@@ -1,0 +1,418 @@
+<div *ngIf="sho_dpr_location_dashboard == false">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <md-icon (click)="onBackClick()" mdTooltip="Back" class="icon-20 material-icons"
+        style="cursor: pointer;color:gray;margin-top: 12px;font-size: 35px;">navigate_before</md-icon>
+    </div>
+    <div style="padding-top: 5px;"><span style="font-size: 25px;font-weight: bold;color: #26a69a;">DPR Dashboard</span>
+    </div>
+    <div></div>
+  </div>
+
+
+
+  <div>
+    <div class="ui-widget-header">
+      <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+        <div fxLayout="row" fxGap="5px" #click>
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="search()" pInputText size="30"
+            placeholder="Search by Site Name">
+        </div>
+        <div>
+          <span>
+            <md-icon (click)="refresh()" mdTooltip="Refresh" style="cursor: pointer;font-size: 20px;color: #23375b;">
+              cached</md-icon>
+          </span>
+          <span #map>
+            <md-icon (click)="exportToExcel()" mdTooltip="Export to Excel"
+              style="cursor: pointer;font-size: 20px;color: #23375b;">insert_drive_file</md-icon>
+          </span>
+          <span>
+            <md-icon *ngIf="dpr_dashboard_location_flag == true" (click)="goToLocationDPRDashboard()"
+              mdTooltip="Open Location DPR Dashboard" style="cursor: pointer;font-size: 20px;color: #23375b;">place
+            </md-icon>
+          </span>
+        </div>
+      </div>
+
+    </div>
+    <div>
+      <p-dataTable [value]="dpr_dashboard" [responsive]="true" scrollable="true" [rows]="10" [paginator]="true" [scrollable]="true" scrollHeight="400px" scrollWidth="100%">        
+        <!-- <p-headerColumnGroup>
+              <p-row>
+                <p-column header="State" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Site" [style]="{'width':'120px'}"></p-column>
+                <p-column header="View Location Dashboard" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Value Nos" [style]="{'width':'100px'}"></p-column>
+                <p-column header="LAF" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Soil Testing" [style]="{'width':'100px'}"></p-column>
+                <p-column header="WTG" [style]="{'width':'100px'}"></p-column>
+                Total added locations-->
+        <!-- <p-column header="Excavation" [style]="{'width':'100px'}"></p-column>
+                <p-column header="PCC" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Reinforcement Binding & Formwork" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Foundation Concrete" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Completion of Foundation" [style]="{'width':'100px'}"></p-column>
+                <p-column header="DP Civil" [style]="{'width':'100px'}"></p-column>
+                <p-column header="DP Yard" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Assembly Lattice Finish" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Erection of Lattice Tower" [style]="{'width':'100px'}"></p-column>
+                <p-column header="WTG Erection" [style]="{'width':'100px'}"></p-column>
+                <p-column header="WTG Precommissioning" [style]="{'width':'120px'}"></p-column>
+                <p-column header="WTG Commissioning" [style]="{'width':'100px'}"></p-column>
+                <p-column header="WTG in Generation" [style]="{'width':'100px'}"></p-column>
+                <p-column header="HOTO Customer" [style]="{'width':'100px'}"></p-column>
+              </p-row>
+            </p-headerColumnGroup> --> -->
+        <p-column field="state" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            State
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.state}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="site" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Site
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.site}} </div>
+          </ng-template>
+        </p-column>
+        <p-column [style]="{'width':'100px','word-wrap': 'break-word','text-align':'center'}">
+          <ng-template pTemplate="header">
+            View Location Dashboard
+          </ng-template>
+          <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="body">
+            <md-checkbox *ngIf="row.showCheckbox == true" (change)="setLocationDPRFlag(i)"
+              [checked]="row.location_dashboard_flag"></md-checkbox>
+          </ng-template>
+        </p-column>
+        <p-column field="value_no" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Value Nos
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.value_no}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="laf" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            LAF
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.laf}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="soil_testing" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Soil Testing
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.soil_testing}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="total_locations" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            WTG
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.total_locations}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="excavation" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Excavation
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.excavation}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="pcc" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            PCC
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.pcc}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="reinforcement_binding" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Reinforcement Binding & Formwork
+          </ng-template>
+
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.reinforcement_binding}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="foundation_concrete" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Foundation Concrete
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.foundation_concrete}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="completion_foundation" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Completion of Foundation
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.completion_foundation}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="dp_civil" [style]="{'width':'100px'}">
+
+          <ng-template pTemplate="header">
+            DP Civil
+          </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.dp_civil}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="dp_yard" [style]="{'width':'100px'}">            
+            <ng-template pTemplate="header">
+                DP Yard
+              </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.dp_yard}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="assembly_lattice_finish" [style]="{'width':'100px'}">
+            <ng-template pTemplate="header">
+                Assembly Lattice Finish
+              </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.assembly_lattice_finish}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="erection_of_lattice_tower" [style]="{'width':'100px'}">            
+            <ng-template pTemplate="header">
+                Erection of Lattice Tower
+              </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.erection_of_lattice_tower}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_erection" [style]="{'width':'100px'}">
+            
+            <ng-template pTemplate="header">
+                WTG Erection
+            </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_erection}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_precomissioning" [style]="{'width':'120px'}">
+            
+            <ng-template pTemplate="header">
+                WTG Precommissioning
+            </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_precomissioning}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_commissioning" [style]="{'width':'100px'}">            
+            <ng-template pTemplate="header">
+                WTG Commissioning
+            </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_commissioning}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_generation" [style]="{'width':'100px'}">            
+            <ng-template pTemplate="header">
+                WTG in Generation
+            </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_generation}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="hoto_customer" [style]="{'width':'100px'}">
+            <ng-template pTemplate="header">
+                HOTO Customer
+            </ng-template>
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.hoto_customer}} </div>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+    <div [hidden]="true" id="dprtable">
+      <p-dataTable [value]="dpr_dashboard" [responsive]="true" sortMode="multiple">
+        <p-headerColumnGroup>
+          <p-row>
+            <p-column header="State" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Site" [style]="{'width':'120px'}"></p-column>
+            <p-column header="Value Nos" [style]="{'width':'100px'}"></p-column>
+            <p-column header="LAF" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Soil Testing" [style]="{'width':'100px'}"></p-column>
+            <p-column header="WTG" [style]="{'width':'100px'}"></p-column>
+            <!--Total added locations-->
+            <p-column header="Excavation" [style]="{'width':'100px'}"></p-column>
+            <p-column header="PCC" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Reinforcement Binding & Formwork" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Foundation Concrete" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Completion of Foundation" [style]="{'width':'100px'}"></p-column>
+            <p-column header="DP Civil" [style]="{'width':'100px'}"></p-column>
+            <p-column header="DP Yard" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Assembly Lattice Finish" [style]="{'width':'100px'}"></p-column>
+            <p-column header="Erection of Lattice Tower" [style]="{'width':'100px'}"></p-column>
+            <p-column header="WTG Erection" [style]="{'width':'100px'}"></p-column>
+            <p-column header="WTG Precommissioning" [style]="{'width':'120px'}"></p-column>
+            <p-column header="WTG Commissioning" [style]="{'width':'100px'}"></p-column>
+            <p-column header="WTG in Generation" [style]="{'width':'100px'}"></p-column>
+            <p-column header="HOTO Customer" [style]="{'width':'100px'}"></p-column>
+          </p-row>
+        </p-headerColumnGroup>
+        <p-column field="state" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.state}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="site" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.site}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="value_no" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.value_no}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="laf" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.laf}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="soil_testing" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.soil_testing}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="total_locations" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.total_locations}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="excavation" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.excavation}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="pcc" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.pcc}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="reinforcement_binding" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.reinforcement_binding}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="foundation_concrete" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.foundation_concrete}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="completion_foundation" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.completion_foundation}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="dp_civil" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.dp_civil}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="dp_yard" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.dp_yard}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="assembly_lattice_finish" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.assembly_lattice_finish}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="erection_of_lattice_tower" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.erection_of_lattice_tower}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_erection" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_erection}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_precomissioning" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_precomissioning}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_commissioning" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_commissioning}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="wtg_generation" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.wtg_generation}} </div>
+          </ng-template>
+        </p-column>
+        <p-column field="hoto_customer" [style]="{'width':'100px'}">
+          <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+            <div style="text-align: center;">
+              {{rowData.hoto_customer}} </div>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+
+  </div>
+</div>
+<div>
+  <app-dpr-location-dashboard *ngIf="sho_dpr_location_dashboard == true" (back)="backFromDPRLocationDashboard($event)" [site_list]="site_id_array">
+  </app-dpr-location-dashboard>
+</div>

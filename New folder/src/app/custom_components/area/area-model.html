@@ -1,0 +1,145 @@
+<form [formGroup]="form" style="padding-top:10px">
+  <div fxLayout="column">
+    <div fxLayout="row">
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+            <small style="color: red;">*</small>
+          </span>
+          <input type="text" [(ngModel)]="areaName" [formControl]="form.controls['name']"
+            style="width: 100%;padding: 5px;border-radius: 4px;">
+          <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched"
+            class="mat-text-warn">Required</small>
+          <small *ngIf="form.controls['name'].hasError('areaNameValidator') && form.controls['name'].touched"
+            class="mat-text-warn">Area already exists</small>
+        </div>
+      </div>
+      <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched"
+        class="mat-text-warn"></small>
+
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">State
+            <small style="color: red;">*</small>
+          </span>
+
+          <select [formControl]="form.controls['state']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            [(ngModel)]="selectedState">
+            <option *ngFor="let state of stateList" [value]="state.id">
+              {{ state.name }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['state'].hasError('required') && form.controls['state'].touched"
+            class="mat-text-warn">Required</small>
+        </div>
+
+
+
+
+      </div>
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Country
+            <small style="color: red;">*</small>
+          </span>
+
+
+          <select [formControl]="form.controls['country']" [(ngModel)]="selectedCountry" (change)="onCountryChange()"
+            style="width: 100%;padding: 5px;border-radius: 4px;">
+            <option *ngFor="let country of countrylist" [value]="country.id">
+              {{ country.name }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['country'].hasError('required') && form.controls['country'].touched"
+            class="mat-text-warn">Required</small>
+        </div>
+
+
+
+
+
+      </div>
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Status
+            <small style="color: red;">*</small>
+          </span>
+
+          <select [formControl]="form.controls['status']" style="width: 100%;padding: 5px;border-radius: 4px;">
+            <option *ngFor="let status of statusList" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['status'].hasError('required') && form.controls['status'].touched"
+            class="mat-text-warn">Required</small>
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <!-- <div fxLayout="row">
+      <div class="mb-1" fxFlex="24" style="margin-right:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Village
+            <small style="color: red;">*</small>
+          </span>
+          <input type="text" [(ngModel)]="village" [formControl]="form.controls['village']"
+            style="width: 100%;padding: 5px;border-radius: 4px;">
+          <small *ngIf="form.controls['village'].hasError('required') && form.controls['village'].touched"
+            class="mat-text-warn">Required</small>
+
+        </div>
+      </div>
+      <small *ngIf="form.controls['village'].hasError('required') && form.controls['village'].touched"
+        class="mat-text-warn"></small>
+
+
+      <div class="mb-1" fxFlex="22" style="margin-right:10px;margin-left: 10px;">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Taluka
+            <small style="color: red;">*</small>
+          </span>
+          <input type="text" [(ngModel)]="taluka" [formControl]="form.controls['taluka']"
+            style="width: 100%;padding: 5px;border-radius: 4px;">
+          <small *ngIf="form.controls['taluka'].hasError('required') && form.controls['taluka'].touched"
+            class="mat-text-warn">Required</small>
+        </div>
+      </div>
+      <small *ngIf="form.controls['taluka'].hasError('required') && form.controls['taluka'].touched"
+        class="mat-text-warn"></small>
+
+
+      <div class="mb-1" fxFlex="22" style="margin-right:10px;margin-left: 12px;">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">District
+            <small style="color: red;">*</small>
+          </span>
+          <input type="text" [(ngModel)]="district" [formControl]="form.controls['district']"
+            style="width: 100%;padding: 5px;border-radius: 4px;">
+          <small *ngIf="form.controls['district'].hasError('required') && form.controls['district'].touched"
+            class="mat-text-warn">Required</small>
+        </div>
+      </div>
+      <small *ngIf="form.controls['district'].hasError('required') && form.controls['district'].touched"
+        class="mat-text-warn"></small> 
+
+
+    </div>-->
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <button md-raised-button color="accent" (click)='closeDialog()'>Cancel</button>
+      <button md-raised-button color="primary" (click)="saveUpdateArea()" style="margin-left: 10px" type="submit"
+        [disabled]="!form.valid">Submit</button>
+    </div>
+  </div>
+  <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>
+</form>

@@ -1,0 +1,80 @@
+<form [formGroup]="form">
+  <div *ngIf="customerSection" fxLayout="row"  fxLayoutAlign="end end" >
+    <md-icon svgIcon="arrow_back" (click)="toggleCustomerSection()" class="icon-20" 
+    style="cursor:pointer"></md-icon>
+  </div>
+  <div *ngIf="!customerSection" fxLayout="column">
+      <div class="mb-1">
+        <h4 style="margin:0">{{modelname}}</h4>
+      </div>
+      <div fxLayout="row">
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="ID" [formControl]="form.controls['ID']">
+          </md-input-container>
+        </div>  
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">	
+            <md-input-container fxFlex="100">
+              <input mdInput placeholder="Model" [mdAutocomplete]="reactiveAuto" [formControl]="stateCtrl">
+            </md-input-container>
+            <md-autocomplete #reactiveAuto="mdAutocomplete" [displayWith]="displayFn">
+              <md-option *ngFor="let state of reactiveStates | async" [value]="state">
+                <span>{{ state.name }}</span>
+              </md-option>
+            </md-autocomplete>
+        </div>
+      </div> 
+      <div fxLayout="row">   
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">	
+            <md-input-container fxFlex="100">
+              <input mdInput placeholder="Customer" [mdAutocomplete]="reactiveAutoCust" [formControl]="customerCtrl">
+            </md-input-container>
+            <md-autocomplete #reactiveAutoCust="mdAutocomplete" [displayWith]="displayFn">
+              <md-option *ngFor="let cust of reactiveCustomers | async" [value]="cust">
+                <span> {{cust.name}} </span>
+              </md-option>
+            </md-autocomplete>
+            <md-icon mdSuffix svgIcon="plus-circle" (click)="toggleCustomerSection()" class="icon-20" style="margin-top:15px;cursor:pointer"></md-icon>
+        </div>
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="Status" [formControl]="form.controls['STATUS']">
+          </md-input-container>
+        </div>
+      </div>  
+      <div fxLayout="row">   
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">	
+            <md-input-container fxFlex="100">
+              <input mdInput placeholder="Site" [mdAutocomplete]="reactiveAutoSite" [formControl]="siteCtrl">
+            </md-input-container>
+            <md-autocomplete #reactiveAutoSite="mdAutocomplete" [displayWith]="displayFnSite">
+              <md-option *ngFor="let s of reactiveSites | async" [value]="s" style="height:62px">
+                <md-item-template>
+                  <div style="display:flex;line-height:2;margin-top:5px">
+                    <md-icon svgIcon="location"></md-icon>
+                    <strong> {{s.site}} </strong>
+                  </div>
+                  <span style="display:block;line-height:2">
+                    <span>
+                      {{s.country}}
+                    </span>
+                    <span>
+                      <i>{{s.state}}</i>
+                    </span>
+                  </span>
+                </md-item-template>
+              </md-option>
+            </md-autocomplete>
+            <md-icon *ngIf="!isSiteHasData" mdSuffix (click)="clearSite()" style="margin-top:15px;cursor:pointer">clear</md-icon>
+        </div>
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">
+          
+        </div>
+      </div>   
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" (click)='closeDialog()'>Cancel</button>
+        <button md-raised-button color="primary" (click)="createLocation()" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+      </div>
+    </div>
+    <div *ngIf="customerSection"><create-customer (toggle)="onToggle($event)"></create-customer> </div>
+</form>

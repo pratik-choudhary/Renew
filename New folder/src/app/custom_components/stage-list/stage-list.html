@@ -1,0 +1,52 @@
+<md-tab-group>
+    <md-tab label="Active">
+        <md-content class="md-padding">
+            <div style="margin-top:10px;">
+                <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none;text-align: end;">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input #gb type="text" pInputText size="50" placeholder="Search">
+                </div>
+                <p-dataTable [value]="stageList"  [rows]="10" [paginator]="true"  [responsive]="true" sortMode="multiple" [globalFilter]="gb">
+                    <p-column field="name" header="Name" [sortable]="true"></p-column>
+                    <p-column field="level" header="Level" [sortable]="true"></p-column>
+                    <p-column field="status" header="Status" [sortable]="true"></p-column>
+                    <p-column styleClass="col-button">
+                        <ng-template pTemplate="header">
+                            Action
+                        </ng-template>
+                        <ng-template let-rowData="rowData" pTemplate="body">
+                            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                <md-icon (click)="openStageEditPopup(rowData)" svgIcon="pencil" class="icon-20" style="cursor:pointer"></md-icon>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </md-content>
+    </md-tab>
+    <md-tab label="Inactive">
+        <md-content class="md-padding">
+                <div style="margin-top:10px;">
+                        <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none;text-align: end;">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input #gb type="text" pInputText size="50" placeholder="Search">
+                        </div>
+                        <p-dataTable [value]="stageList"  [rows]="10" [paginator]="true"  [responsive]="true" sortMode="multiple" [globalFilter]="gb">
+                            <p-column field="name" header="Name" [sortable]="true"></p-column>
+                            <p-column field="level" header="Level" [sortable]="true"></p-column>
+                            <p-column field="status" header="Status" [sortable]="true"></p-column>
+                            <p-column styleClass="col-button">
+                                <ng-template pTemplate="header">
+                                    Action
+                                </ng-template>
+                                <ng-template let-rowData="rowData" pTemplate="body">
+                                    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                        <md-icon (click)="openStageEditPopup(rowData)" svgIcon="pencil" class="icon-20" style="cursor:pointer"></md-icon>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+        </md-content>
+    </md-tab>
+</md-tab-group>

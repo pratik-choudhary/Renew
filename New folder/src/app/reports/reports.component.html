@@ -1,0 +1,64 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;color:#fff">Reports</div>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+        </div>
+    </div>
+</md-toolbar>
+<div fxLayout="row">
+    <md-card style="width:100%;margin-top:-30px;">
+        <md-card-content class="md-padding">
+            <div>
+                <div class="ui-widget-header">
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                        <div fxLayout="row" fxGap="5px">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input #gb1 type="text" pInputText size="30" placeholder="Search">
+                            <div style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;" *ngIf="locationList">Total Count {{locationList.length}}</div>
+                        </div>
+                    </div>
+
+                    <p-dataTable [value]="reports" [rows]="10" [paginator]="true" [responsive]="true" [editable]="true" [immutable]="false" [globalFilter]="gb1"
+                        sortMode="multiple">
+                        <p-headerColumnGroup>
+                            <p-row>
+                                <p-column header="SR. No." rowspan="3"></p-column>
+                                <p-column header="Details of check point" rowspan="3"></p-column>
+                                <p-column header="Required value / status" rowspan="3"></p-column>
+                                <p-column header="Observed Status" colspan="2"></p-column>
+                                <p-column header="Actual" rowspan="3"></p-column>
+                                <p-column header="Correction Record" rowspan="3"></p-column>
+                            </p-row>
+                            <p-row>
+                                <p-column header="OK" colspan="1"></p-column>
+                                <p-column header="Not Ok" colspan="1"></p-column>
+                            </p-row>
+                        </p-headerColumnGroup>
+
+                        <p-column field="sr_no"></p-column>
+                        <p-column field="checkpoint_details">
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                <!-- {{row[col.field][0].question}} -->
+                                <div *ngFor="let detail of row[col.field]">{{detail.question}}</div>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="required_value">
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                <!-- {{row[col.field][0].question}} -->
+                                <div *ngFor="let detail of row[col.field]">{{detail.serial_no}}.
+                                    <span *ngFor="let data of detail.questions">{{data}}</span>
+                                </div>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="ok"></p-column>
+                        <p-column field="notok"></p-column>
+                        <p-column field="actual"></p-column>
+                        <p-column field="correction_record"></p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

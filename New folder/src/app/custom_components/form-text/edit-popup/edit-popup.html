@@ -1,0 +1,17 @@
+<form  fxLayout="column" [formGroup]="form" (ngSubmit)="updateQuestion()">
+<h2 md-dialog-title>Edit component</h2>
+<md-dialog-content style="height: auto;overflow:hidden;">
+	<div  fxLayout="column">
+		<div class="mb-1">
+          <md-input-container style="width: 100%">
+            <input mdInput placeholder="Question" [formControl]="form.controls['label']">
+          </md-input-container>
+          <small *ngIf="form.controls['label'].hasError('required') && form.controls['label'].touched" class="mat-text-warn">Required.</small>
+        </div>
+    </div>
+</md-dialog-content>
+<md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+	<button md-raised-button color="accent"  [md-dialog-close]="false">Cancel</button>
+    <button md-raised-button color="primary" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+</md-dialog-actions>
+</form>

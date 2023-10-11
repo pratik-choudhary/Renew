@@ -1,0 +1,71 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;color:#fff">Site Team</div>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+            <!--  <button md-raised-button class="suzlon-button" (click)="openDialog()">
+                <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+                <span>Add Location</span>
+            </button> -->
+        </div>
+    </div>
+</md-toolbar>
+<div fxLayout="row"  fxLayoutWrap="wrap"  fxLayoutAlign="center start">
+  <div style="padding: 1px;" fxFlex="100">
+    <md-card class="mat-card-top" style="margin-top:-30px;">
+        <md-card-content>
+            <div id="site-dropdown">
+                <p-dropdown [options]="sites" placeholder="Select Site" [(ngModel)]="selectedSite"
+                    [filter]="true" filterBy="label" (onChange)="changeSite(selectedSite)"></p-dropdown>
+              </div>
+            <p-dataTable [value]="departments" [editable]="true" [responsive]="true">
+                <p-column field="department.name" header="Department" [style]=" {'width':'200px' }">
+                      
+                </p-column>
+                <!-- <p-column field="department.stage" header="Stage" [style]=" {'width':'100px' }">     
+                </p-column>-->
+                <p-column field="HOD" header="HoD" [editable]="true" [style]=" {'width':'300px' }">
+                     <ng-template let-col let-row="rowData" pTemplate="body">
+                         <span *ngIf="row.HOD != null">{{row.HOD.name}}</span>
+                         <span *ngIf="row.HOD == null || row.HOD.name == undefined" [hidden]="row.department.id == 12 || row.department.id == 13" style="font-style: italic;color: #9499a2;">Click here to select HoD</span> 
+                    </ng-template>
+                    <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                        <p-dropdown [hidden]="row.department.id == 13" [options]="HODs" placeholder="Select HoD" [(ngModel)]="row[col.field]"
+                    [filter]="true" (onFocus)="loadHOD(row)" (onChange)="enableSaveFlag(i)" [style]="{'width':'100%'}"></p-dropdown>
+                    </ng-template> 
+                </p-column>
+                 <p-column field="team" header="Team" [editable]="true" [style]="{'word-wrap': 'break-word'}" >
+                  <ng-template let-col let-row="rowData" pTemplate="body">
+                      <span *ngIf="row.team.length == 0" style="font-style: italic;color: #9499a2;">Click here to select team</span>
+                        <span *ngFor="let t of row.team" 
+                      style="border-color: #156090;background: #186ba0;color: #FFFFFF;
+                      padding: 1px; margin: 4px; border-radius: 3px;">{{t.name}}</span>  
+                  </ng-template>
+                   <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                      <p-autoComplete [(ngModel)]="row[col.field]" (onBlur)="enableSaveFlag(i)" [suggestions]="filteredCountriesMultiple" (completeMethod)="filterCountryMultiple($event,row[col.field])" 
+                          [minLength]="1" placeholder="Team" field="name" (onFocus)="getDepartmentUsers(row)" [multiple]="true" [style]="{'width':'100%'}">
+                      </p-autoComplete>  
+                  </ng-template> 
+                </p-column>
+                <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                    <ng-template pTemplate="header">
+                    </ng-template>
+                    <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
+                        <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                            <md-icon *ngIf="rowData.saveFlag" (click)="changeTeam(rowData)" class="icon-20 material-icons" style="cursor:pointer;font-size: 20px;color: #23375b;">save</md-icon>
+                            <md-icon  *ngIf="!rowData.saveFlag" class="icon-20 material-icons" style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+                        </div>
+                    </ng-template>
+                </p-column>
+            </p-dataTable>    
+        </md-card-content>
+ <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+                <p>{{Notification}}</p>
+                <p-footer>
+                    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+                </p-footer>
+            </p-dialog>
+    </md-card>
+  </div>
+</div>

@@ -1,0 +1,307 @@
+<div class="ui-widget-header" fxLayout="row" fxLayoutAlign="space-between" style="padding:4px 10px;border-bottom: 0 none;">
+    <div>
+        <span>Total Locations: {{new_dashboard.length}}</span>
+    </div>
+    <div>
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input [(ngModel)]="searchTerm" (ngModelChange)="search()" type="text" pInputText size="35" placeholder="Search by Location Name">
+        <span><a style="color: #00978c;text-decoration: underline;cursor: pointer;padding: 10px;" (click)="openIssueRegisterDialog()">View Issue Register</a></span>
+        <span #map>
+            <md-icon (click)="openMapDialog()" mdTooltip="Map" class="icon-20 material-icons" style="cursor: pointer;font-size: 20px;color: #23375b;">map</md-icon>
+        </span>
+        <span #map>
+            <md-icon (click)="exportToExcel()" mdTooltip="Export to Excel" style="cursor: pointer;font-size: 20px;color: #23375b;">insert_drive_file</md-icon>
+        </span>
+
+    </div>
+</div>
+<div id="gt-loss-grid1" *ngIf="new_dashboard.length > 0"> 
+    <p-dataTable [value]="new_dashboard" scrollHeight="400px"  scrollable="true" scrollWidth="100%">
+        <p-headerColumnGroup>
+            <p-row>
+                <p-column header="Location"  rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Current Stage" rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <p-column header="Model" rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <p-column header="DQR OK Points" rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <p-column header="DQR NOT OK Points" rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <p-column header="HOTO Certificate" rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <!-- <p-column header="STPT Certificate" rowspan="3" [style]="{'width':'100px'}"></p-column> -->
+                <p-column header="PQHC" [style]="{'width': '640px'}" colspan="9"></p-column>
+                <p-column header="Pre-Comissioning" [style]="{'width': '210px'}" colspan="3"></p-column>
+                <p-column header="Safe Run" [style]="{'width': '210px'}" colspan="3"></p-column>
+                <p-column header="Commissioning" [style]="{'width': '210px'}" colspan="3"></p-column>
+                <p-column header="Configuration" [style]="{'width': '210px'}" colspan="3"></p-column>
+                <p-column header="TT & HOTO Sign-Off" [style]="{'width': '210px'}" colspan="3"></p-column>
+                <p-column header="Maintenance" [style]="{'width': '210px'}" colspan="3"></p-column>
+                <!-- <p-column header="STPT" [style]="{'width': '210px'}" colspan="3"></p-column> -->
+                <!-- <p-column header="Status" rowspan="4" [style]="{'width':'100px'}"></p-column> -->
+                <!-- <p-column header="HOTO Certificate" rowspan="4" [style]="{'width':'100px'}"></p-column>
+                <p-column header="STPT Certificate" rowspan="4" [style]="{'width':'100px'}"></p-column> -->
+            </p-row>
+            <p-row>
+                <p-column header="Civil" colspan="3"></p-column>
+                <p-column header="Electrical" colspan="3"></p-column>
+                <p-column header="Mechanical" colspan="3"></p-column>
+                <p-column header="Pre-Comissioning" colspan="3"></p-column>
+                <p-column header="Safe Run" colspan="3"></p-column>
+                <p-column header="Commissioning" colspan="3"></p-column>
+                <p-column header="Configuration" colspan="3"></p-column>
+                <p-column header="TT & HOTO Sign-Off" colspan="3"></p-column>
+                <p-column header="Maintenance" colspan="3"></p-column>
+                <!-- <p-column header="STPT" colspan="3"></p-column> -->
+            </p-row>
+            <p-row>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column>
+                <!-- <p-column header="HOD"></p-column>
+                <p-column header="QA"></p-column>
+                <p-column header="Completed"></p-column> -->
+            </p-row>
+        </p-headerColumnGroup>
+        <p-column field="location_name" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div (click)="OpenLocationDashboard(rowData)" style="cursor:pointer;text-align: center;">{{i}}
+                    {{rowData.location_name}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="current_stage_name" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: center;">
+                    {{rowData.current_stage_name}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="model_name" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: center;">
+                    {{rowData.model_name}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="ok_questions" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: center;">
+                    {{rowData.ok_questions}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="not_ok_questions" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: center;">
+                    {{rowData.not_ok_questions}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="current_stage" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: center;">
+                    <div><a *ngIf="rowData.show_hoto_certificate == '1'" style="color: #00978c;text-decoration: underline;cursor: pointer;" (click)="generatePDF(rowData)">Customer</a></div>
+                <div><a *ngIf="rowData.show_hoto_certificate == '1'" style="color: #00978c;text-decoration: underline;cursor: pointer;" (click)="generateInternalPDF(rowData)">Internal</a></div>
+                </div>
+            </ng-template>
+        </p-column>
+        <!-- <p-column field="show_stpt_certificate" [style]="{'width':'100px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: center;">
+                    <div><a *ngIf="rowData.show_stpt_certificate == '1'" style="color: #00978c;text-decoration: underline;cursor: pointer;" (click)="getSTPTCertificate(rowData)">STPT Certificate</a></div>                
+                </div>
+            </ng-template>
+        </p-column> -->
+        <p-column field="stage_1_civil_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_civil_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_civil_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_civil_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_civil_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_civil_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_electrical_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_electrical_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_electrical_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_electrical_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_electrical_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_electrical_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_mechanical_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_mechanical_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_mechanical_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_mechanical_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_1_mechanical_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_1_mechanical_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_2_precom_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_2_precom_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_2_precom_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_2_precom_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_2_precom_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_2_precom_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_3_safe_run_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_3_safe_run_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_3_safe_run_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_3_safe_run_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_3_safe_run_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_3_safe_run_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_4_comm_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_4_comm_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_4_comm_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_4_comm_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_4_comm_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_4_comm_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_5_config_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_5_config_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_5_config_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_5_config_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_5_config_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_5_config_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_6_hoto_signoff_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_6_hoto_signoff_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_6_hoto_signoff_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_6_hoto_signoff_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_6_hoto_signoff_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_6_hoto_signoff_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_7_maintenance_hod_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_7_maintenance_hod_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_7_maintenance_qa_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_7_maintenance_qa_count}} </div>
+            </ng-template>
+        </p-column>
+        <p-column field="stage_7_maintenance_completed_count" [style]="{'width':'70px'}">
+            <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
+                <div style="text-align: right;">
+                    {{rowData.stage_7_maintenance_completed_count}} </div>
+            </ng-template>
+        </p-column>
+        <!-- <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column>
+        <p-column field=""></p-column> -->
+
+
+    </p-dataTable>
+</div>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

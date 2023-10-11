@@ -1,0 +1,69 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">HoTo Type
+            </div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+<div style="padding:20px">
+    <div fxLayout="column" fxLayoutGap="10px">
+        <md-radio-group fxLayout="column" fxLayoutWrap="wrap">
+            <md-radio-button *ngFor="let label of approve_labels" (change)="onApproveChange($event)" [value]="label.id" fxFlex="25" style="padding:8px 0px;">{{label.name}}</md-radio-button>
+        </md-radio-group>        
+        <div *ngIf="approve_type == 2">
+            <div class="ui-widget-header">
+                <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                    <div fxLayout="row" fxGap="5px">
+                    </div>
+
+                    <div fxLayout="row" >
+                        <md-icon (click)="addObservation()" class="material-icons" style="color: #00968c;cursor: pointer;">add_box</md-icon>
+                        <div (click)="addObservation()" style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;">Add New Observation</div>
+                        <div style="margin-left:20px"><md-icon  *ngIf="deleteObservationFlag == true" class="icon-20" (click)="deleteObservations()" label="Delete" style="cursor:pointer;color: #23375b;">delete</md-icon></div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+            <p-dataTable  [value]="observation_list" [rows]="10" dataKey="serial_no" [editable]="true"  [immutable]="false" >
+                    <p-column field="serial_no" [style]="{'word-wrap': 'break-word','width':'100px','text-align':'center'}" [editable]="true">
+                        <ng-template pTemplate="header">
+                            Sr.No
+                        </ng-template>
+
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <input type="number" [min]="1"  pInputText placeholder="Enter Sr No." [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                        </ng-template>
+                    </p-column>
+                    <p-column field="observation" [style]="{'word-wrap': 'break-word'}" [editable]="true">
+                        <ng-template pTemplate="header">
+                            Observation
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <input type="text"  placeholder="Enter Observation" pInputText   [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                        </ng-template>
+                    </p-column>
+                    <p-column field="deleteflag" header="Delete" [style]="{'word-wrap': 'break-word','width':'60px','text-align':'center'}">
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="body">
+                            <md-checkbox (change)="setDeleteflag(i)" [(ngModel)]="row[col.field]" [checked]="row.deleteflag"></md-checkbox>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button md-raised-button color="primary" [disabled]="emptyFlag" style="margin-left: 10px" (click)="submitDetails()" type="button">Submit</button>
+        </div>
+    </div>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+        <p>{{Notification}}</p>
+        <p-footer>
+            <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+        </p-footer>
+    </p-dialog>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

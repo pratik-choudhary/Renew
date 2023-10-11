@@ -1,0 +1,117 @@
+@import "../../../assets/styles/scss/components/timeline";
+
+.timeline::before {
+    background: #bcbdbd !important;
+    left: 57px !important;
+    width: 3px !important; 
+}
+.timeline-card{
+    margin: 12px 0 !important;
+    display:flex;
+}
+.timeline-icon{
+ left:52px !important;
+}
+.timeline-content{
+    position: relative;
+    margin-left: 34px !important;
+}
+.timeline-date {
+    width:70px !important;
+    left: 0;
+    margin-left: -15px;
+    font-size: 12px !important;
+}
+.mat-card::after {
+    border-color: transparent #fdfdfd transparent transparent !important;
+}
+.question-label{
+    color: #7a869a;
+    font-size: 14px;
+}
+.question{
+    font-size: 14px;
+    color: #0a2350;
+    padding-bottom: 10px;
+}
+.specification-label{
+    color: #7a869a;
+    font-size: 12px;
+}
+.specifications{
+    font-size: 14px;
+    color: #0a2350;
+}
+.width-200px{
+  width:200px;
+}
+.width-300px{
+  width: 300px;
+}
+.margin-bottom-10{
+  margin-bottom: 10px;
+}
+.approved-status{
+    width: 30px;
+    text-align: center;
+    background: #3a983a;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+}
+.rejected-status{
+    width: 50px;
+    text-align: center;
+    background: #ce5a5a;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+}
+.inprogress-status{
+    width: 68px;
+    text-align: center;
+    background: gray;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+}
+.attachment-image{
+    width:80px;
+    height:80px;
+    padding: 2px 5px 2px 0;
+}
+.attach-doc{
+    color: #aeb7c7;
+    height: 80px !important;
+    width: 80px !important;
+    font-size: 80px !important;
+    border-radius: 4px;
+    border: 1px solid #c9ccd2;
+}
+.attach-doc-link{
+    font-size: 12px;
+    color: #0a2350;
+}
+.document-title{
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-top: 22px;
+}
+.download-btn{
+    margin-left: -18px;
+    background: #fff;
+    border-radius: 50%;
+    border: 1px dotted #0b295e;
+    height: 20px !important;
+    width: 20px !important;
+    font-size: 20px !important;
+    color: #4f6690 !important;
+}
+// .on-hover{
+//     md-icon{
+//        opacity: 0;
+//         &:hover{
+//           opacity: 0.8;
+//         }
+//     }
+// }

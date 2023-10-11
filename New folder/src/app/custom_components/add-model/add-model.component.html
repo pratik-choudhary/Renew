@@ -1,0 +1,68 @@
+<div fxLayout="row" fxLayoutAlign="end" style="margin-top:10px;">
+
+    <div class="milestone-instance-div" fxFlex="100">
+
+        <div class="mb-1">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="suzlon-input" style="width: 40%;">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Model
+                        <small style="color: red;">*</small>
+                    </span>
+                    <!-- <p-dropdown [(ngModel)]="project_model" (onChange)="changeProModel(project_model)" [options]="models" [autoWidth]="false" [style]="{'width':'100%'}"
+                    required="true" appendTo="body" [filter]="true" filterBy="label,value.name" placeholder="Select Model"></p-dropdown> -->
+                    <!-- <select [disabled]="usesFlag" class="suzlon-input" [(ngModel)]="project_model" placeholder="Select Model" style="width: 100%;
+                        padding: 5px;
+                        border-radius: 4px;" name="model" (change)="changeProModel(project_model)"> 
+                        <option *ngFor="let c of models" [value]="c.id">{{c.name}}</option>
+                    </select>-->
+                    <p-dropdown [style]="{'width':'100%'}" [disabled]="usesFlag" [options]="models" placeholder="Select Model" (onChange)="changeProModel(project_model)" [(ngModel)]="project_model"  [filter]="true" filterBy="label" appendTo="body">
+                    </p-dropdown>
+                </div>
+                <div style="margin-left:50px;margin-top: 5px;width: 70%;">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Checklists
+                        <small style="color: red;">*</small>
+                    </span>
+                    <div>
+                         <span class="ui-fluid">
+                            <p-autoComplete [disabled]="usesFlag" [(ngModel)]="project_checklists" (onSelect)="changeChecklists(project_checklists)" (onUnselect)="changeChecklists(project_checklists)"
+                                (onClear)="changeChecklists(project_checklists)" (onBlur)="changeChecklists(project_checklists)" [suggestions]="filteredCountriesMultiple" (completeMethod)="filterCountryMultiple($event)"
+                                [minLength]="1" placeholder="checklist" field="NAME" [multiple]="true" appendTo="body">
+                            </p-autoComplete>
+                        </span> 
+                        <!-- <p-multiSelect [options]="checklists" [(ngModel)]="project_checklists" (onChange)="changeChecklists(project_checklists)" [(ngModel)]="project_checklists" [panelStyle]="{minWidth:'12em'}" appendTo="body"></p-multiSelect> -->
+                    </div>
+                </div>
+                <div><md-icon *ngIf="usesFlag==false"  class="icon-20" (click)="deleteModel($event)" label="Delete" style="cursor:pointer;color: #23375b;margin-bottom: 60px;margin-right: -10px;">delete</md-icon></div>
+                <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+            </div>
+        </div>
+        <div fxLayout="row" *ngIf="usesFlag == true && completeFlag == false">
+            <div style="width:40%"></div>
+            <div style="width:60%">
+                    <button md-raised-button color="primary" (click)="addNewChecklists()" type="button" style="margin-left: 10px">Add Checklists</button>
+            </div>
+        </div>
+        <div fxLayout="row" *ngIf="newChecklistsFlag == true && completeFlag == false">
+        <div style="width:40%"></div>
+        <div style="width:60%">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Checklists for next Stages
+                        <small style="color: red;">*</small>
+                    </span>
+                    <div fxLayout="column">
+                        <div>
+                        <span class="ui-fluid">
+                            <p-autoComplete  [(ngModel)]="project_checklists2" (onSelect)="changeChecklists(project_checklists2)" (onUnselect)="changeChecklists(project_checklists2)"
+                                (onClear)="changeChecklists(project_checklists2)" (onBlur)="changeChecklists(project_checklists2)" [suggestions]="filteredCountriesMultiple" (completeMethod)="filterCountryMultiple($event)"
+                                [minLength]="1" placeholder="checklist" field="NAME" [multiple]="true" appendTo="body">
+                            </p-autoComplete>
+                        </span>
+                        </div>
+                        <div><button md-raised-button color="primary" (click)="changeChecklists2(project_checklists2)" type="button" style="margin-left: 10px">Add</button> </div> 
+                        <!-- <p-multiSelect [options]="checklists" [(ngModel)]="project_checklists" (onChange)="changeChecklists(project_checklists)" [(ngModel)]="project_checklists" [panelStyle]="{minWidth:'12em'}" appendTo="body"></p-multiSelect> -->
+                    </div>
+
+        </div>
+
+        </div>
+    </div>
+</div>

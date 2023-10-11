@@ -1,0 +1,215 @@
+.span-green {
+    background:#6e9c6e;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.6em;
+    margin-right: 10px;
+    text-align: center;
+    width: 1.6em; 
+  }
+  .mat-dialog-container {
+    max-width: 100vw !important;
+}
+.hide_row{
+  display: none !important;
+}
+
+
+  .span-red {
+    background:#f57777;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.6em;
+    margin-right: 10px;
+    text-align: center;
+    width: 1.6em; 
+  }
+
+  
+  .span-red-to-do {
+    background:#f57777;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.6em;
+    margin-right: 10px;
+    text-align: center;
+    width: 1.6em; 
+  }
+
+ 
+  .span-gray{
+    background:gray;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.6em;
+    margin-right: 0px;
+    text-align: center;
+    width: 1.6em; 
+  }
+
+  .span-yellow{
+    background:#ffbf00;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.6em;
+    margin-right: 5px;
+    text-align: center;
+    width: 1.6em; 
+  }
+
+.span-onTrack{
+    color:green;
+}
+
+.span-delayed{
+    color:red;
+}
+
+.certificate
+{
+  height:130px;
+}
+.table-subheader{
+ overflow-y: hidden;
+}
+.sub-header-red,{
+  font-size: 10px;
+  font-weight:normal;
+  float:left;
+  margin-left: 40px;
+  
+}
+.sub-header-yellow,{
+  font-size: 10px;
+  font-weight:normal;
+  float:left;
+  margin-left: 10px;
+  
+}
+
+.sub-header-approved,{
+  font-size: 10px;
+  font-weight:normal;
+  float:left;
+  margin-left: 22px
+  
+}
+
+.span-yellow-not-ok-4{
+  background:#ffbf00;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.6em;
+  margin-right: 5px;
+  text-align: center;
+  width: 1.6em; 
+  margin-left: 33px;
+}
+
+.span-yellow-not-ok{
+  background:#ffbf00;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.6em;
+  margin-right: 5px;
+  text-align: center;
+  width: 1.6em; 
+}
+.span-yellow-not-ok-empty-red{
+  margin-left: 36px;
+  background:#ffbf00;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.6em;
+  margin-right: 5px;
+  text-align: center;
+  width: 1.6em; 
+}
+
+.span-red-not-ok {
+  background:#f57777;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.6em;
+  margin-right: 10px;
+  text-align: center;
+  width: 1.6em; 
+}
+.span-red-not-ok-empty-yellow {
+  margin-right: 36px;
+  background:#f57777;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.6em;
+  margin-right: 10px;
+  text-align: center;
+  width: 1.6em; 
+}
+
+.sub-header-rejected,{
+  font-size: 10px;
+  font-weight:normal;
+  float:left;
+  margin-left: 8px;
+  
+}
+.sub-header-inprogress,{
+  font-size: 10px;
+  font-weight:normal;
+  float:left;
+  margin-left: 5px;
+  
+}
+.status-row{
+  border-bottom: 1px solid #ababab;
+}
+
+.status-div{
+  text-align: -webkit-auto;
+  background: #c3dcda;
+  padding: 5px;
+}
+.status-span{
+  font-size: 11px;
+  
+}

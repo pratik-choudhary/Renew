@@ -1,0 +1,83 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">STPT Form</div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+<div fxLayout="column" style="margin-top: 15px;padding:20px">
+    <!-- <div fxFlex="30"><span style="margin-left: 23px;">Date <small style="color: red;">*</small></span></div>
+    <div fxFlex="20"><span>% Machine Availability <small style="color: red;">*</small></span></div>
+    <div fxFlex="17"><span>BD Hours <small style="color: red;">*</small></span></div>
+    <div fxFlex="18"><span>Remark <small style="color: red;">*</small></span></div> -->
+    <p-dataTable [value]="stageFormData" [rows]="10"  [responsive]="true" [editable]="true" [immutable]="false">
+                    <p-column field="stpt_date" [style]="{'height':'27px','width':'200px'}" header="Date" [editable]="true" [style]=" {'overflow':'visible','word-wrap': 'break-word' }">
+                        <ng-template pTemplate="header">
+                            Date
+                            <small style="color: red;">*</small>
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            {{row[col.field]|date:'dd-MMM, yyyy' }}
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-calendar dateFormat="dd-M,yy" [maxDate]="maxDate" [(ngModel)]="row[col.field]" (onSelect)="changeFlag(row,i)" appendTo="body" (change)="changeFlag(row,i)"></p-calendar>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="field1"  [style]="{'word-wrap': 'break-word','width':'200px'}" header="% Machine Availability " [editable]="true">
+                        <ng-template pTemplate="header">
+                            % Machine Availability 
+                            <small style="color: red;">*</small>
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <input type="number"  [max]="100" placeholder="Enter % Machine Availability" pInputText
+                                [disabled]="row.stpt_date == null"   [(ngModel)]="row[col.field]" (change)="changeFlag(row,i)" style="margin-bottom:4px" />
+                        </ng-template>
+                    </p-column>
+                    <p-column field="field2" [style]="{'word-wrap': 'break-word','width':'200px'}" header="BD Hours" [editable]="true">
+                        <ng-template pTemplate="header">
+                            BD Hours
+                            <small style="color: red;">*</small>
+                        </ng-template>
+
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <input type="number"  placeholder="Enter BD Hours" pInputText
+                            [disabled]="row.stpt_date == null"  [(ngModel)]="row[col.field]" (change)="changeFlag(row,i)" style="margin-bottom:4px" />
+                        </ng-template>
+                    </p-column>
+                    <p-column field="field3" [style]="{'word-wrap': 'break-word'}" header="Remarks" [editable]="true">
+                        <ng-template pTemplate="header">
+                            Remarks 
+                        </ng-template>
+
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <input type="text"  placeholder="Enter Remarks" pInputText
+                                [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                        </ng-template>
+                    </p-column>
+        
+    </p-dataTable>                    
+</div>
+<div  style="padding-left:20px;padding-bottom:20px;padding-right:20px">
+    <div fxLayout="column">
+            <div fxLayout="row" style="margin-top:10px">
+               <div fxFlex="20"><span>MA - 97% for 240Hrs </span> <div class="suzlon-input" style="width: 30%;"><input type="text" [disabled]="true" [(ngModel)]="ma1" class="suzlon-input"></div></div>
+               <div fxFlex="20"><span>MA - 99% for 72Hs </span> <div class="suzlon-input" style="width: 30%;"><input type="text" [disabled]="true" [(ngModel)]="ma2" class="suzlon-input"></div></div>
+            </div>
+            
+            <span style="margin-top:15px">Comments <small style="color: red;">*</small></span>            
+            <textarea  [(ngModel)]="comments" type="text" style="margin:16px 0;width:100%;"></textarea>
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="primary" [disabled]="dateFlag"  style="margin-left: 10px" (click)="submitDetails()" type="button">Submit</button>
+    </div>
+</div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

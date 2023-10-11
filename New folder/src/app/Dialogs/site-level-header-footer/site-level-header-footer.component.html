@@ -1,0 +1,144 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text"
+        style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Upload Headers FirstPage
+        Footers for Site</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon"
+        style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div>
+<div>
+
+  <div fxLayout="row" fxLayoutAlign="space-around" style="padding:20px;">
+    <div *ngIf="models.length > 0" fxLayout="column" style="padding:10px;">
+      <div>
+        Select Model
+        <p-dropdown [options]="models" placeholder="Models" [(ngModel)]="selectedModel" [filter]="true" filterBy="label"
+          appendTo="body" (onChange)="showForms()"></p-dropdown>
+      </div>
+    </div>
+    <div *ngIf="departments.length > 0" fxLayout="column" style="padding:10px;">
+      <div>
+        Select Department
+        <p-dropdown [options]="departments" placeholder="Departments" [(ngModel)]="selectedDepartment" [filter]="true"
+          filterBy="label" appendTo="body" (onChange)="showCranePadorGuideLine()"></p-dropdown>
+
+      </div>
+    </div>
+  </div>
+
+  <div  *ngIf="show_upload_form==true">
+    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">Header </div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeHeaderFile($event)" />
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_header_button" (click)="uploadHeaderFile()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">First Page Content </div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeFirstPageFile($event)" />
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_firstpage_button" (click)="uploadFirstPageFile()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">Footer</div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeFooterFile($event)" />
+
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_footer_button" (click)="uploadFooterFile()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+
+
+
+    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">Header IMIC</div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeHeaderFileIMIC($event)" />
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_header_button_imic" (click)="uploadHeaderFileIMIC()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">First Page Content IMIC</div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeFirstPageFileIMIC($event)" />
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_firstpage_button_imic" (click)="uploadFirstPageFileIMIC()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">Footer IMIC</div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeFooterFileIMIC($event)" />
+
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_footer_button_imic" (click)="uploadFooterFileIMIC()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+
+
+
+
+
+    <!--mechanical only images-->
+
+    <div fxLayout="row" *ngIf="show_cranepad_form == true" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">Crane Pad</div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeCranePadFile($event)" />
+
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_cranepad_button" (click)="uploadCranepadFile()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+
+    <div fxLayout="row" *ngIf="show_cranepad_form == true" fxLayoutAlign="space-between" style="padding:15px 25px">
+      <div style="width: 22%;">Crane Pad Guideline</div>
+      <div fxLayout="column">
+        <input type="file" (change)="changeGuidelineFile($event)" />
+
+      </div>
+      <div>
+        <button md-raised-button color="primary" [disabled]="disable_guideline_button" (click)="uploadGuideline()"
+          style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+      </div>
+    </div>
+
+
+
+
+    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+      <p>{{Notification}}</p>
+      <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+      </p-footer>
+    </p-dialog>
+
+
+  </div>

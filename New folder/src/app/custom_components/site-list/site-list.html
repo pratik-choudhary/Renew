@@ -1,0 +1,82 @@
+<md-content class="md-padding" style="margin-top:-20px;">
+    <div>
+        <div class="ui-widget-header">
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                <div fxLayout="row" fxGap="5px">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input #gb type="text" pInputText size="30" placeholder="Search by site name">
+                    <div *ngIf="siteList" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">
+                        <div>Total Count {{siteList.length}}</div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxGap="">
+                    <md-icon class="material-icons" style="color: #00968c;cursor: pointer;" (click)="openDialog()">add_box</md-icon>
+                    <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;" (click)="openDialog()">Add Site</div>
+                </div>
+            </div>
+
+        </div>
+        <p-dataTable [value]="siteList" [rows]="10" [paginator]="true" [responsive]="true" [globalFilter]="gb" sortMode="multiple">
+            <p-column field="site" header="Site" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Site
+                </ng-template>
+            </p-column>
+            <p-column styleClass="col-button" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Substations
+                </ng-template>
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div fxLayout="row" fxLayoutWrap>
+                        <div *ngFor="let sub of rowData.substations" style="background: #00968c;padding: 4px;
+    color: #fff;border-radius: 2px;margin: 2px;">{{sub.name}}</div>
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="area.name" header="Area/District" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Area/District
+                </ng-template>
+            </p-column>
+            <p-column field="state" header="State" [sortable]="true" [style]="{'width':'130px'}">
+                <ng-template pTemplate="header">
+                    State
+                </ng-template>
+            </p-column>
+            <p-column field="country" header="Country" [sortable]="true" [style]="{'width':'150px'}">
+                <ng-template pTemplate="header">
+                    Country
+                </ng-template>
+            </p-column>
+            <p-column field="status" header="Status" [sortable]="true" [style]="{'width':'100px'}">
+                <ng-template pTemplate="header">
+                    Status
+                </ng-template>
+            </p-column>
+            <!-- <p-column field="status" header="Site Map" [sortable]="true" [style]="{'width':'100px'}">
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                        <md-icon (click)="openMapDialog(rowData)" svgIcon="map" class="icon-20" style="cursor:pointer"></md-icon>
+                    </div>
+                </ng-template>
+            </p-column> -->
+            <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                        <md-icon (click)="openSiteEditPopup(rowData)" svgIcon="pencil" class="icon-20" style="cursor:pointer"></md-icon>
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                <ng-template pTemplate="header">
+                    Headers and Footers for Document
+                </ng-template>
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                        <md-icon *ngIf="rowData.show_report_dialog==true"(click)="openSiteLevelHeaderFooter(rowData)" svgIcon="pencil" class="icon-20" style="cursor:pointer"></md-icon>
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+</md-content>

@@ -1,0 +1,62 @@
+<form [formGroup]="form" style="padding-top:10px;padding-bottom:10px;">
+    <div *ngIf="!notificationFlag" fxLayout="column"  fxLayoutAlign="space-evenly">
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+        <div class="suzlon-input">   
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;margin-right:10px;">Department<small style="color: red;">*</small></span>
+          <select style="border-radius:4px;" class="suzlon-input" placeholder="Department" fxFlex="100" [formControl]="form.controls['DEPARTMENT']" [(ngModel)]="selectedDepartment"
+            (change)="selectedDepartmentValueObj($event)">
+          <option *ngFor="let department of departments" [value]="department.id">
+            {{department.name}}
+          </option>
+        </select>
+        </div>
+        <small *ngIf="form.controls['DEPARTMENT'].hasError('required') && form.controls['DEPARTMENT'].touched" class="mat-text-warn" style="margin-left: 85px;">Required</small>
+      </div>
+      
+  
+  
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+        <div class="suzlon-input">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;margin-right:24px;">Checklist<small style="color: red;">*</small></span>
+          <select style="border-radius:4px;" placeholder="Checklist" fxFlex="100" [formControl]="form.controls['CHECKLIST']" [(ngModel)]="selectedChecklist" (change)="selectedChecklistValueObj($event)">
+            <option *ngFor="let checklist of checklists" [value]="checklist.CHECKLIST.CHECKLIST_ID">
+              {{checklist.CHECKLIST.NAME}}
+            </option>
+          </select>
+        </div>
+        <small *ngIf="form.controls['CHECKLIST'].hasError('required') && form.controls['CHECKLIST'].touched" class="mat-text-warn" style="margin-left: 85px;">Required</small>
+      </div>
+  
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+        <div class="suzlon-input">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;margin-right:21px;">Milestone<small style="color: red;">*</small></span>
+          <select style="border-radius:4px;" placeholder="Milestone" fxFlex="100" [formControl]="form.controls['MILESTONE']" [(ngModel)]="selectedMilestone" (change)="selectedMilestoneValueObj($event)">
+            <option *ngFor="let milestone of milestones" [value]="milestone.SECTION_ID">
+              {{milestone.NAME}}
+            </option>
+          </select>
+        </div>
+        <small *ngIf="form.controls['MILESTONE'].hasError('required') && form.controls['MILESTONE'].touched" class="mat-text-warn" style="margin-left: 85px;">Required</small>
+      </div>
+  
+  
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" (click)="closeDialog()">Cancel</button>
+        <button md-raised-button color="primary" (click)="submitMilestoneImport()" style="margin-left:5px;" [disabled]="!form.valid">Submit</button>
+      </div>
+  
+  
+  
+  
+    </div>
+<!--       <div *ngIf="checklistFlag">
+      <confirm-checklist (notify)="onNotifyChecklist($event)"></confirm-checklist>
+      </div>
+ -->            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+      <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+          <p>{{Notification}}</p>
+          <p-footer>
+              <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+          </p-footer>
+      </p-dialog>
+    </form>

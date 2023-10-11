@@ -1,0 +1,47 @@
+<md-content class="md-padding">
+    <div style="margin-top:10px;">
+        <div class="ui-widget-header">
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                <div fxLayout="row" fxGap="5px">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input #gb1 type="text" pInputText size="30" placeholder="Search by area name">
+                    <div *ngIf="areaList != undefined && areaList != null" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count {{areaList.length}}</div>
+                </div>
+
+                <div fxLayout="row" fxGap="">
+
+                    <md-icon class="material-icons" style="color: #00968c;cursor: pointer;" (click)="openDialog()">add_box</md-icon>
+                    <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;" (click)="openDialog()">Add Area</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <p-dataTable [value]="areaList" [rows]="10" [paginator]="true" [responsive]="true" sortMode="multiple" [globalFilter]="gb1">
+            <p-column field="name" header="Name" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Name 
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row.name}} , {{row.country.name}} , {{row.state.name}}
+                </ng-template> 
+            </p-column>
+            <p-column field="status" header="Status" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Status 
+                </ng-template>
+            </p-column>
+            <p-column styleClass="col-button">
+                <ng-template pTemplate="header">
+                    Action
+                </ng-template>
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                        <md-icon (click)="openAreaEditPopup(rowData)" svgIcon="pencil" class="icon-20" style="cursor:pointer"></md-icon>
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+</md-content>

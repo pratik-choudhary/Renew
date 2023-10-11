@@ -1,0 +1,58 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{modelName}}</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div>
+<md-dialog-content style="max-height:90vh;">
+  <div>
+    <form name="project" style="padding-top:10px;padding-bottom:10px">
+      <div fxLayout="row">
+        <div class="suzlon-input" *ngIf="!onlyModel" style="width:50%;margin-right: 12px;">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+            <small style="color: red;">*</small>
+          </span>
+          <input type="text" class="suzlon-input" style="width:98%;" [(ngModel)]="project_name" name="name">
+        </div>
+        <div class="suzlon-input" style="width:50%" *ngIf="!onlyModel">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Customer
+            <small style="color: red;">*</small>
+          </span>
+          <!-- <select class="suzlon-input" [(ngModel)]="project_customer" placeholder="Select Customer" style="width: 100%;padding: 6px; border-radius: 4px;border: solid 1px #dcdcdc;" name="customer">
+            <option *ngFor="let c of customers" [value]="c.id">{{c.name}}</option>
+          </select> -->
+          <p-dropdown [style]="{'width':'100%'}"  [options]="customers" placeholder="Select Customer"  [(ngModel)]="project_customer"  [filter]="true" filterBy="label" appendTo="body" name="customer">
+            </p-dropdown>
+        </div>
+      </div>
+      <app-add-model *ngFor="let m of addModelComp;let i = index" (changeProjectModel)="changeProjectModel($event,i)" (changeProjectChecklist)="changeProjectChecklist($event,i)"
+        (newFlag)="setNewFlag($event,i)"[project_id]="project_id" [modelInput]="modelInput[i]" [checklistInput]="checklistInput[i]" (delete)="deleteModel($event,i)" [locationCount]="locationCount" style="margin-top:10px"></app-add-model>
+      <div style="cursor:pointer;display:flex;width: 150px;margin-top: 10px;" (click)="addModelWithInit()">
+        <md-icon class="material-icons" style="color: #00968c;font-size: 20px;width:20px;height:20px;">add_box</md-icon>
+        <div>
+          <div style="margin-top: 2px;color: #00978c;text-decoration: underline;">Add New Model</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end center" style="margin-top:15px;">
+        <button md-raised-button color="accent" (click)='closeDialog()'>Cancel</button>
+        <button md-raised-button color="primary" (click)="createProject(project_name,project_customer)" type="button" style="margin-left: 10px">Submit</button>
+      </div>
+    </form>
+  </div>
+ <!--  <div *ngIf="duplicateChecklistFlag">
+    <project-confirm (notify)="onDuplicate($event)"></project-confirm>
+  </div> -->
+  <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" class="notification-button"
+      (click)="onNotification()"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-check" style="margin-right:1px" ></span> <span>Ok</span></button>
+    </p-footer>
+  </p-dialog>
+
+</md-dialog-content>

@@ -1,0 +1,15 @@
+.sortable {
+    cursor: pointer;
+  }
+  .sortable:after {
+    font-family: FontAwesome;
+    content: "\f0dc";
+  }
+  .st-sort-ascent:after {
+    font-family: FontAwesome;
+    content: "\f0de";
+  }
+  .st-sort-ascent:after {
+    font-family: FontAwesome;
+    content: "\f0dd";
+  }

@@ -1,0 +1,21 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;">Feeder</div>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+            <!--       <button md-raised-button class="suzlon-button" (click)="openDialog()">
+                <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+                <span>Add Feeder</span>
+            </button> -->
+        </div>
+    </div>
+</md-toolbar>
+<!-- model list -->
+<md-card class="mat-card-top"     style="margin-top: -30px;">
+    <md-card-content>
+        <div id="master" style="padding: 10px;">
+            <feeder-list [value]="value2"></feeder-list>
+        </div>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,1729 @@
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <div>
+    <a (click)="BackToDPRDashboard()"
+      style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">
+      Back</a>
+  </div>
+  <div style="padding-top: 5px;"><span style="font-size: 25px;font-weight: bold;color: #26a69a;">Location DPR
+      Dashboard</span>
+  </div>
+  <div></div>
+</div>
+<div class="ui-widget-header">
+  <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+    <div fxLayout="row" fxGap="5px">
+      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+      <input #gb type="text" [disabled]="disabled_flag" pInputText size="30" placeholder="Search">
+    </div>
+    <div>
+        <span>
+            <md-icon (click)="refresh()" mdTooltip="Refresh"
+              style="cursor: pointer;font-size: 20px;color: #23375b;">cached</md-icon>
+          </span>
+      <span #map>
+        <md-icon (click)="openSummary()" mdTooltip="View Summary"
+          style="cursor: pointer;font-size: 20px;color: #23375b;">assignment</md-icon>
+      </span>
+      <span #map>
+        <md-icon (click)="exportToExcel()" mdTooltip="Export to Excel"
+          style="cursor: pointer;font-size: 20px;color: #23375b;">insert_drive_file</md-icon>
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <p-dataTable  [value]="location_data" [responsive]="true" [rows]="10" [paginator]="true" [responsive]="true" [editable]="true" [immutable]="false" [globalFilter]="gb"
+      [scrollable]="true" scrollHeight="400px" scrollWidth="100%" [rowsPerPageOptions]="[5,10,20]" [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadDataLazy($event)">
+      <p-column field="project_definition" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Project Definition
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Project Definition" pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="cf_new" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          CF/New
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter CF/New"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="client_name" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Client Name
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" [disabled]="true" (change)="showSaveButton(i)"
+            placeholder="Enter Client Name" pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="state" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          State
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter State"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="site" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Site
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter State"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="model" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Model
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter State"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="capacity" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Capacity
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Capacity"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="feeder_no" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Feeder no
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Capacity"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="location" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Location no
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Capacity"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="survey_no" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Survey no
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Survey No"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="village" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Village
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Survey No"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="taluka" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Taluka/Mandal
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Survey No"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="district" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          District
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Survey No"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+      <p-column field="dispatch_clearance_date" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Dispatch Clearance Date
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy"  [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="po_commissioning_date" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          PO Commissioning Date
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy"  [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="laf_mom_release" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          LAF/ MoM Release
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy"  [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="conditional_laf_workfront" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Conditional LAF/Work front available for Execution
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="laf_mom_acceptance" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          LAF/ MoM Acceptance (Ready for Excavation incl pathway clearance)
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="soil_testing" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Soil Testing
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="re_engg" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Re-engg
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="approach_road" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Approch road
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="stub_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Stub receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+          </ng-template>
+      </p-column>
+      <p-column field="stub_hw_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Stub H/w Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+          </ng-template>
+      </p-column>
+      <p-column field="lattice_tower_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Lattice Tower Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+          </ng-template>
+      </p-column>
+      <p-column field="lattice_internal_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Lattice Internals Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+          </ng-template>
+      </p-column>
+      <p-column field="tadap_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          T Adap Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+          </ng-template>
+      </p-column>
+      <p-column field="tplate_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          T Plate Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+          </ng-template>
+      </p-column>
+      <p-column field="t1_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          T1 Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="t2_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          T2 Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="t3_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          T3 Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="t4_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          T4 Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="full_tower_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Full Tower Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="tower_hardware_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Tower Hardware Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="cable_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Cable Reciept
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="power_panel_converter_panel_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Power Panel & Convertor panel Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="dfig_panel_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          DFIG Panel receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="transformer_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Transformer Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="hub_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Hub Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="hub_kit_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Hub Kit Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="nacelle_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Nacelle Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="nacelle_kit_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Nacelle Kit Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="blade_with_service_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Blade with Service kit Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="lift" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Lift
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="full_wtg_reciept" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Full WTG Receipt
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="wtg_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          WTG WCC offered to customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="wtg_wcc_completed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          WTG WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_material_reciept_anchor_bolts_studs_for_tub_model" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil Material Receipt - Anchor Bolts and Studs for Tub Model
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_material_reciept_ar_lsp_for_tub_model" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil Material Receipt - AR/LSP for Tub Model
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_material_reciept_tmt" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil Material Receipt - TMT
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_material_reciept_packing_plate_for_tub_model" [editable]="true"  [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil Material Receipt - Packing plate for Tub Model
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="electrical_material_reciept_css" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Electrical Material Receipt - CSS
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="electrical_material_reciept_ctpt" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Electrical Material Receipt - CT PT
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="electrical_material_reciept_la" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Electrical Material Receipt - LA
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="electrical_material_reciept_rsj_pole" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Electrical Material Receipt -RSJ Pole
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="electrical_material_reciept_conductor" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Electrical Material Receipt - Conductor
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="excavation" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Excavation
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="pcc" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          PCC
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_pcc_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil PCC WCC offered to customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_pcc_wcc_completed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil PCC WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="stub_assembly_ar_assembly" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Stub Assembly/ AR Assly
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="stub_erection" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Stub Erection
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="reinforcement_binding_and_formwork" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Reinforcement Binding & Formwork
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="shuttering" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Shuttering
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="foundation_casting_raft" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Foundation - Casting Raft
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="foundation_casting_pedestal" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Foundation - Casting Pedestal-(Foundation concrete)
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="completion_of_foundation" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Completion of foundation
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="seven_day_test_report" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          7 Day Test Report
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="twenty_eight_day_test_report" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          28 Day Test Report
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil WCC offered to customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="civil_wcc_completed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Civil WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="dp_yard_civil_plinth_platform" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          DP Yard civil plinth /platform
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="trafo_css_erection" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Trafo/CSS erection
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="ctpt_erection" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          CTPT erection (For metering only)
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="metering_and_plumbing_work" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Metering & plumbing work
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="earthing_strip_laying" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Earthing strip laying
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="lt_cable_laying_and_termination" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          LT cable laying Cable laying and Termination between Generator and LT terminals of Transformer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="completion_of_dp_yard" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Completion of DP Yard (Civil+Elect)
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="scope_of_lnt_lines_in_total_no_of_poles" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Scope of Int line in total no. of poles
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Scope of Int line in total no. of poles" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="survey_done_in_total_nos_int" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Survey done in total nos.
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Survey done in total nos." pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="pit_excavations_in_nos_int" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Pit Excavation in nos
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Pit Excavation in nos"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="pole_erection_in_nos_int" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Pole erection in nos.
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Pole erection in nos." pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="pole_stringing_in_nos_int" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Pole stringing in nos
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Pole erection in nos." pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="internal_line_completion" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Internal line completion
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="scope_of_external_line_in_total_no_of_poles" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Scope of Ext line in total no. of poles
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Scope of Ext line in total no. of poles" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="surve_done_in_total_nos_ext" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Survey done in total nos.
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Survey done in total nos." pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="pit_excavations_in_nos_ext" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Pit Excavation in nos
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Pit Excavation in nos" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="pole_erection_no_nos_ext" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Pole erection in nos.
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Pole erection in nos." pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="pole_stringing_in_nos_ext" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Pole stringing in nos
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Pole stringing in nos" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="external_line_completion" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          External line completion
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="electrical_dp_yard_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Elect DP yard WCC offered to customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="electrical_dp_yard_wcc_completed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Elect DP yard WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="electrical_33kv_line_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Elect 33kv line WCC offered to customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="electrical_33kv_line_wcc_completed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Elect 33kv line WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="assembly_lattice_start" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Assembly Lattice Start
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="assembly_lattice_finisih" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Assembly Lattice Finish
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="assembly_transition_adapter" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Assembly Transition Adaptor
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+
+      <p-column field="crane_boomup" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Crane Boomup
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+
+      <p-column field="erection_of_is4" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Erection of IS4
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+
+      <p-column field="erection_of_is3" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Erection of IS3
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="erection_of_is2" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Erection of IS2
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="erection_of_lattice_tower" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Erection of Lattice Tower
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="erection_of_tubular_tower" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Erection of Tubular Tower
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="erection_nacelle" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Erection Nacelle
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="rotor_assembly" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Rotor Assembly
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="crane_package" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Crane Package
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Crane Package"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="wtg_erection" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          WTG Erection
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="lift_landing_platform" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Lift landing platform
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="lift_installation" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Lift Installation
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="lift_ftu" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Lift FTU (Fit To Use)
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+
+      <p-column field="wtg_cable_termination" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          WTG Cable Termination
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="mech_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Mech WCC offered to customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="mech_wcc_completed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Mech WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="wtg_pre_commissioning" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          WTG Pre-commissioning
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="safe_run" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Safe Run
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="ceig_approval" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          CEIG approval
+        </ng-template>
+
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="wtg_commissioning" [editable]="true" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          WTG Commissioning
+        </ng-template>
+
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="true" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="wtg_in_generation" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          WTG in Generation
+        </ng-template>
+
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="comm_wcc_offered_to_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Comm WCC offered to customer
+        </ng-template>
+
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="comm_wcc_competed_by_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Comm WCC completed by customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="risk_remark" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Risk/Remark
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Risk/Remark"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="mitigation_plan" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          Mitigation plan
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)" placeholder="Enter Mitigation plan"
+            pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="name_of_civil_contractor" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Name of Civil Contractor
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="true" (change)="showSaveButton(i)"
+            placeholder="Enter Name of Civil Contractor " pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="name_of_electrical_contractor_dp_yard" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Name of Electrical Contractor - DP Yard
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="true" (change)="showSaveButton(i)"
+            placeholder="Enter Name of Electrical Contractor - DP Yard" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="name_of_electrical_contractor_elect_yard" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Name of Electrical Contractor - Elect Line
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="true" (change)="showSaveButton(i)"
+            placeholder="Enter Name of Electrical Contractor - DP Yard" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="name_of_assembly_contractor" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Name of Assembly contractor
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="true" (change)="showSaveButton(i)"
+            placeholder="Enter Name of Assembly contractor" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+
+
+      <p-column field="name_of_mechanical_contractor" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Name of Mechanical contractor
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="true" (change)="showSaveButton(i)"
+            placeholder="Enter Name of Mechanical contractor" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="name_of_cable_termination" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          Name of Cable Termination
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <input type="text" [disabled]="disabled_flag" (change)="showSaveButton(i)"
+            placeholder="Enter Name of Cable Termination" pInputText [(ngModel)]="row[col.field]"
+            style="margin-bottom:4px" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="hoto_projects_oms" [editable]="false" [style]="{'width':'120px','background-color':'lightgreen'}">
+        <ng-template pTemplate="header">
+          HO/TO - Projects/ OMS
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+
+      <p-column field="hoto_customer" [editable]="true" [style]="{'width':'120px','background-color':'#dcdcdcab'}">
+        <ng-template pTemplate="header">
+          HOTO - Customer
+        </ng-template>
+        <ng-template let-col let-row="rowData" pTemplate="body">
+          {{row[col.field]|date:'dd-MMM, yyyy' }}
+        </ng-template>
+        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+          <p-calendar [disabled]="disabled_flag" dateFormat="dd-M,yy" [(ngModel)]="row[col.field]" appendTo="body"
+            (onSelect)="showSaveButton(i)">
+          </p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column styleClass="col-button" [style]="{'width':'80px'}">
+        <ng-template pTemplate="header">
+        </ng-template>
+        <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+          <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+            <md-icon *ngIf="row.saveFlag" (click)="updateLocationDPRDashboard(row,index)" class="icon-20 material-icons"
+              style="cursor: pointer;font-size: 20px;color: #23375b;">save</md-icon>
+            <md-icon *ngIf="row.saveFlag == false" class="icon-20 material-icons"
+              style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+          </div>
+        </ng-template>
+      </p-column>
+    </p-dataTable>
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>

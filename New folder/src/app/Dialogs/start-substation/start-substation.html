@@ -1,0 +1,54 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Start Substation</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div>
+
+<div  fxLayout="column">
+  <md-dialog-content style="height:250px">
+    <div style="margin-top: 5px;width: 100%;">
+        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Select Site
+            <small style="color: red;">*</small>
+        </span>
+        <div style="width:100%" id="site-dropdown">
+              <span class="ui-fluid">
+               <p-dropdown [options]="sites" placeholder="Select Site" (onChange)="KeepSelectedSite(selectedSite)" [(ngModel)]="selectedSite" [filter]="true" filterBy="label" appendTo="body">
+    </p-dropdown>
+            </span> 
+        </div>
+    </div>
+     
+    <div style="margin-top: 5px;width: 100%;">
+        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Select Checklists
+            <small style="color: red;">*</small>
+        </span>
+        <div>
+              <span class="ui-fluid">
+                <p-autoComplete [(ngModel)]="project_checklists" (onSelect)="changeChecklists(project_checklists)" (onUnselect)="changeChecklists(project_checklists)"
+                    (onClear)="changeChecklists(project_checklists)" (onBlur)="changeChecklists(project_checklists)" [suggestions]="filteredCountriesMultiple" (completeMethod)="filterCountryMultiple($event)"
+                    [minLength]="1" placeholder="checklist" field="NAME" [multiple]="true" appendTo="body">
+                </p-autoComplete>
+            </span> 
+        </div>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions fxLayout="row" fxLayoutAlign="end center" style="padding:20px;">
+    <button md-raised-button [md-dialog-close]="false" style="background-color: #5B5B5B;color: #fff;">Cancel</button>
+    <button md-raised-button color="primary" style="margin-left: 10px" [disabled]="emptyFlag" (click)="startSubstation()">Start</button>
+  </md-dialog-actions>
+</div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" class="notification-button"
+        (click)="onNotification()"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-check" style="margin-right:1px" ></span> <span>Ok</span></button>
+    </p-footer>
+</p-dialog>
+

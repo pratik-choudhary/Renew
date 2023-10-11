@@ -1,0 +1,100 @@
+<md-toolbar color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;">Contractor</div>
+    </div>
+    <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+      <!--       <button md-raised-button class="suzlon-button" (click)="openDialog()">
+              <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+              <span>Add Feeder</span>
+          </button> -->
+    </div>
+  </div>
+</md-toolbar>
+
+<md-card class="mat-card-top" style="margin-top: -30px;">
+  <md-card-content>
+    <div style="padding:10px;">
+      <div class="ui-widget-header">
+        <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+          <div fxLayout="row" fxGap="5px">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input #gb type="text" pInputText size="30" placeholder="Search by Contractor Name">
+            <div *ngIf="feeder_values != undefined && feeder_values != null"
+              style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count
+              {{feeder_values.length}}</div>
+
+          </div>
+
+          <div fxLayout="row" (click)="addNewContractor()">
+
+            <md-icon class="material-icons" style="color: #00968c;cursor: pointer;">add_box</md-icon>
+            <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;">Add New Contractor
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <p-dataTable [value]="contractor_list" [rows]="10" [paginator]="true" [responsive]="true" [editable]="true"
+        [immutable]="false" [globalFilter]="gb" sortMode="multiple">
+        <p-column field="contractor_name" [editable]="true" [sortable]="true" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Name <small style="color: red;">*</small>
+          </ng-template>
+          <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+            <input type="text" (change)="showSaveButton(i)" placeholder="Contractor Name" pInputText
+              [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+          </ng-template>
+        </p-column>
+        <p-column field="department_name" [editable]="true" [sortable]="true" [style]="{'width':'100px'}">
+          <ng-template pTemplate="header">
+            Department Name <small style="color: red;">*</small>
+          </ng-template>
+          <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+            <p-dropdown [(ngModel)]="row[col.field]" (onChange)="changeDepartment(i,row)" [options]="departments"
+              [autoWidth]="false" [style]="{'width':'100%'}" appendTo="body" placeholder="Select department">
+            </p-dropdown>
+          </ng-template>
+        </p-column>
+        <p-column field="status" header="Status" [editable]="true" [sortable]="true" [style]="{'width':'100px'}">
+          <ng-template let-col let-row="rowData" pTemplate="body">
+            {{row[col.field]}}
+          </ng-template>
+          <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+            <p-dropdown [(ngModel)]="row[col.field]" (onChange)="showSaveButton(i)" [options]="status_arr"
+              [autoWidth]="false" [style]="{'width':'100%'}" required="true" appendTo="body"></p-dropdown>
+          </ng-template>
+        </p-column>
+        <p-column styleClass="col-button" [style]="{'width':'80px'}">
+          <ng-template pTemplate="header">
+          </ng-template>
+          <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
+            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+              <md-icon *ngIf="rowData.saveFlag" (click)="saveEditContractor(rowData,index)"
+                class="icon-20 material-icons" style="cursor: pointer;font-size: 20px;color: #103a84;">save</md-icon>
+              <md-icon *ngIf="rowData.saveFlag == false" class="icon-20 material-icons"
+                style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+            </div>
+          </ng-template>
+        </p-column>
+        <p-column styleClass="col-button" [style]="{'width':'80px'}">
+          <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+              <md-icon *ngIf="row.contractor_id == 0" (click)="deleteEmptyRow(index)" class="icon-20 material-icons"
+                style="cursor: no-drop;font-size: 20px;color: gray;">delete</md-icon>
+            </div>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+      <p>{{Notification}}</p>
+      <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+      </p-footer>
+    </p-dialog>
+  </md-card-content>
+</md-card>

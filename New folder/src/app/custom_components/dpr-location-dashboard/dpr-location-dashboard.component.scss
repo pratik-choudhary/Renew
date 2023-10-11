@@ -1,0 +1,19 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #dddbdb;
+    margin: 20px 0;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    width:100px !important;
+}
+
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+:host /deep/.ui-datatable .ui-datatable-thead > tr > th{
+   background-color:#ebedf0 !important;
+}

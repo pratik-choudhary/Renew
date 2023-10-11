@@ -1,0 +1,15 @@
+<div fxLayout="row"  fxLayoutAlign="space-between" style="padding:15px 25px">
+    <div fxLayout="column">
+        <input type="file" (change)="changeFile($event)" />
+        <small *ngIf="invalidFile" style="margin-top:6px;color:red;">Invalid file format</small>
+    </div>
+    <div>
+        <button md-raised-button color="primary" [disabled]="disable_button" (click)="uploadFile()" style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+    </div>
+</div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog>

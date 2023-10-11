@@ -1,0 +1,20 @@
+<div fxLayout="row" fxLayoutAlign="end">
+
+    <div class="milestone-instance-div" fxFlex="100">
+
+        <div class="mb-1">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="suzlon-input">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Number<small style="color: red;">*</small></span>
+                    <input type="number" class="suzlon-input" [(ngModel)]="milestone_no" size="3"  (change)="changeNo()">
+                </div>
+                <div class="suzlon-input" style="margin-left:50px;">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name<small style="color: red;">*</small></span>
+                    <input type="text" class="suzlon-input" [(ngModel)]="milestone_name" size="90" (change)="changeName()">
+                </div>
+                <!-- <div><md-icon  class="icon-20"  (click)="deleteMilestone()" label="Delete" style="cursor:pointer;color: #23375b;margin-left:60px;margin-bottom:10px">delete</md-icon></div> -->
+            </div>
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div fxLayout="row" fxLayoutAlign="start" fxlayoutGap style="width:348px;margin-bottom:10px">
+    <div class="ui-g-12">
+        <p-radioButton name="group2" value="" label="All" [(ngModel)]="filter_val" inputId="preopt1" (onClick)="dt.filter('','OPTIONS','equals')"></p-radioButton>
+    </div>
+    <div class="ui-g-12">
+        <p-radioButton name="group2" value="Ok" label="Ok" [(ngModel)]="filter_val" inputId="preopt2" (onClick)="dt.filter('Ok','OPTIONS','equals')"></p-radioButton>
+    </div>
+    <div class="ui-g-12">
+        <p-radioButton name="group2" value="Not Ok" label="Not Ok" [(ngModel)]="filter_val" inputId="preopt3" (onClick)="dt.filter('Not Ok','OPTIONS','equals')"></p-radioButton>
+    </div>
+    <div class="ncd-button">
+        <p-radioButton name="group2" value="Ok with RFD" [(ngModel)]="filter_val" inputId="preopt4" (onClick)="dt.filter('Ok with RFD','OPTIONS','equals')"></p-radioButton><span style="margin-left:4px">Ok with RFD</span></div>
+</div>
+<div id="prime-datatable">
+    <p-dataTable [value]="checklist_items" [responsive]="true" sortableRowGroup="false" rowGroupMode="subheader" groupField="ACTIVITY_ID" [sortableRowGroup]="false" #dt>
+        <ng-template pTemplate="rowgroupheader" let-rowData>
+            <div style="display:flex">
+                <div *ngIf="rowData['ACTIVITY_NAME']" style="width: calc(100% - 40px);">{{rowData['ACTIVITY_NAME']}}</div>
+            </div>
+        </ng-template>
+        <p-column header="No" [style]="{'background':'#fff','width':'50px','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+                <div>{{row.QUESTION_NO}}</div>
+              </template>
+        </p-column>
+        <p-column header="Question" [style]="{'background':'#fff','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <div fxLayout="row" FxLayoutAlign="start center" style="cursor:pointer" (click)="selectQuestion(row)">
+                <div><div [ngClass]="{'bullet-dot-red':row.CRITICALITY=='red','bullet-dot-yellow':row.CRITICALITY=='yellow','bullet-dot-green':row.CRITICALITY=='green','ml-15':row.ACTIVITY}"></div></div>
+                <div>{{row.QUESTION}}</div>
+              </div>
+            </template>
+        </p-column>
+        <p-column header="Specification" *ngIf="is_wtg == false" [style]="{'background':'#fff','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <div *ngIf="row.SPECIFICATION != null">{{row.SPECIFICATION}}</div>
+            </template>
+        </p-column>
+        <p-column field="OPTIONS" *ngIf="is_wtg == false" header="Observation" [style]="{'width':'120px','background':'#fff','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.OPTIONS != null && row.OPTIONS != 'Ok with RFD'"  [ngClass]="{'green-color': row.OPTIONS =='Ok','red-color': row.OPTIONS == 'Not Ok'}">{{row.OPTIONS}}</span>
+              <span *ngIf="row.OPTIONS == 'Ok with RFD'"  [ngClass]="{'green-color': row.OPTIONS =='Ok with RFD'}">{{row.OPTIONS}} <md-icon class="material-icons mat-icon download-btn" (click)="openRFD(row)" style="margin-left:10px;font-size:14px;color:#103a84;cursor:pointer">insert_drive_file</md-icon></span>
+            </template>
+        </p-column>
+        <p-column *ngIf="is_wtg == true" [style]="{'width':'100px','background':'#fff','word-wrap':'break-word'}">
+            <template pTemplate="header">
+                {{make}}
+            </template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.MAKE!=null">{{row.MAKE}}</span>
+            </template>
+        </p-column>
+        <p-column *ngIf="is_wtg == true" [style]="{'width':'100px','background':'#fff','word-wrap':'break-word'}">
+            <template pTemplate="header">
+                {{manufacturer}}
+            </template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.MANUFACTURER!=null">{{row.MANUFACTURER}}</span>
+            </template>
+        </p-column>
+        <p-column *ngIf="is_wtg == true"  [style]="{'width':'100px','background':'#fff','word-wrap':'break-word'}">
+            <template pTemplate="header">
+                {{serial_no}}
+            </template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.SERIAL_NO!=null">{{row.SERIAL_NO}}</span>
+            </template>
+        </p-column>
+        <p-column *ngIf="is_wtg == true"  [style]="{'width':'100px','background':'#fff','word-wrap':'break-word'}">
+            <template pTemplate="header">
+                {{set}}
+            </template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.SET!=null">{{row.SET}}</span>
+            </template>
+        </p-column>
+        <p-column *ngIf="is_wtg == false" header="Actual" [style]="{'width':'100px','background':'#fff','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.ACTUAL!=null">{{row.ACTUAL}}</span>
+            </template>
+        </p-column>
+        <p-column header="Last Actioned By" [style]="{'width':'150px','background':'#f9fbfd','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.last_updated_by!=null">{{row.last_updated_by}}</span>
+            </template>
+        </p-column>
+        <p-column header="Remarks" [style]="{'background':'#f9fbfd','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.REMARK!=null">{{row.REMARK}}</span>
+            </template>
+        </p-column>
+        <p-column header="Last Status" [style]="{'width':'100px','background':'#f9fbfd','word-wrap':'break-word'}">
+            <template let-col let-row="rowData" pTemplate="body">
+              <span *ngIf="row.status != null" [ngClass]="{'green-color': row.status =='Ok','red-color': row.status == 'Not ok'}">{{row.status}}</span>
+            </template>
+        </p-column>
+    </p-dataTable>
+</div>

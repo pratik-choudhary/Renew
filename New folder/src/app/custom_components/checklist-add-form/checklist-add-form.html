@@ -1,0 +1,217 @@
+<!-- <form fxLayout="column" [formGroup]="form" style="padding:20px 0">
+    <div class="mb-1">
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+                <div class="suzlon-input mb-1" style="width:70%">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+            <small style="color: red;">*</small>
+          </span>
+                    <input type="text" #name class="suzlon-input" [ngModel]="checklistName" [formControl]="form.controls['NAME']">
+                    <small *ngIf="form.controls['NAME'].hasError('required') && form.controls['NAME'].touched" class="mat-text-warn">Required</small>
+                </div>
+                <div class="suzlon-input" style="width:30%">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Stage
+            <small style="color: red;">*</small>
+          </span>
+                    <select class="suzlon-input" #stage [formControl]="form.controls['STAGE']" placeholder="Select stage" style="width: 100%;
+                  padding: 6px;border-radius: 4px;border-color: #dcdcdc;" (change)="getDepartments($event)">
+            <option *ngFor="let stage of stages" [value]="stage.STAGE_ID">{{stage.STAGE_NAME}}</option>
+          </select>
+                    <small *ngIf="form.controls['STAGE'].hasError('required') && form.controls['STAGE'].touched" class="mat-text-warn">Required</small>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+                <div class="suzlon-input" style="width:70%" [hidden]="feederStageFlag">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Model
+            <small style="color: red;">*</small>
+          </span>
+                    <select #modelDD class="suzlon-input" [disabled]="edit_date" [formControl]="form.controls['MODEL']" [(ngModel)]="selectModel" placeholder="Select Model" style="width: 100%;
+      padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+            <option *ngFor="let model of modelList" [value]="model.id">{{model.name}}</option>
+          </select>
+                    <small *ngIf="form.controls['MODEL'].hasError('required') && form.controls['MODEL'].touched" class="mat-text-warn">Required</small>
+                </div>
+                <div class="suzlon-input" style="margin-left:100px;margin-right:100px;width:30%;">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Revision
+            <small style="color: red;">*</small>
+          </span>
+                    <input #version type="number" style="width: 94%;" class="suzlon-input" [min]="1" [formControl]="form.controls['VERSION']">
+                    <small *ngIf="form.controls['VERSION'].hasError('required') && form.controls['VERSION'].touched" class="mat-text-warn">Required</small>
+                </div>
+            </div>
+            <div class="suzlon-input mb-1" style="width:100%;margin-top: 10px;">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Nomenclature
+        <small style="color: red;">*</small>
+      </span>
+                <input type="text" class="suzlon-input"  [formControl]="form.controls['document_name']">
+                <small *ngIf="form.controls['document_name'].hasError('required') && form.controls['document_name'].touched" class="mat-text-warn">Required</small>
+            </div>
+            <div fxLayout="column">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Release Date                    
+        <small style="color: red;">*</small>
+      </span>
+                 <p-calendar  #docdate dateFormat="dd-M,yy" [formControl]="form.controls['document_date']"  appendTo="body"></p-calendar>
+                <small *ngIf="form.controls['document_date'].hasError('required') && form.controls['document_date'].touched" class="mat-text-warn">Required</small>
+            </div>
+            <div *ngIf="pqhc_flag == true && edit_date == false">
+                <div class="mb-1" style="margin-top:20px">
+                    <md-checkbox (change)="change_checklist_type()" [disabled]="is_imic == true" [checked]="is_prerequisite">Is Pre-requisite ?</md-checkbox>
+                </div>
+                <div class="mb-1" style="margin-top:20px">
+                    <md-checkbox (change)="change_imic_type()" [disabled]="is_prerequisite == true" [checked]="is_imic">Is IMIC ?</md-checkbox>
+                </div>
+            </div>
+            <div class="mb-1" style="margin-top:20px">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Department
+          <small style="color: red;">*</small>
+        </span>
+                <md-radio-group [disabled]="edit_date" fxLayout="row" fxLayoutWrap="wrap" [formControl]="form.controls['DEPARTMENT']">
+                    <md-radio-button *ngFor="let department of departments" [value]="department.id" fxFlex="25" style="padding:8px 0px;">{{department.name}}</md-radio-button>
+                </md-radio-group>
+                <small *ngIf="form.controls['DEPARTMENT'].hasError('required') && form.controls['DEPARTMENT'].touched" class="mat-text-warn">Required</small>
+            </div>
+            <div *ngIf="edit_date == false">
+            <milestone-ins *ngFor="let c of milestone_forms;let i = index" [index]="i" [milestones]="milestones" [edit_milestone_name]="edit_milestone_name" [edit_id]="edit_id" [edit_milestone_no]="edit_milestone_no" [edit_name]="edit_name" [edit_id]="edit_id" (afterdelete)="removeMilestoneIns($event,i)"
+                (changeMilestoneName)="getMilestoneName($event,i)" (changeMilestoneNo)="getMilestoneNo($event,i)" (removeMilestone)="deleteMilestone($event,i)" (getMilestoneId)="getMilestoneId($event,i)"></milestone-ins>
+            </div>
+            <div class="mb-1">
+                <button md-raised-button [disabled]="edit_date" class="suzlon-button" (click)="loadMilestones();">
+          <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+          <span>Add Milestone</span>
+        </button>
+            </div>
+        </div>
+    </div>
+
+    <md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" [md-dialog-close]="false">Cancel</button>
+        <button md-raised-button color="primary" style="margin-left: 10px" type="submit" (click)="createChecklist()" [disabled]="!form.valid">Submit</button>
+    </md-dialog-actions>
+</form>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog> -->
+<form fxLayout="column" [formGroup]="form" style="padding:20px 0">
+    <div class="mb-1">
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+                <div class="suzlon-input mb-1" style="width:70%">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+                        <small style="color: red;">*</small>
+                    </span>
+                    <input type="text" #name class="suzlon-input" [ngModel]="checklistName"
+                        [formControl]="form.controls['NAME']">
+                    <small *ngIf="form.controls['NAME'].hasError('required') && form.controls['NAME'].touched"
+                        class="mat-text-warn">Required</small>
+                </div>
+                <div class="suzlon-input" style="width:30%">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Status
+                        <small style="color: red;">*</small>
+                    </span>
+                    <select class="suzlon-input" #status [formControl]="form.controls['STATUS']"
+                        placeholder="Select Status" style="width: 100%;
+                       padding: 6px;border-radius: 4px;border-color: #dcdcdc;" (change)="getDepartments($event)">
+                        <option *ngFor="let sts of statusdata" [value]="sts.STAGE_ID">{{sts.STAGE_NAME}}</option>
+                    </select>
+                    <small *ngIf="form.controls['STATUS'].hasError('required') && form.controls['STATUS'].touched"
+                        class="mat-text-warn">Required</small>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+                <div class="suzlon-input" style="width:70%" [hidden]="feederStageFlag">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Model
+                        <small style="color: red;">*</small>
+                    </span>
+                    <select #modelDD class="suzlon-input" [disabled]="edit_date" [formControl]="form.controls['MODEL']"
+                        [(ngModel)]="selectModel" placeholder="Select Model" style="width: 100%;
+      padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                        <option *ngFor="let model of modelList" [value]="model.id">{{model.name}}</option>
+                    </select>
+                    <small *ngIf="form.controls['MODEL'].hasError('required') && form.controls['MODEL'].touched"
+                        class="mat-text-warn">Required</small>
+                </div>
+                <div class="suzlon-input" style="margin-left:100px;margin-right:100px;width:30%;">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Version
+                        <small style="color: red;">*</small>
+                    </span>
+                    <input #version type="number" style="width: 94%;" class="suzlon-input" [min]="1"
+                        [formControl]="form.controls['VERSION']">
+                    <small *ngIf="form.controls['VERSION'].hasError('required') && form.controls['VERSION'].touched"
+                        class="mat-text-warn">Required</small>
+                </div>
+            </div>
+            <!-- <div class="suzlon-input mb-1" style="width:100%;margin-top: 10px;">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Nomenclature
+                    <small style="color: red;">*</small>
+                </span>
+                <input type="text" class="suzlon-input" [formControl]="form.controls['document_name']">
+                <small
+                    *ngIf="form.controls['document_name'].hasError('required') && form.controls['document_name'].touched"
+                    class="mat-text-warn">Required</small>
+            </div> -->
+            <!-- <div fxLayout="column">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Release Date
+                    <small style="color: red;">*</small>
+                </span>
+                <p-calendar #docdate dateFormat="dd-M,yy" [formControl]="form.controls['document_date']"
+                    appendTo="body"></p-calendar>
+                <small
+                    *ngIf="form.controls['document_date'].hasError('required') && form.controls['document_date'].touched"
+                    class="mat-text-warn">Required</small>
+            </div> -->
+            <div *ngIf="pqhc_flag == true && edit_date == false">
+                <div class="mb-1" style="margin-top:20px">
+                    <md-checkbox (change)="change_checklist_type()" [disabled]="is_imic == true"
+                        [checked]="is_prerequisite">Is Pre-requisite ?</md-checkbox>
+                </div>
+                <div class="mb-1" style="margin-top:20px">
+                    <md-checkbox (change)="change_imic_type()" [disabled]="is_prerequisite == true"
+                        [checked]="is_imic">Is IMIC ?</md-checkbox>
+                </div>
+            </div>
+            <div class="mb-1" style="margin-top:20px">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Department
+                    <small style="color: red;">*</small>
+                </span>
+                <md-radio-group [disabled]="edit_date" fxLayout="row" fxLayoutWrap="wrap"
+                    [formControl]="form.controls['DEPARTMENT']">
+                    <md-radio-button *ngFor="let department of departments" [value]="department.id" fxFlex="25"
+                        style="padding:8px 0px;">{{department.name}}</md-radio-button>
+                </md-radio-group>
+                <small *ngIf="form.controls['DEPARTMENT'].hasError('required') && form.controls['DEPARTMENT'].touched"
+                    class="mat-text-warn">Required</small>
+            </div>
+            <div *ngIf="edit_date == false">
+                <milestone-ins *ngFor="let c of milestone_forms;let i = index" [index]="i" [milestones]="milestones"
+                    [edit_milestone_name]="edit_milestone_name" [edit_id]="edit_id"
+                    [edit_milestone_no]="edit_milestone_no" [edit_name]="edit_name" [edit_id]="edit_id"
+                    (afterdelete)="removeMilestoneIns($event,i)" (changeMilestoneName)="getMilestoneName($event,i)"
+                    (changeMilestoneNo)="getMilestoneNo($event,i)" (removeMilestone)="deleteMilestone($event,i)"
+                    (getMilestoneId)="getMilestoneId($event,i)"></milestone-ins>
+            </div>
+            <div class="mb-1">
+                <button md-raised-button [disabled]="edit_date" class="suzlon-button" (click)="loadMilestones();">
+                    <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+                    <span>Add Milestone</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" [md-dialog-close]="false">Cancel</button>
+        <button md-raised-button color="primary" style="margin-left: 10px" type="submit" (click)="createChecklist()"
+            [disabled]="!form.valid">Submit</button>
+    </md-dialog-actions>
+</form>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog>

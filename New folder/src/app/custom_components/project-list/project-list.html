@@ -1,0 +1,82 @@
+<div id="site-dropdown">
+    <div fxLayout="column">
+        <div class ="dropdown-label">Select Site :</div>
+        <p-dropdown [options]="sites" placeholder="Select Site" (onChange)="getProjects(selectedSite)" [(ngModel)]="selectedSite" [filter]="true" filterBy="label">
+        </p-dropdown>
+    </div>
+</div>
+<div *ngIf="selectedSite">
+   <div style="margin-top:20px">
+        <md-content class="md-padding">
+            <div>
+                <div class="ui-widget-header">
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                        <div fxLayout="row" fxGap="5px">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input #gb type="text" pInputText size="30" placeholder="Search by project name">
+                            <div style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;" *ngIf="projectsList">Total Count {{projectsList.length}}</div>
+                        </div>
+                        <div *ngIf="areaList != undefined && areaList != null" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count {{areaList.length}}</div>
+                        <div fxLayout="row" (click)="addProjectDialog()" >
+
+                            <md-icon class="material-icons" style="color: #00968c;cursor: pointer;">add_box</md-icon>
+                            <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;">Add New Project</div>
+                        </div>
+                    </div>
+
+                </div>
+                <p-dataTable [value]="projects" [rows]="10" [paginator]="true" [responsive]="true"  sortField="name" rowGroupMode="rowspan" groupField="name" [immutable]="false" [globalFilter]="gb">
+                    <p-column field="name" header="Project" [style]="{'width':'250px'}">
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            <div style="display: flex;justify-content: space-between;">
+                                <div>
+                                    <div style="color:#707070">Project:</div>
+                                    <div>{{row.name}}</div>
+                                </div> 
+                                <div *ngIf="row.location_count == 0 && currentUser.role == 'admin'" fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                    <md-icon class="icon-20" (click)="deleteProject(row)" label="Delete" style="cursor:pointer;color: #23375b;">delete</md-icon>
+                                </div>
+                            </div>   
+                            <div style="display: flex;justify-content: space-between;">
+                                <div>
+                                    <div style="color:#707070">Customer:</div>
+                                    <div>{{row.customer.name}}</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                    <md-icon (click)="openEditProject(row)" svgIcon="pencil" class="icon-20" style="cursor:pointer"></md-icon>
+                                </div>
+                            </div>
+                            <div style="display: flex;justify-content: space-between;">
+                                    <div>
+                                        <div style="color:#707070">Locations:</div>
+                                        <div>{{row.location_count}}</div>
+                                    </div> 
+                            </div>   
+                        </ng-template>
+                    </p-column>
+                    <p-column field="model" header="Model" [style]="{'width':'250px'}">
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            {{row[col.field].name}}
+                        </ng-template>
+                    </p-column>
+                    <p-column field="checklists" header="Checklist" [style]="{'word-wrap': 'break-word'}" >
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                           <div fxLayout="row" fxLayoutWrap> 
+                                <div *ngFor="let c of row.checklists" 
+                                style="border-color: #156090;background: #186ba0;color: #FFFFFF;
+                                padding: 2px; margin: 4px; border-radius: 3px;">{{c.NAME}}</div>
+                           </div> 
+                        </ng-template>
+                    </p-column>
+            </p-dataTable>
+           </div>
+          <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+          <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+                <p>{{Notification}}</p>
+                <p-footer>
+                    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+                </p-footer>
+            </p-dialog>
+        </md-content>
+    </div>
+</div>

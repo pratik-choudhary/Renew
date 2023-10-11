@@ -1,0 +1,103 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;">Users</div>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+
+        </div>
+    </div>
+</md-toolbar>
+<!-- model list -->
+<md-card class="mat-card-top" style="margin-top: -30px;">
+    <md-card-content>
+        <div id="user-search" style="margin-left: 10px;">
+            <p-autoComplete [(ngModel)]="user" [suggestions]="filteredUsersSingle" (completeMethod)="filterUsersSingle($event)" field="fullNameValue"
+                [size]="30" placeholder="Select User" [minLength]="1" (onSelect)="selectedUserFn($event)" [style]="{'width':'300px'}" (onClear)="clearUser()"></p-autoComplete>
+        </div>
+        <div *ngIf="error_msg_flag" style="margin-top:5px;color:red;">{{error_msg_flag}}</div>    
+        <md-card *ngIf="selectedUser">
+            <md-card-content>
+                <div fxLayout="row">
+                    <div class="mb-1" fxFlex="50">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">First name:            
+                    </span>
+                        {{user.firstName}}
+                    </div>
+                    <div class="mb-1" fxFlex="50" style="margin-left: 72px;">
+                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Last name:            
+                    </span>  
+                        {{user.lastName}}
+                    </div>
+                    <div class="mb-1" fxFlex="50">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Full name:</span>            
+                        {{user.fullNameValue}}
+                    </div>
+                </div>
+                <div fxLayout="row">
+                    <div class="mb-1" fxFlex="50">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Email Id:</span>
+                        {{user.email}}
+                    </div>
+                    <div class="mb-1" fxFlex="50" style="margin-left: 72px;">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Domain Id:</span>
+                        {{user.employeeId}}
+                    </div>
+                    <div class="mb-1" fxFlex="50">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Department:</span>
+                        {{user.department}}
+                    </div>
+                </div>
+                <form [formGroup]="form">
+                    <div fxLayout="row">
+                        <div class="mb-1" fxFlex="50" fxLayoutWrap="wrap">
+                            Department<small style="color: red;">*</small>
+                            <select style="width: 95%;padding: 5px;border-radius: 4px;" class="suzlon-input" placeholder="Department" [(ngModel)]="selectedDepartment"
+                                [formControl]="form.controls['DEPARTMENT']" (change)="getDepartmentSpecificRoles()">
+                                <option *ngFor="let department of departments" [value]="department.id">
+                                    {{department.name}}
+                                </option>
+                            </select>
+                            <small *ngIf="form.controls['DEPARTMENT'].hasError('required') && form.controls['DEPARTMENT'].touched" class="mat-text-warn">Required</small>
+                        </div>
+                        <div class="mb-1" fxFlex="50" fxLayoutWrap="wrap">
+                            Role
+                            <select style="width: 95%;padding: 5px;border-radius: 4px;" class="suzlon-input" placeholder="Role" [(ngModel)]="selectedRole"
+                                [formControl]="form.controls['ROLE']">
+                                <option *ngFor="let role of roles" [value]="role.role">
+                                    {{role.role}}
+                                </option>
+                            </select>
+
+                        </div>
+                        <div class="mb-1"  fxFlex="25" fxLayoutWrap="wrap">
+                            Status
+                            <select class="suzlon-input" style="width: 95%;padding: 5px;border-radius: 4px;" required="true" [formControl]="form.controls['STATUS']">
+                                <option *ngFor="let status of statusList" [value]="status">
+                                    {{ status }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-1"  fxFlex="25" fxLayoutWrap="wrap" fxLayout="column">
+                                <div>Is Dashboard User?</div>
+                                <div><md-checkbox (change)="setDashboardUser(i)" [(ngModel)]="dashboard_user" ></md-checkbox></div>
+                            </div>
+                        <div>
+                            <button md-raised-button color="primary" (click)="addUser()" style="margin-left: 10px; margin-top: 16px;" type="button" [disabled]="!form.valid">{{buttonLabel}}</button>
+                        </div>
+                    </div>
+                </form>
+            </md-card-content>
+        </md-card>
+        <div id="master" style="padding: 10px;">
+            <user-list [data]="refresh"></user-list>
+        </div>
+    </md-card-content>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+            <p>{{Notification}}</p>
+            <p-footer>
+                <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+            </p-footer>
+    </p-dialog>
+    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+</md-card>

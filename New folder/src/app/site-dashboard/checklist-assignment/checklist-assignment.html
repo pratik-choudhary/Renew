@@ -1,0 +1,154 @@
+<md-toolbar color="primary" style="margin-top: 7px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex class="header-text checklist-dashboard-title">Checklist<span *ngIf="stage!= ''"> (Stage:{{stageName}}<span *ngIf="department">,Dept: {{department}}</span>)</span>
+        </div>
+    </div>
+</md-toolbar>
+
+
+
+<md-card class="mat-card-top" style="margin: -30px 12px;">
+    <md-card-content>
+        <div class="status-legends">
+            <div fxLayout="row" class="padding-h-3">
+                <div class="approved-legend"></div>
+                <div class="tip-text">Approved</div>
+            </div>
+            <div fxLayout="row" class="padding-h-3">
+                <div class="rejected-legend"></div>
+                <div class="tip-text">Rejected</div>
+            </div>
+            <div fxLayout="row" class="padding-h-3">
+                <div class="inprogress-legend"></div>
+                <div class="tip-text">In Progess</div>
+            </div>
+        </div>
+        <div *ngFor="let checklist of checklists;" [ngClass]="select_milestone== checklist ? 'show-milestone-div':'hide-milestone-div'">
+            <div fxLayout="column" fxLayout.gt-sm="row" class="checklist-div">
+                <div fxFlex class="padding-6px">
+                    <div (click)="showSelectedMilestones(checklist)"><span style="text-decoration:underline">{{checklist.checklist.NAME}}</span> belongs to</div>
+                    <div class="checklist-no">Stage: {{checklist.stage.stage.name}}</div>
+                    <div *ngIf="(checklist.is_prerequisite == null || checklist.is_prerequisite == false) && (checklist.is_imic == false || checklist.is_imic == null) && (checklist.is_wtg == null || checklist.is_wtg == false) && checklist.disable_link == true" class="checklist-no">Note: Please upload Headers,Footers and First Page Content to download Reports</div>
+                </div>
+
+                <div fxLayout="column" style="margin-right: 15px">
+                    <span style="font-size:12px;color:rgba(0, 0, 0, 0.7);margin-top: 2px;">Current stage</span>
+                    <span class="font-12" style="text-align: left;padding-left: 5px;">{{checklist.present_stage_name}}</span>
+                    <a (click)="viewHistory(checklist.id)" *ngIf="(checklist.is_wtg == false)" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:10px;margin-left:15px;">History</a>
+                    <!-- <a (click)="generateChecklistReports(checklist.id)" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Reports</a> -->
+                    <a  (click)="generateChecklistReports(checklist.id,checklist.disable_link)" *ngIf="(checklist.is_imic==false || checklist.is_imic == null)&&(checklist.is_prerequisite ==false || checklist.is_prerequisite ==null ) && checklist.is_wtg == false" [ngClass]="{'enabled_link': checklist.disable_link == false,'disabled_link':checklist.disable_link == true}">Reports</a>
+                    <a (click)="generatePrerequisiteChecklistReports(checklist.id)" *ngIf="checklist.is_prerequisite == true && (checklist.is_wtg == false || checklist_is_wtg == null)" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Reports</a>
+                    <a (click)="generateImicChecklistReports(checklist.id)" *ngIf="checklist.is_imic == true && (checklist.is_wtg == false || checklist_is_wtg == null)" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Reports</a>
+                    <a (click)="openHeaderFooterUpload(checklist.id,checklist.checklist.DEPARTMENT_ID)"mdTooltip="Upload Images for header footer and First Page Content" mdTooltipPosition="below" *ngIf="(checklist.is_prerequisite == null || checklist.is_prerequisite == false) && (checklist.is_wtg == null || checklist.is_wtg == false)" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top: -5px;margin-bottom: 10px;margin-left: 12px;">Upload Images</a>
+                    <a (click)="deleteExistingImages(checklist.id)" *ngIf="(checklist.is_imic==false || checklist.is_imic == null)&&(checklist.is_prerequisite ==false || checklist.is_prerequisite ==null ) && checklist.is_wtg == false && checklist.disable_link == false" mdTooltip="Delete Existing Images of Header,Footer,FirstPage for this Location" mdTooltipPosition="below" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top: -5px;margin-bottom: 10px;margin-left: 12px;">Delete Images</a>
+                </div>
+                <div class="padding-3px margin-right-15">
+                    <div class="checklist-no status-count-label" style="margin-bottom: 8px;">
+                        <div class="space-both-side">Milestones</div>
+                    </div>
+                    <div fxLayout="row" class="margin-right-15" style="height: 38px;margin-bottom: 8px;">
+                        <div>
+                            <div class="approved-legend-count" mdTooltip="Approved" mdTooltipPosition="below">{{checklist.statastic.approved_count}}</div>
+                        </div>
+                        <div>
+                            <div class="rejected-legend-count" mdTooltip="Rejected" mdTooltipPosition="below">{{checklist.statastic.rejected_count}}</div>
+                        </div>
+                        <div>
+                            <div class="inprogress-legend-count" mdTooltip="In Progress" mdTooltipPosition="below">{{checklist.statastic.inprogess_count}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="padding-3px margin-right-15">
+                    <div class="checklist-no status-count-label" style="margin-bottom: 8px;">
+                        <div class="space-both-side">Checkpoint</div>
+                    </div>
+                    <div fxLayout="row" class="margin-right-15" style="height: 38px;margin-bottom: 8px;">
+                        <div>
+                            <div class="approved-legend-count" mdTooltip="Ok" mdTooltipPosition="below">{{getQuestionOkCount(checklist)}}</div>
+                        </div>
+                        <div>
+                            <div class="rejected-legend-count" mdTooltip="Not Ok" mdTooltipPosition="below">{{getQuestionNotOkCount(checklist)}}</div>
+                        </div>
+                        <div>
+                            <div class="inprogress-legend-count" mdTooltip="In Progress" mdTooltipPosition="below">{{getQuestionInprogessCount(checklist)}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="column" style="margin-right: 15px" *ngIf="checklist.last_updated_date && checklist.last_updated_by">
+                    <span style="font-size:12px;color:rgba(0, 0, 0, 0.7);margin-top: 2px;">Last updated date</span>
+                    <span class="font-12" style="text-align:center">{{checklist.last_updated_date | date:'dd-MMM, yyyy'}}</span>
+                    <span style="font-size:12px;color:rgba(0, 0, 0, 0.7);margin-top: 2px;">Last updated by</span>
+                    <span class="font-12" style="text-align:center">{{checklist.last_updated_by}}</span>
+                </div>
+                <div class="padding-3px" style="margin-right: 10px;padding-top: 12px;">
+                    <div>
+                        <button *ngIf="(currentUser.role=='hod'||currentUser.role=='pm' )&& checkVisibility(checklist.milestones) && checklist.red_criticality_no_ok == 0 && checklist.status != 'approved' && checklist.checklist.DEPARTMENT_ID==currentUser.department_id" (click)="approveChecklist(checklist.id)"
+                            md-raised-button class="suzlon-button suzlon-small-button">
+                    <md-icon class="material-icons mat-icon">check</md-icon>
+                    <span>Approve</span>
+                </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="milestones-div">
+                <div class="milestone-div" *ngFor="let milestone of checklist.milestones">
+                    <div fxFlex="45" style="cursor: pointer">
+                        <div class="checklist-no">Milestone : {{milestone.milestone.MILESTONE_NO}}</div>
+                        <div><span><a (click)="openQuestionInfo(milestone,checklist)" style="color: #00978c;text-decoration: underline;cursor: pointer;">{{milestone.milestone.NAME}}</a></span><span *ngIf="milestone.pending_with!=null" style="font-size: 13px;margin-left: 15px;">Pending with:{{milestone.pending_with}}</span></div>
+                        
+                    </div>
+                    <div class="margin-right-15"><small *ngIf="milestone.lastUpdated" style="text-transform:capitalize">Last actioned by : {{milestone.lastUpdated.name}}</small></div>
+                    <div style="width: 200px;margin: 0 20px;">
+                        <div *ngIf="milestone.milestone.assignedTo!=null&&checklist.status==qa_submitted">{{milestone.milestone.assignedTo}}</div>
+                        <div *ngIf="(currentUser.role=='hod'||currentUser.role=='pm') && checklist.checklist.DEPARTMENT_ID==currentUser.department_id">
+                            <p-dropdown [options]="users" placeholder="Assign to" [filter]="true" [(ngModel)]="milestone.assignedTo" (onFocus)="loadUsers(checklist.site_id,checklist.checklist.DEPARTMENT_ID)" (onChange)="assignMilestone(milestone.assignedTo.user_id,milestone.id)"
+                                [style]="{'width':'100%'}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div style="width: 25%;" *ngIf="(checklist.is_prerequisite == null || checklist.is_prerequisite == false) && (checklist.is_imic == false || checklist.is_imic == null)">
+                        <a *ngIf="(checklist.is_wtg == false) && (checklist.is_prerequisite == null || checklist.is_prerequisite == false) && (checklist.is_imic == false || checklist.is_imic == null) && (checklist.is_wtg == null || checklist.is_wtg == false) && checklist.disable_link == false" (click)="generateMilestoneReports(milestone.id)" style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Reports</a>
+                    </div>
+
+                    <div style="margin: 0 25px;" class="status-link">
+                        <div><span class="darkgray-font">Ok:</span><span class="font-12">{{milestone.statastic.approved_count}}</span></div>
+                        <div><span class="darkgray-font">Not ok:</span><span class="font-12">{{milestone.statastic.rejected_count}}</span></div>
+                        <div><span class="darkgray-font">Incomplete:</span><span class="font-12">{{milestone.statastic.inprogess_count}}</span></div>
+                    </div>
+                    <div>
+                        <span *ngIf="milestone.status == 'qa_submitted'"> QA Submitted</span>
+                        <span *ngIf="milestone.status == 'not started'"> Not Started</span>
+                        <span *ngIf="milestone.status == 'ready_for_qa'"> Ready for QA</span>
+                        <span *ngIf="milestone.status == 'inprogress'"> In Progress</span>
+                        <span *ngIf="milestone.status == 'checklist-approved'"> Checklist Approved</span>
+                        <span *ngIf="milestone.status == 'stage1-approved'"> Stage 1 Approved</span>
+                        <span *ngIf="milestone.status == 'stage2-approved'"> Stage 2 Approved</span>
+                        <span *ngIf="milestone.status == 'stage3-approved'"> Stage 3 Approved</span>
+                        <span *ngIf="milestone.status == 'stage4-approved'"> Stage 4 Approved</span>
+                        <span *ngIf="milestone.status == 're-assigned'"> Re-Assigned</span>
+                        <span *ngIf="milestone.status == 'review-rejected'"> Review Rejected</span>
+                        <span *ngIf="milestone.status == 'review-submitted'"> Review Submitted</span>
+                        <span *ngIf="milestone.status == 'ready_for_com'"> Ready for Com</span>
+                        <span *ngIf="milestone.status == 'ready_for_ops'"> Ready for Ops</span>
+                        <span *ngIf="milestone.status == 'com-submitted'"> Com Submitted</span>
+                        <span *ngIf="milestone.status == 'oms-submitted'"> OMS Submitted</span>
+                        <span *ngIf="milestone.status == 'ops-submitted'"> OPS Submitted</span>
+                        <span *ngIf="milestone.status == 'maintainance-submitted'"> Maintainance Submitted</span>
+                        <span *ngIf="milestone.status == 'assigned-for-review'"> Assigned for Review</span>
+
+
+                        <!-- <span *ngIf="milestone.status != 'qa_submitted'"> {{milestone.status}}</span> -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </md-card-content>
+    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+        <p>{{Notification}}</p>
+        <p-footer>
+            <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+        </p-footer>
+    </p-dialog>
+</md-card>

@@ -1,0 +1,20 @@
+<div class="contextmenu" [ngStyle]="{'left.px': x-250, 'top.px': y-50}">
+    <md-card>
+        <div fxLayout="column" fxLayoutAlign="space evenly">
+            <div flex style="background: #d1dcdb;">
+                <button (click)="deleteFile()" *ngIf="deleteItem.created_by == currentUser.user_id" md-menu-item style="width: 230px; text-align: left;">
+                    <md-icon>delete</md-icon>
+                    Delete
+                </button>
+            </div>
+        </div>
+    </md-card>
+</div>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog>

@@ -1,0 +1,39 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Commissioning </div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+<div  style="padding:20px">
+    <div fxLayout="column" fxLayoutGap="10px">
+        <div class="mb-1" fxFlex="100">
+            <div fxLayout="column">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Pre-Commissioning Date <small style="color: red;">*</small></span>
+                <p-calendar  dateFormat="dd-M,yy" [maxDate]="maxDate" [(ngModel)]="pre_commissioningDate" (onSelect)="onPreCommissioningDateSelect()" appendTo="body"></p-calendar>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="column" fxLayoutGap="10px">
+        <div class="mb-1" fxFlex="100">
+            <div fxLayout="column">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Commissioning Date <small style="color: red;">*</small></span>
+                <p-calendar  dateFormat="dd-M,yy" [maxDate]="maxDate" [(ngModel)]="commissioningDate"   (onSelect)="onCommissioningDateSelect()" appendTo="body"></p-calendar>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="primary" [disabled]="dateFlag"  style="margin-left: 10px" (click)="submitDetails()" type="button">Submit</button>
+    </div>
+</div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

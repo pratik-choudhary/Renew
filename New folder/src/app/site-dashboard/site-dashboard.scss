@@ -1,0 +1,282 @@
+.header-div{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 0px;
+    height: 55px;
+    background: #f5f7f8;
+    border-bottom: 1px solid #d5dfe4;
+}
+.site-label{
+  font-size: 25px;
+    font-weight: bold;
+    color: #26a69a;
+}
+::ng-deep .md-tooltip {
+  font-size: 14px !important;
+}
+.header-text{
+    font-size: 20px;
+    color: #fff;
+    margin-top: -16px !important;
+}
+.example-form {
+  min-width: 150px;
+  width: 100%;
+}
+.box-card{
+    text-align: center;
+    vertical-align: middle;
+    width: 40px;
+    height: 20px;
+    background-color: #D1D0D0;
+    border: solid 1px #969494;
+    margin: 0 10px;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.padding-r15{
+  padding-right: 15px;
+}
+md-chip {
+    display: inline-block;
+    padding: 3px 8px 3px 8px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    line-height: 13px !important;
+    background-color: #26a69a !important;
+    color: white !important;
+}
+.close-chips-icon{
+   margin-left: 2px !important;
+    cursor: pointer !important;
+    border-radius: 50% !important;
+    padding: 1px !important;
+}  
+
+
+.mdl-stepper-horizontal-alternative {
+    display: table;
+    width: 100%;
+    margin: 0 auto 0 0;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step {
+    display: table-cell;
+    position: relative;
+    padding: 8px;
+    vertical-align: middle;
+  }
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step:active {
+    border-radius: 15% / 75%;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child:active {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child:active {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step:hover .mdl-stepper-circle {
+    background-color: #757575;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child .mdl-stepper-bar-left,
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child .mdl-stepper-bar-right {
+    display: none;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-circle {
+    width: 26px;
+    height: 26px;
+    margin: 0 auto;
+    background-color:rgb(122, 163, 229);
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    color: white;
+  }
+  .flagtrue{
+    width: 26px;
+    height: 26px;
+    margin: 0 auto;
+    background-color:#757575;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    color: white;
+    //background-color: #757575;
+  }
+  .flagfalse{
+    width: 26px;
+    height: 26px;
+    margin: 0 auto;
+    background-color:rgb(122, 163, 229);
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    color: white;
+  }
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.done-step .mdl-stepper-circle {
+   background-color: #00968c;
+  }
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-circle {
+    background-color: rgb(255, 191, 0);
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.step-done .mdl-stepper-circle:before {
+    content: "\2714";
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.step-done .mdl-stepper-circle *,
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle * {
+    display: none;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle {
+    -moz-transform: scaleX(-1);
+    /* Gecko */
+    -o-transform: scaleX(-1);
+    /* Opera */
+    -webkit-transform: scaleX(-1);
+    /* Webkit */
+    transform: scaleX(-1);
+    /* Standard */
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle:before {
+    content: "\270E";
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  .mdl-stepper-date{
+    font-size: 12px;
+    color:darkgray;
+    text-align: center;
+  }
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title,
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+    text-align: center;
+    color: rgb(245, 119, 119);
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-title {
+    font-weight: 500;
+    color: rgba(0, 0, 0, .87);
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step.step-done .mdl-stepper-title,
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step.editable-step .mdl-stepper-title {
+    font-weight: 300;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+    font-size: 12px;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-optional {
+    color: rgba(0, 0, 0, .54);
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+    position: absolute;
+    top: 20px;
+    height: 1px;
+    border-top: 1px solid #BDBDBD;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+    right: 0;
+    left: 50%;
+    margin-left: 20px;
+  }
+  
+  .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left {
+    left: 0;
+    right: 50%;
+    margin-right: 20px;
+  } 
+  .stage-div{
+    text-align: center;
+    width: 28px;
+    background: #FFFFFF;
+    .inner-stage-digit{
+      margin: 100% 0;
+      color: #FFFFFF;
+    }
+  }
+
+  .stage-info{
+    margin-top: 0px;
+    z-index: 1;
+    position: absolute;
+    color:#000 !important;
+    padding:6px 8px;
+    margin-left:12px;
+    border-radius:2px;
+    text-align:center;
+    font-family:Roboto,"Helvetica Neue",sans-serif;
+    font-size:11px !important;
+    max-width:140px !important;
+  }
+  .stagePQHC  
+  {
+    margin-left:10px
+  }
+  .stageSTPT  
+  {
+    margin-left:13px
+  }
+  .stageCoD  
+  {
+    margin-left:14px
+  }
+  .stageCommissioning
+  {
+    margin-left: -12px
+  }
+  .stageSafeRun
+  {
+    margin-left: 5px
+  }
+  .stageMaintain_TT
+  {
+    margin-left:-8px
+  }
+  .stageHOTO_Sign-Off
+  {
+    margin-left:-5px
+  }
+  .card1{
+    
+      //padding: 10px !important; 
+      border-radius: 10px !important; 
+      background-color: rgb(240, 248, 247) !important;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+  }
+  .site_title{
+    background: #26a69a;
+    border-top-left-radius: 8px;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+  }
+
+
+  .card_site{
+    //padding: 10px !important; 
+    border-radius: 10px !important; 
+    background-color: rgba(144, 238, 146,0.89) !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}

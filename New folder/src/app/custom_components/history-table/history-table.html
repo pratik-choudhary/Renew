@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutAlign="space-evenly">
+    <table>
+        <tr *ngFor="let i of history">
+            <td>{{i.body}} <span style="color: #989393">({{i.updated_at|date:'dd-MMM, yyyy'}})</span></td>
+            
+        </tr>
+    </table>
+    <div *ngIf="history==null||history.length==0" class="empty-div">
+       <span> No History in this checklist</span>
+    </div>
+</div>

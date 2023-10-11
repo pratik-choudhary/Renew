@@ -1,0 +1,22 @@
+
+.milestones-div{
+    padding: 4px;
+    border: 1px solid #eee;
+    background: #fafcfd;
+    .milestone-div{
+        padding: 2px;
+    }
+}
+.close-popup{
+    position: absolute !important;
+    width: calc(100% - 40px);
+    margin-top: -10px !important;
+    text-align: end !important;
+    cursor:pointer !important;
+    font-size: 18px !important;
+}
+.popup-title{
+    font-size: 16px;
+    color: #777b84;
+    margin-bottom: 4px;
+}

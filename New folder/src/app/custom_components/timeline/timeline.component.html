@@ -1,0 +1,75 @@
+<div style="padding: 12px;">
+    <div class="timeline stacked">
+        <div class="timeline-card" *ngFor="let h of history">
+            <div class="timeline-date">{{h.last_updated_date | date:'short'}}</div>
+            <div class="timeline-icon mat-grey"></div>
+            <section class="timeline-content">
+                <md-card style="width: 100%;background: #fdfdfd;">
+                    <md-card-content fxLayout="row">
+                        <div fxFlex="50">
+                            <div fxLayout="row" fxLayoutWrap>
+                                <div class="width-200px margin-bottom-10">
+                                    <div class="specification-label">Status</div>
+                                    <div *ngIf="h.options == 'True' || h.options == 'true'" class="approved-status">
+                                        <div>Ok</div>
+                                    </div>
+                                    <div *ngIf="h.options == 'False' || h.options == 'false'" class="rejected-status">
+                                        <div>Not Ok</div>
+                                    </div>
+                                </div>
+                                <div class="width-200px margin-bottom-10">
+                                    <div class="specification-label">Last Actioned By</div>
+                                    <div class="specifications">{{h.last_updated_by_name}}</div>
+                                </div>
+                                <div class="width-200px margin-bottom-10">
+                                    <div class="specification-label">Department</div>
+                                    <div class="specifications">{{h.department_name}}</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="margin-bottom-10">
+                                <div fxFlex>
+                                    <div class="specification-label">Remarks</div>
+                                    <div class="specifications">{{h.remark}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="70" fxLayout="row" fxLayoutAlign="space-between" fxLayoutWrap>
+                            <div>
+                                <div style="width:50%" *ngIf="h.images.length > 0" class="question-label" style="padding-bottom: 8px;">Attachments</div>
+                                <div style="padding-left: 10px;">
+                                    <div *ngIf="h.images.length > 0">
+                                        <div class="specification-label">Photos</div>
+                                        <div *ngFor="let image of h.images">
+                                            <a href={{image}} target="_blank">
+                                                <img class="attachment-image" src={{image}} />
+                                            </a>
+                                            <a href={{image}} download>
+                                                <md-icon class="material-icons mat-icon download-btn">file_download</md-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:50%" *ngIf="h.ncd_doc && h.ncd_doc.length > 0">
+                                <div  class="question-label" style="padding-bottom: 8px;">RFD Documents</div>
+                                    <div style="padding-left: 10px;">
+                                        <div>
+                                            <div class="specification-label">Documents</div>
+                                        <div *ngFor="let doc of h.ncd_doc">
+                                            <a href="{{doc}}" target="_blank">
+                                                <md-icon class="icon-20 material-icons" style="font-size:80px;color:#103a84">insert_drive_file</md-icon>
+                                            <a href={{doc}} download>
+                                                <md-icon class="material-icons mat-icon download-btn" style="margin-left: 18px;cursor:pointer;font-size: 20px;color: #103a84;">file_download</md-icon>
+                                            </a>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </section>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<md-icon class="material-icons mat-icon" 
+style="position: absolute; width: calc(100% - 30px);margin-top: -20px;text-align: end;cursor:pointer;font-size: 18px;" (click)="closeDialog()">close</md-icon>
+<md-dialog-content style="height: auto;">
+  <create-feeder (notify)='onNotify($event)' [parentInput]="parentInput"></create-feeder>
+</md-dialog-content>

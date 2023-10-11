@@ -1,0 +1,186 @@
+<form [formGroup]="form" style="padding-bottom:10px;padding-top:10px">
+  <div  fxLayout="column">
+    <div class="mb-1">
+      <div class="suzlon-input" style="width:100%">
+        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Model
+          <small style="color: red;">*</small>
+        </span>
+        <input type="text" class="suzlon-input" [formControl]="form.controls['MODEL_NAME']" size="50" style="width: 98%;padding: 5px;border-radius: 4px;"
+          required="true" pattern="^\s?[a-zA-Z0-9-.@#$()*\s_]{1,}$">
+        <div>
+          <small *ngIf="form.controls['MODEL_NAME'].hasError('required') && form.controls['MODEL_NAME'].touched" class="mat-text-warn">Required</small>
+        </div>
+        <div>
+          <small *ngIf="form.controls['MODEL_NAME'].hasError('pattern') && form.controls['MODEL_NAME'].dirty" class="mat-text-warn">Name can contain alphabets,Numbers, - , . , @ , # , $ , & , ) , ( , * , _ and space</small>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="row">
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Blade Type<small style="color: red;">*</small>
+          </span>
+          <select class="suzlon-input" [formControl]="form.controls['BLADE_TYPE']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let type of bladeType" [value]="type.value">
+              {{ type.value}}
+            </option>
+          </select>
+          <small *ngIf="form.controls['BLADE_TYPE'].hasError('required') && form.controls['BLADE_TYPE'].touched" class="mat-text-warn">Required</small>
+        </div>
+
+
+      </div>
+
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Blade Version<small style="color: red;">*</small>
+          </span>
+          <select class="suzlon-input" [formControl]="form.controls['BLADE_VERSION']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let type of bladeVersion" [value]="type.value">
+              {{ type.value}}
+            </option>
+          </select>
+          <small *ngIf="form.controls['BLADE_VERSION'].hasError('required') && form.controls['BLADE_VERSION'].touched" class="mat-text-warn">Required</small>
+        </div>
+
+        <!-- <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Blade Version<small style="color: red;">*</small>
+          </span>
+          <input type="text" class="suzlon-input" [formControl]="form.controls['BLADE_VERSION']" style="width: 96%;padding: 5px;border-radius: 4px;"
+            required="true" size="50">
+          <small *ngIf="form.controls['BLADE_VERSION'].hasError('required') && form.controls['BLADE_VERSION'].touched" class="mat-text-warn">Required</small>
+        </div> -->
+      </div>
+    </div>
+
+
+    <div fxLayout="row">
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Tower Type
+            <small style="color: red;">*</small>
+          </span>
+          <select class="suzlon-input" [formControl]="form.controls['TOWER_TYPE']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let type of towerType" [value]="type.value">
+              {{ type.value }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['TOWER_TYPE'].hasError('required') && form.controls['TOWER_TYPE'].touched" class="mat-text-warn">Required</small>
+        </div>
+
+      </div>
+
+
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Frequency
+            <small style="color: red;">*</small>
+          </span>
+          <select class="suzlon-input" [formControl]="form.controls['FREQUENCY']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let type of frequencies" [value]="type.value">
+              {{ type.value }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['FREQUENCY'].hasError('required') && form.controls['FREQUENCY'].touched" class="mat-text-warn">Required</small>
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+    <div fxLayout="row">
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Temperature Version
+            <small style="color: red;">*</small>
+          </span>
+
+          <select class="suzlon-input" [formControl]="form.controls['TEMP_VERSION']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let type of tempVersions" [value]="type.value">
+              {{ type.value }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['TEMP_VERSION'].hasError('required') && form.controls['TEMP_VERSION'].touched" class="mat-text-warn">Required</small>
+        </div>
+
+      </div>
+
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Rotor Dia (in meter)
+            <small style="color: red;">*</small>
+          </span>
+
+          <select class="suzlon-input" [formControl]="form.controls['ROTOR_DIA']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let type of rotorList" [value]="type.value">
+              {{ type.value }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['ROTOR_DIA'].hasError('required') && form.controls['ROTOR_DIA'].touched" class="mat-text-warn">Required</small>
+        </div>
+
+      </div>
+
+    </div>
+    <div fxLayout="row">
+      <div class="mb-1" fxFlex="50" style="margin-right:10px">
+
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Hub Height (in meter)
+            <small style="color: red;">*</small>
+          </span>
+
+          <select class="suzlon-input" [formControl]="form.controls['HUB_HEIGHT']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let hub of hubHeightList" [value]="hub.value">
+              {{ hub.value }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['HUB_HEIGHT'].hasError('required') && form.controls['HUB_HEIGHT'].touched" class="mat-text-warn">Required</small>
+
+        </div>
+
+      </div>
+      <div class="mb-1" fxFlex="50" style="margin-left:10px">
+
+        <div class="suzlon-input" style="width:100%">
+          <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Status
+            <small style="color: red;">*</small>
+          </span>
+
+          <select class="suzlon-input" [formControl]="form.controls['STATUS']" style="width: 100%;padding: 5px;border-radius: 4px;"
+            required="true">
+            <option *ngFor="let status of statusList" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+          <small *ngIf="form.controls['STATUS'].hasError('required') && form.controls['STATUS'].touched" class="mat-text-warn">Required</small>
+
+        </div>
+
+
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <button md-raised-button color="accent" (click)="closeDialog()">Cancel</button>
+      <button md-raised-button color="primary" (click)="createModel()" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+    </div>
+  </div>
+  <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>
+
+</form>

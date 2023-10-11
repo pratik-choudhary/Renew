@@ -1,0 +1,725 @@
+@import "../../assets/styles/scss/components/messages";
+:host {
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-top: -5px;
+    display: block;
+}
+.enabled_link
+{
+        color: #00978c;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-top:5px;
+        margin-bottom:10px;
+        margin-left: 12px;
+}
+.disabled_link
+{
+    color: gray;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top:5px;
+    margin-bottom:10px;
+    margin-left: 12px;
+    pointer-events:none;
+}
+
+:host /deep/ {
+    md-sidenav {
+        width: 200px;
+    }
+    .mat-sidenav-content {
+        padding: 0;
+    }
+    @media (min-width: 959px) {
+        .mat-sidenav-side {
+            background-color: transparent;
+            box-shadow: none!important;
+        }
+    }
+}
+
+.project-title {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.checklist-div {
+    background: #fcfcfc;
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+}
+
+.milestones-div {
+    padding: 4px;
+    border: 1px solid #eee;
+}
+
+.checklist-no {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.7);
+    margin-right: 10px;
+}
+
+.milestone-div {
+    display: flex;
+    align-items: center;
+    &:not(:last-child) {
+        border-bottom: 1px solid #e0e2e0;
+    }
+}
+
+.darkgray-font {
+    font-size: 12px;
+    color: darkgray;
+    margin-right: 5px;
+    text-decoration: underline;
+}
+
+.font-12 {
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+
+/* Simple setup for this demo */
+
+.mdl-card__supporting-text {
+    width: 100%;
+    padding: 0;
+}
+
+.project-header-expanded {
+    height: 140px;
+    cursor: pointer;
+    padding: 15px 15px 40px 15px !important;
+    background: #fff;
+    border-bottom: 1px solid #f0f2f3;
+}
+
+.project-header-collapsed {
+    height: 34px;
+    cursor: pointer;
+    padding: 15px 15px 0 15px;
+    background: #f5f7f8;
+    border-bottom: 1px solid #e5e7e8;
+    .mdl-stepper-horizontal-alternative {
+        display: none !important;
+    }
+}
+
+.project-title-text {
+    font-size: 16px;
+    color: #23375b;
+}
+
+
+/* Begin actual mdl-stepper css styles */
+
+.mdl-stepper-horizontal-alternative {
+    //display: table;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0 auto 0 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step {
+    //display: table-cell;
+    position: relative;
+    padding: 8px;
+    width: 130px;
+    display: block;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:active {
+    border-radius: 15% / 75%;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child:active {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child:active {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:hover .mdl-stepper-circle {
+    background-color: #757575;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child .mdl-stepper-bar-right {
+    display: none;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-circle {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    background-color: #9E9E9E;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    color: white;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.done-step .mdl-stepper-circle {
+    background-color: #00968c;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-circle {
+    background-color: rgb(255, 191, 0);
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.step-done .mdl-stepper-circle:before {
+    content: "\2714";
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.step-done .mdl-stepper-circle *,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle * {
+    display: none;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle {
+    -moz-transform: scaleX(-1);
+    /* Gecko */
+    -o-transform: scaleX(-1);
+    /* Opera */
+    -webkit-transform: scaleX(-1);
+    /* Webkit */
+    transform: scaleX(-1);
+    /* Standard */
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle:before {
+    content: "\270E";
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.mdl-stepper-date {
+    font-size: 12px;
+    color: darkgray;
+    text-align: center;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+    text-align: center;
+    color: rgb(245, 119, 119);
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-title {
+    font-weight: 500;
+    color: rgba(0, 0, 0, .87);
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step.step-done .mdl-stepper-title,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step.editable-step .mdl-stepper-title {
+    font-weight: 300;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+    font-size: 12px;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-optional {
+    color: rgba(0, 0, 0, .54);
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+    position: absolute;
+    top: 20px;
+    height: 1px;
+    border-top: 1px solid #BDBDBD;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+    right: 0;
+    left: 50%;
+    margin-left: 20px;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left {
+    left: 0;
+    right: 50%;
+    margin-right: 20px;
+}
+
+.criticality-div {
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 50px);
+}
+
+.criticality-text {
+    font-size: 12px;
+    color: #949292;
+}
+
+.red-circle {
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    margin: 5px;
+}
+
+.yellow-circle {
+    width: 10px;
+    height: 10px;
+    background: #ffbf00;
+    border-radius: 50%;
+    margin: 5px;
+}
+
+.green-circle {
+    width: 10px;
+    height: 10px;
+    background: green;
+    border-radius: 50%;
+    margin: 5px;
+}
+
+.approved-checklist {
+    padding: 0 15px;
+    .status-title {
+        border-bottom: 2px solid #6e9c6e;
+    }
+}
+
+.rejected-checklist {
+    padding: 0 15px;
+    .status-title {
+        border-bottom: 2px solid #f57777;
+    }
+}
+
+.inprogress-checklist {
+    padding: 0 0px 0 40px;
+    .status-title {
+        border-bottom: 2px solid #f9c214;
+    }
+}
+
+.approved-summary {
+    padding: 0 15px;
+    border-left: 5px solid #a4a4a4;
+}
+
+.rejected-summary {
+    padding: 0 15px;
+    border-left: 5px solid #a4a4a4;
+}
+
+.inprogress-summary {
+    padding: 0 15px;
+    border-left: 5px solid #a4a4a4;
+}
+
+.first-analytic-div {
+    padding: 14px;
+    width: 550px;
+}
+
+.mar-right-30 {
+    margin-right: 30px;
+}
+
+.status-title {
+    font-size: 12px;
+    color: #8c8c8c;
+}
+
+.margin-right-15 {
+    margin-right: 15px;
+}
+
+.status-link {
+    cursor: pointer;
+}
+
+.hide-milestone-div {
+    .checklist-div {
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+    .milestones-div {
+        display: none !important;
+    }
+}
+
+.show-milestone-div {
+    .checklist-div {
+        cursor: pointer;
+    }
+    .milestones-div {
+        display: block !important;
+    }
+}
+
+.suzlon-small-button {
+    line-height: 26px !important;
+    padding: 0 6px !important;
+    >md-icon {
+        height: 22px !important;
+        width: 22px !important;
+        font-size: 22px !important;
+    }
+}
+
+.status-count-label {
+    margin-bottom: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .central-border {
+        width: 72px;
+        border-top: 1px solid #a5a1a1;
+    }
+    .space-both-side {
+        margin: 0 6px;
+    }
+}
+
+.padding-3px {
+    padding: 3px;
+}
+
+.padding-6px {
+    padding: 6px;
+}
+
+.stageStart {
+    margin-top: 70px;
+}
+
+.stage-div {
+    text-align: center;
+    width: 28px;
+    background: #dbe2e2;
+    .inner-stage-digit {
+        margin: 100% 0;
+        color: #23375b;
+    }
+}
+
+.stage-info {
+    min-width: 75px;
+    text-align: center;
+    margin-top: 8px;
+    z-index: 1;
+    position: absolute;
+    color: #000 !important;
+    background: #ceecea;
+    border: 1px solid #88cac5;
+    padding: 6px 8px;
+    border-radius: 2px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12px !important;
+    max-width: 140px !important;
+}
+
+.stage-info:after,
+.stage-info:before {
+    bottom: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.stage-info:before {
+    border-color: transparent;
+    border-bottom-color: #88cac5;
+    border-width: 8px;
+    left: 45%;
+}
+
+.activate-link {
+    color: #1960E2 !important;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.approved-legend-count {
+    background: #6e9c6e;
+    min-width: 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    margin: 0 6px;
+}
+
+.rejected-legend-count {
+    background: #f57777;
+    min-width: 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    margin: 0 6px;
+}
+
+.inprogress-legend-count {
+    background: gray;
+    min-width: 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    margin: 0 6px;
+}
+
+.status-legends {
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+    margin: 4px 10px;
+    .approved-legend {
+        background: #6e9c6e;
+        width: 12px;
+        height: 12px;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        margin: 0 2px;
+    }
+    .rejected-legend {
+        background: #f57777;
+        width: 12px;
+        height: 12px;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        margin: 0 2px;
+    }
+    .inprogress-legend {
+        background: gray;
+        width: 12px;
+        height: 12px;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        margin: 0 2px;
+    }
+    .tip-text {
+        font-size: 12px;
+        color: #7c7f84;
+        margin-top: -2px;
+        padding: 0 3px;
+    }
+    .padding-h-3 {
+        padding: 0 3px;
+    }
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.analytic-status-header-card {
+    padding: 5px 18px;
+}
+
+.white-background {
+    background: #fff !important;
+}
+
+.mat-list-item {
+    box-shadow: none !important;
+    background-color: #fafafa;
+    display: block;
+}
+
+.department-divs {
+    display: flex;
+    border: 1px solid #f1efef;
+    height: 65px;
+    margin: 0 0 10px 0;
+    .department-status-count {
+        font-weight: 600;
+        color: #fff;
+        font-size: 22px;
+    }
+    .department-status {
+        font-size: 12px;
+        color: #fff;
+    }
+}
+
+.department-avatar {
+    width: 50px;
+    background: #cfd1d2;
+    text-align: center;
+    background: transparent;
+    margin-top: 6px;
+    >img {
+        width: 25px;
+        height: 25px;
+        padding: 4px;
+        border: 1px dashed #23375b;
+        background: #fff;
+        border-radius: 50%;
+        margin-top: 6px;
+    }
+}
+
+.red-points {
+    width: 50%;
+    background: #a4a4a4;
+    text-align: center;
+    cursor: pointer;
+}
+
+.yellow-points {
+    width: 50%;
+    background: #a4a4a4bf;
+    text-align: center;
+    cursor: pointer;
+}
+
+.green-points {
+    width: 50%;
+    background: #a4a4a485;
+    text-align: center;
+    cursor: pointer;
+}
+
+.width-75 {
+    width: 75px;
+    margin-right: 10px;
+}
+
+.status-span {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.status-span-prerequisite {
+    font-size: 13px;
+    color: green;
+}
+
+.stage-title {
+    padding-top: 10px;
+    padding-left: 10px;
+    color: #23375b;
+}
+
+.small-card-title {
+    //margin: auto auto auto 0px;
+    margin: auto 0;
+    font-size: 18px;
+    color: #808080;
+    padding-right: 10px;
+}
+
+.padding-10-18 {
+    padding: 10px 18px;
+}
+
+.font-25 {
+    font-size: 22px;
+    color: #808080;
+}
+
+.font-808080 {
+    color: #808080;
+    font-size: 12px;
+}
+
+.red-left-border {
+    border-left: 3px solid red;
+    padding-left: 10px;
+}
+
+.green-left-border {
+    border-left: 3px solid green;
+    padding-left: 10px;
+}
+
+.blue-left-border {
+    border-left: 3px solid blue;
+    padding-left: 10px;
+}
+
+md-list {
+    padding-top: 0px !important;
+}
+
+.empty-div {
+    span {
+        display: block;
+        width: 100%;
+        max-width: 1000px;
+        padding: 20px;
+        border: 1px dashed rgba(0, 0, 0, .15);
+        color: #42454B;
+        font-style: italic;
+        font-size: 13px;
+        background: rgb(251, 252, 253);
+        margin: 0 auto;
+        text-align: center;
+        border-radius: 2px;
+    }
+    margin-top:15px;
+}
+
+.underline-text {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.checklist-dashboard-title {
+    margin-bottom: 28px;
+    color: #fff;
+    >span {
+        font-size: 16px;
+        text-transform: capitalize;
+        margin-left: 8px;
+    }
+}
+
+.refresh-button-div {
+    background-image: linear-gradient(to bottom, #f5f5f5, #f1f1f1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #5d5d5d;
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    margin-right: 6px;
+    height: 23px;
+    line-height: 27px;
+    min-width: 26px;
+    outline: 0;
+    padding: 0 8px;
+    >md-icon {
+        font-size: 22px !important;
+        height: 22px !important;
+        width: 22px !important;
+    }
+}
+
+.configuration-link {
+    text-decoration: underline !important;
+    color: #00968b !important;
+}
+
+.checklist_select_div {
+    margin-right: 25px !important;
+    width: 55% !important;
+}

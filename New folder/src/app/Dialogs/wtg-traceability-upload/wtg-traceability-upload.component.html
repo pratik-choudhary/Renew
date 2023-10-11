@@ -1,0 +1,62 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text"
+        style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Import WTG Traceability
+        Questions</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon"
+        style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+  <div fxLayout="column">
+    <span>Civil WTG Questions</span>
+    <input [disabled]="publish_civil_wtg == true" type="file" (change)="changeCivilFile($event)" />
+    <small *ngIf="invalidFile" style="margin-top:6px;color:red;">Invalid file format</small>
+  </div>
+  <div fxLayout="row">
+    <button md-raised-button color="primary" [disabled]="disable_civil_button || publish_civil_wtg == true" (click)="uploadCivilFile()"
+      style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+  </div>
+  <button md-raised-button color="primary" *ngIf="publish_civil_wtg == false" (click)="publishCivilChecklist()"
+    style="margin-left: 10px;box-shadow: none;color:#fff">Publish</button>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+  <div fxLayout="column">
+    <span>Electrical WTG Questions</span>
+    <input type="file" [disabled]="publish_electrical_wtg == true" (change)="changeElectricalFile($event)" />
+    <small *ngIf="invalidFile" style="margin-top:6px;color:red;">Invalid file format</small>
+  </div>
+  <div fxLayout="row">
+    <button md-raised-button color="primary" [disabled]="disable_electrical_button" (click)="uploadElectricalFile()"
+      style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+  </div>
+  <button md-raised-button color="primary" *ngIf="publish_electrical_wtg == false" (click)="publishElectricalChecklist()"
+    style="margin-left: 10px;box-shadow: none;color:#fff">Publish</button>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between" style="padding:15px 25px">
+  <div fxLayout="column">
+    <span>Mechanical WTG Questions</span>
+    <input type="file" [disabled]="publish_mechanical_wtg == true" (change)="changeMechanicalFile($event)" />
+    <small *ngIf="invalidFile" style="margin-top:6px;color:red;">Invalid file format</small>
+  </div>
+  <div fxLayout="row">
+    <button md-raised-button color="primary" [disabled]="disable_mechanical_button" (click)="uploadMechanicalFile()"
+      style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+  </div>
+  <button md-raised-button color="primary" *ngIf="publish_mechanical_wtg == false" (click)="publishMechanicalChecklist()"
+    style="margin-left: 10px;box-shadow: none;color:#fff">Publish</button>
+</div>
+
+
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+  <p>{{Notification}}</p>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+  </p-footer>
+</p-dialog>

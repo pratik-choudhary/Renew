@@ -1,0 +1,29 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text"
+        style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">DQR Reports</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon"
+        style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div>
+<div>
+
+
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div fxLayout="column" style="padding:10px;">
+      <div class="dropdown-label">Select Location :</div>
+      <div>
+        <p-dropdown [options]="locations" placeholder="Select Location" [(ngModel)]="selectedLocation" [filter]="true"
+          filterBy="label" [style]="{'margin':'3px'}" appendTo="body"></p-dropdown>
+      </div>
+    </div>
+    <div style="padding:15px;">
+      <button md-raised-button color="primary" (click)="generateDQRReports()" style="margin-left: 10px;box-shadow: none;color:#fff">Download</button>
+    </div>
+  </div>
+</div>

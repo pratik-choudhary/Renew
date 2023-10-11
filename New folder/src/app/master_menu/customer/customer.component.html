@@ -1,0 +1,25 @@
+<md-toolbar color="primary">
+    <div style="width:100%;margin-top: -26px;">
+        <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+            <div>
+                <div fxFlex class="header-text" style="margin-bottom:16px;margin-top:16px;">Customer</div>
+            </div>
+            <!-- <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+                <button md-raised-button class="suzlon-button-small" (click)="openDialog()">
+                    <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+                    <span>Add Customer</span>
+                </button>
+            </div> -->
+        </div>
+    </div>
+</md-toolbar>
+
+<!-- model list -->
+<md-card class="mat-card-top" style="margin-top:-25px">
+    <md-card-content>
+
+        <div id="master" style="padding: 10px;">
+            <customer-list [value]="value2"></customer-list>
+        </div>
+    </md-card-content>
+</md-card>

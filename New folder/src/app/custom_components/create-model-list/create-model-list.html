@@ -1,0 +1,140 @@
+<md-content class="md-padding">
+    <div style="margin-top:10px;">
+        <div class="ui-widget-header">
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                <div fxLayout="row" fxGap="5px">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input #gb type="text" pInputText size="30" placeholder="Search by model name">
+                    <div *ngIf="modelList != undefined && modelList != null"
+                        style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count
+                        {{modelList.length}}</div>
+                </div>
+
+                <div fxLayout="row" fxGap="">
+
+                    <md-icon class="material-icons" style="color: #00968c;cursor: pointer;" (click)="openDialog()">
+                        add_box</md-icon>
+                    <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;"
+                        (click)="openDialog()">Add Model</div>
+                </div>
+            </div>
+        </div>
+        <p-dataTable [value]="modelList" [responsive]="true" [rows]="10" [paginator]="true" [globalFilter]="gb"
+            sortMode="multiple">
+            <p-column field="name" [sortable]="true" [style]="{'width':'150px','word-wrap': 'break-word'}">
+                <ng-template pTemplate="header">
+                    Name
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="blade_type" header="Blade Type" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Blade Type
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="blade_version" header="Blade Version" [sortable]="true" [style]="{'width':'120px'}">
+                <ng-template pTemplate="header">
+                    Blade Version
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="tower_type" header="Tower Type" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Tower Type
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="frequency" header="Frequency" [sortable]="true" [style]="{'word-wrap': 'break-word'}">
+                <ng-template pTemplate="header">
+                    Frequency
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="temperature_type" header="Temperature Version" [sortable]="true"
+                [style]="{'word-wrap': 'break-word'}">
+                <ng-template pTemplate="header">
+                    Temperature Version
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="rotor_dia" header="Rotor Dia" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Rotor Dia
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="hub_height" header="Hub Height" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Hub Height
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column field="status" header="Status" [sortable]="true">
+                <ng-template pTemplate="header">
+                    Status
+                </ng-template>
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                    {{row[col.field]}}
+                </ng-template>
+            </p-column>
+            <p-column styleClass="col-button">
+                <ng-template pTemplate="header">
+                    Action
+                </ng-template>
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div style="margin-left:20px" fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px"
+                        fxLayoutAlign="start start">
+                        <div>
+                            <md-icon (click)="openQuestionEditPopup(rowData)" svgIcon="pencil" class="icon-20"
+                                style="cursor:pointer"></md-icon>
+                        </div>
+                        <div [hidden]="rowData.uses!=0">
+                            <md-icon *ngIf="currentUser.role=='admin'" class="icon-20" (click)="deleteModel(rowData)"
+                                label="Delete" style="cursor:pointer;color: #23375b;">delete</md-icon>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column>
+                <ng-template pTemplate="header">
+                    WTG Traceability Questions
+                </ng-template>
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <div fxLayout="row" fxLayoutAlign="space-around">
+                        <div>
+                            <md-icon  (click)="openWTGDialog(rowData)" svgIcon="pencil" 
+                                mdTooltip="Manage WTG Traceability Questions"    style="cursor:pointer"></md-icon>                            
+                        </div>
+                    </div>
+                </ng-template>
+            </p-column>
+
+            
+        </p-dataTable>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body">
+        </p-confirmDialog>
+        <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+            <p>{{Notification}}</p>
+            <p-footer>
+                <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+            </p-footer>
+        </p-dialog>
+    </div>
+</md-content>

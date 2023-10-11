@@ -1,0 +1,51 @@
+<md-card>
+<form [formGroup]="form" (ngSubmit)="saveComponent()">	
+<table class="table">
+	<thead>
+		<tr>
+			<td>Description</td>
+			<td>Regular Value</td>
+			<td>Ok</td>
+			<td>Not ok</td>
+			<td>Actual</td>
+			<td>Remark</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+			<md-input-container>
+		            <textarea mdInput placeholder="Description" [formControl]="form.controls['DESCRIPTION']">
+		            </textarea>
+	            </md-input-container>
+			</td>
+			<td>
+			<md-input-container>
+		            <textarea mdInput placeholder="Required Value" [formControl]="form.controls['REQUIRED_VALUE']">
+		            </textarea>
+	            </md-input-container>
+			</td>
+			<td>
+				<span></span>
+			</td>
+			<td>
+				<span></span>
+			</td>
+			<td>
+			<md-input-container>
+		            <textarea mdInput placeholder="Actual">
+		            </textarea>
+	            </md-input-container>
+			</td>
+			<td>
+			<md-input-container>
+		            <textarea mdInput placeholder="Remark">
+		            </textarea>
+	            </md-input-container>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<button md-raised-button color="primary" style="margin: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+</form>
+</md-card>

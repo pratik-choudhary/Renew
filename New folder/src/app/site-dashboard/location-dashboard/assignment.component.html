@@ -1,0 +1,308 @@
+<!-- stepper  -->
+<div [ngClass]="expanded_header ? 'project-header-expanded' : 'project-header-collapsed'">
+    <!--(click)="expandeCollapseHeader()"-->
+    <div fxLayout="row" fxLayoutAlign="start center" style="padding:0 10px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div>
+                <span *ngIf="location_summary" class="project-title-text">{{location_summary.location_name}}</span>
+            </div>
+        </div>
+        <span fxFlex></span>        
+        <div class="checklist_select_div">
+            <!--checklist select div-->
+            <md-select placeholder="Select Checklist" fxFlex="700" [(ngModel)]="selected_checklist"
+                (change)="changeChecklist()">
+                <md-option *ngFor="let checklist of checklists" [value]="checklist.id">
+                    {{ checklist.name}}
+                </md-option>
+            </md-select>
+        </div>
+        <div class="refresh-button-div" (click)="refreshDashboard($event)" mdTooltip="Refresh" mdTooltipPosition="left">
+            <md-icon>refresh</md-icon>
+            <!-- <a>Refresh</a> -->
+        </div>
+        <div class="pl-1 text-xs-right" fxShow="false" fxShow.gt-sm>
+            <!-- <small class="text-xs-muted"><span>Last modified :</span>Tuesday, March 24, 2017</small> -->
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 40px;padding:10px;">
+        <div fxflex="50"></div>
+        <div fxflex="50">
+            <button (click)="add_WTG_checklists()" md-raised-button class="suzlon-button suzlon-small-button">
+                <md-icon class="material-icons mat-icon">check</md-icon>
+                <span>Add WTG checklists</span>
+            </button>
+            <button (click)="remove_WTG_checklists()" md-raised-button class="suzlon-button suzlon-small-button">
+                <md-icon class="material-icons mat-icon">clear</md-icon>
+                <span>Remove WTG checklists</span>
+            </button>
+        </div>
+        
+    </div>
+    <div class="mdl-stepper-horizontal-alternative">
+        <div class="mdl-stepper-step"
+            [ngClass]="{'done-step':s.status == 'completed','active-step':s.status == 'started'}"
+            *ngFor="let s of title_stages;let i=index">
+            <div class="mdl-stepper-circle"><span>{{i+1}}</span></div>
+            <!-- [ngClass]="{'stage-info': s.status != 'not started'}" -->
+            <div class="stage-info">
+                <div *ngIf="s.stage.id != 6">{{s.stage.name}}</div>
+                <div *ngIf="s.stage.id == 6 && (currentUser.department_id != 10017 || s.status != 'started')">
+                    {{s.stage.name}}</div>
+                <div *ngIf="s.stage.id == 6 && currentUser.department_id == 10017 && s.status == 'started'"
+                    class="configuration-link" (click)="openStageFive($event,s)"><a>{{s.stage.name}}</a></div>
+                <div *ngIf="s.planned_end_date != null">PED : {{s.planned_end_date | date:'dd-MMM, yyyy'}}</div>
+                <div *ngIf="s.actual_start_date != null">ASD : {{s.actual_start_date | date :'dd-MMM, yyyy'}}</div>
+                <!-- <div> AED : Mar 25,2017</div>
+         <div>Yellow points:4</div> -->
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='pm' && s.stage.id != 5 && s.stage.id != 4 && s.stage.id != 6 && s.stage.id != 7 && s.stage.id != 3 && s.stage.id != 8 && s.stage.id != 10"
+                    (click)="approveStageIns($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='pm' && s.stage.id == 5"
+                    (click)="approveStageFour($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='pm' && s.stage.id == 4"
+                    (click)="approveStageThree($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='hod' && currentUser.department_id == 10014 && s.stage.id == 7"
+                    (click)="approveStageSix($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='hod' && currentUser.department_id == 10017 && s.stage.id == 6"
+                    (click)="approveStageIns($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='hod' && currentUser.department_id == 10014 && s.stage.id == 8"
+                    (click)="approveStageSeven($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='pm'  && s.stage.id == 3"
+                    (click)="approveStageIns($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='hod' && currentUser.department_id == 10014 && s.stage.id == 9"
+                    (click)="approveStageEight($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.approve_visibility && s.status != 'not started' && currentUser.role=='hod' &&  currentUser.department_id == 10014 && s.stage.id == 10"
+                    (click)="approveStageNine($event,s)"><a class="activate-link">Approve</a></div>
+                <div *ngIf="s.reviewed_by">Reviewed by : {{s.reviewed_by}}</div>
+                <div *ngIf="s.stage.id == 9 && s.status == 'completed' && conditional_approve_flag == false"><a
+                        class="activate-link" (click)="openStage8Details($event,s)">View stage 8</a></div>
+                <div *ngIf="s.stage.id == 10 && s.status == 'completed' && conditional_approve_flag == false"><a
+                        class="activate-link" (click)="getSTPTCertificate($event,s)">STPT Certificate</a></div>
+            </div>
+            <div class="mdl-stepper-bar-left"></div>
+            <div class="mdl-stepper-bar-right"></div>
+        </div>
+    </div>
+</div>
+
+<!-- stepper end -->
+<div *ngIf="dashboard_view" id="assign-project" fxLayout="row" fxLayoutAlign="center start"
+    [ngClass]="{'stageStart':stageFlag == true}">
+    <div class="main-content" fxLayout="row" fxLayoutAlign="center start" style="width:100%">
+        <div fxFlex="100" style="padding: 0 20px;max-width: 1500px;">
+            <div class="messages-list">
+                <md-list>
+                    <md-list-item style="background-color: #fafafa !important; box-shadow:none !important;">
+                        <div>
+                            <md-card class="shadow-none" style="background: #fafafa;">
+                                <div fxLayout="row" fxLayoutWrap>
+                                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+                                        <md-card *ngIf="location_summary" class="card-widget white-background"
+                                            style="min-height:330px;">
+                                            <div class="padding-10-18 analytic-status-header-card" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                                                <div class="small-card-title">Summary</div>
+                                                <div fxLayout="row">
+                                                    <div class="approved-summary">
+                                                        <div class="font-25">{{location_summary.all_ok}}</div>
+                                                        <div class="status-title">Ok</div>
+                                                    </div>
+                                                    <div class="rejected-summary">
+                                                        <div class="font-25">{{location_summary.all_not_ok}}</div>
+                                                        <div class="status-title">Not Ok</div>
+                                                    </div>
+                                                    <div class="inprogress-summary">
+                                                        <div class="font-25">{{location_summary.all_todo}}</div>
+                                                        <div class="status-title">Todo</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="padding-10-18 analytic-status-header-card" fxLayout="row"
+                                                fxLayoutAlign="space-around">
+                                                <div class="small-card-title"><span
+                                                        style="margin-right: 60px;">Red</span></div>
+                                                <div fxLayout="row">
+                                                    <div class="rejected-checklist"
+                                                        style="padding: 0px 20px 0px 0px;    margin-right: 15px;">
+                                                        <div class="font-25">{{location_summary.ok_red_criticality}}
+                                                        </div>
+                                                        <!-- <div class="status-title">Red</div> -->
+                                                    </div>
+                                                    <div class="inprogress-checklist"
+                                                        style="padding: 0px 12px 0 0px;margin-right: 20px;">
+                                                        <div class="font-25">{{location_summary.not_ok_red_criticality}}
+                                                        </div>
+                                                        <!-- <div class="status-title">Red</div> -->
+                                                    </div>
+                                                    <div class="inprogress-checklist" style="padding: 0 0px 0 30px;">
+                                                        <div class="font-25">{{location_summary.todo_red_criticality}}
+                                                        </div>
+                                                        <!-- <div class="status-title">Red</div> -->
+                                                    </div>
+                                                    <!-- <div class="inprogress-checklist">
+                                                        <div class="font-25">{{location_summary.ok_yellow_criticality}}</div>
+                                                        <div class="status-title">Yellow</div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <div class="padding-10-18 analytic-status-header-card" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                                                <div class="small-card-title">Yellow</div>
+                                                <div fxLayout="row">
+                                                    <div class="rejected-checklist" style="padding: 0 0 0 40px;">
+                                                        <div class="font-25">{{location_summary.ok_yellow_criticality}}
+                                                        </div>
+                                                        <!-- <div class="status-title">Red</div> -->
+                                                    </div>
+                                                    <div class="inprogress-checklist">
+                                                        <div class="font-25">
+                                                            {{location_summary.not_ok_yellow_criticality}}</div>
+                                                        <!-- <div class="status-title">Yellow</div> -->
+                                                    </div>
+                                                    <div class="inprogress-checklist">
+                                                        <div class="font-25">
+                                                            {{location_summary.todo_yellow_criticality}}</div>
+                                                        <!-- <div class="status-title">Yellow</div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="padding-10-18 analytic-status-header-card" fxLayout="row" fxLayoutAlign="space-between">
+                                                <div class="small-card-title">Todo's</div>
+                                                <div fxLayout="row">
+                                                    <div class="rejected-checklist">
+                                                        <div class="font-25">{{location_summary.todo_red_criticality}}</div>
+                                                        <div class="status-title">Red</div>
+                                                    </div>
+                                                    <div class="inprogress-checklist">
+                                                        <div class="font-25">{{location_summary.todo_yellow_criticality}}</div>
+                                                        <div class="status-title">Yellow</div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                                        </md-card>
+                                    </div>
+                                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100"
+                                        *ngFor="let s of title_stages;let i=index;" [hidden]="hiddenFlag[i]">
+                                        <md-card *ngIf="s.dept!=null && s.dept.length > 1" class="white-background"
+                                            style="min-height:330px;">
+                                            <div class="stage-title underline-text"
+                                                [routerLink]="['/site-dashboard/checklists',location_id]"
+                                                [queryParams]="{stage:s.stage.id}">{{s.stage.name}}</div>
+                                            <div style="display: block;padding: 11px 20px 35px 20px;">
+                                                <div fxLayout="row" *ngFor="let d of s.dept">
+                                                    <div fxLayout="column" fxLayoutAlign="center" class="width-75">
+                                                        <!--routerlink for department==> [routerLink]="['/site-dashboard/checklist',location_id]" [queryParams]="{stage:s.stage.id,dept:'civil' }"-->
+                                                        <div style="cursor:pointer;text-decoration:underline"
+                                                            [ngClass]="{'underline-text':currentUser.department==d.dept_name}"
+                                                            [routerLink]="['/site-dashboard/checklists',location_id]"
+                                                            [queryParams]="{stage:s.stage.id,dept:d.dept_name,dept_id:d.dept_id }">
+                                                            {{d.dept_name}}</div>
+                                                        <span class="status-span"
+                                                            *ngIf="d.cheklist_name && d.cheklist_status">({{d.cheklist_status}})</span>
+                                                        <span class="status-span-prerequisite"
+                                                            *ngIf="d.is_prerequisite == '1'">Pre-requisite</span>
+                                                        <span class="status-span-prerequisite"
+                                                            *ngIf="d.is_imic == '1'">IMIC</span>
+                                                        <span class="status-span-prerequisite"
+                                                            *ngIf="d.is_wtg == '1'">WTG Form</span>
+                                                        <span><a *ngIf="d.is_wtg != '1'"
+                                                                (click)="deleteChecklistInstance(d.checklist_ins_id)"
+                                                                class="activate-link">Delete</a></span>
+                                                    </div>
+                                                    <div fxFlex class="department-divs">
+                                                        <div *ngIf="d.dept_name=='Civil'" class="department-avatar">
+                                                            <img src="assets/images/civil_engg.png" />
+                                                        </div>
+                                                        <div *ngIf="d.dept_name=='Electrical'"
+                                                            class="department-avatar">
+                                                            <img src="assets/images/electrical-engineer-icon.png" />
+                                                        </div>
+                                                        <div *ngIf="d.dept_name=='Mechanical'"
+                                                            class="department-avatar">
+                                                            <img src="assets/images/mechanical.png" />
+                                                        </div>
+                                                        <div class="red-points">
+                                                            <div class="department-status-count">{{d.not_oks}}</div>
+                                                            <div class="department-status">Not Ok</div>
+                                                        </div>
+                                                        <div class="yellow-points">
+                                                            <div class="department-status-count">{{d.todos}}</div>
+                                                            <div class="department-status">To Do</div>
+                                                        </div>
+                                                        <div class="green-points">
+                                                            <div class="department-status-count">{{d.oks}}</div>
+                                                            <div class="department-status">Ok</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </md-card>
+                                        <div *ngIf="s.dept != null && s.dept.length == 1 &&  s.dept[0].cheklist_status != 'Not Started'"
+                                            style="display: block">
+                                            <md-card class="white-background analytic-status-header-card">
+                                                <div class="stage-title underline-text"
+                                                    [routerLink]="['/site-dashboard/checklists',location_id]"
+                                                    [queryParams]="{stage:s.stage.id}">{{s.stage.name}}</div>
+                                                <div style="display: block;padding: 6px;"><span><a
+                                                            *ngIf="s.dept[0].is_wtg != '1' && s.dept[0].cheklist_name != 'Master Data Form'"
+                                                            (click)="deleteChecklistInstance(s.dept[0].checklist_ins_id)"
+                                                            class="activate-link">Delete</a></span>
+                                                    <canvas baseChart width="383" height="244" [data]="pieChartData[i]"
+                                                        [labels]="pieChartLabels" [chartType]="pieChartType"
+                                                        [colors]="chartColors">
+                                                    </canvas>
+                                                    <div style="margin-bottom:10px;margin-top:20px"><span
+                                                            *ngIf="s.dept[0].cheklist_status && s.dept[0].cheklist_name"
+                                                            class="status-span">{{s.dept[0].cheklist_name}}
+                                                            ({{s.dept[0].cheklist_status}})</span></div>
+                                                </div>
+                                            </md-card>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-card>
+                            <div *ngIf="notifications && notifications.length>0" fxFlex.gt-sm="33.33%" fxFlex="100"
+                                style="height: calc(100% - 32px);margin-top:6px;">
+                                <md-card>
+                                    <md-card-title>Notifications</md-card-title>
+                                    <md-card-subtitle>Stories posted recently</md-card-subtitle>
+                                    <hr>
+                                    <md-list>
+                                        <md-list-item *ngFor="let notification of notifications;let i=index;">
+                                            <div class="green-left-border">
+                                                <div style="word-wrap:break-word">
+                                                    <p>{{notification.body}} </p>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                                    <!-- <div class="font-808080">March 24, 2017</div><div class="font-808080">Amit</div> -->
+                                                </div>
+                                            </div>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-card>
+                                <div *ngIf="expandFlag==true && notifications.length>10"><a
+                                        (click)="toggleNotifications()"
+                                        style="color: #00978c;text-decoration: underline;cursor: pointer;">Show less</a>
+                                </div>
+                                <div *ngIf="expandFlag==false && notifications.length==10"><a
+                                        (click)="toggleNotifications()"
+                                        style="color: #00978c;text-decoration: underline;cursor: pointer;">Show more</a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+    </div>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+        <p>{{Notification}}</p>
+        <p-footer>
+            <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+        </p-footer>
+    </p-dialog>
+    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+</div>

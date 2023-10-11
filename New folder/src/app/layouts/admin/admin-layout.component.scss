@@ -1,0 +1,74 @@
+/* .profile-card{
+    padding:0px;
+    margin:0px;
+    box-shadow: none;
+    margin-bottom:0px;
+}
+ */
+ .md-toolbar.main-header .logo{
+	background-size: 173px 55px !important;
+}
+.image-container{
+    margin-top: 10px;   
+    border-radius: 10%;
+    overflow:hidden;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.md-card-image{
+    width: 100px;
+    height: 100px;
+    padding:0px;
+    margin:0px;
+    //border-radius: 15%!important;
+}
+.profile-details{
+    padding:0px;
+    margin:0px;
+}
+
+.profile-name{
+    font-size: 16px;
+}
+
+.profile-designation,.profile-mobile,.profile-email{
+    font-size: 14px;
+}
+
+.profile-designation{
+    padding-bottom:10px;
+    color:#23375b;
+}
+
+
+//css code for removing shadow  note:: not working
+.profile-menu{
+    box-shadow: 0 0px 0px rgba(0,0,0,.1), 0 0 0px rgba(0,0,0,.1) !important;
+    box-shadow:  0px 0px 0px 0px!important;
+    transform: translate3d(0,0,0)!important;
+    transition: background .4s cubic-bezier(.25,.8,.25,1),box-shadow 280ms cubic-bezier(.4,0,.2,1)!important;
+}
+.profile-background-for-image{
+        background: #f3f3f3 !important;
+}
+.profile-background-for-contact{
+        background: #f3f3f3 !important;
+    border-bottom: 1px solid #bfbebe !important;
+}
+/*
+.profile-menu :hover{
+    box-shadow: 0 0px 0px rgb(255, 255, 255), 0 0 0px rgb(255, 255, 255) !important;
+    transform: translate3d(0,0,0);
+    transition: background .4s cubic-bezier(.25,.8,.25,1),box-shadow 280ms cubic-bezier(.4,0,.2,1);    
+}
+*/
+
+md-sidenav.sidebar-panel .navigation md-icon:not(.menu-caret) {
+    margin-right: 10px !important;
+}
+
+md-sidenav.sidebar-panel {
+    width: 13.3rem !important;
+}

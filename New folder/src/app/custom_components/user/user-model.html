@@ -1,0 +1,48 @@
+<form [formGroup]="form">
+  <div fxLayout="column">
+      <div class="mb-1">
+        <h4 style="margin:0">{{modelname}}</h4>
+      </div>
+      <div fxLayout="row">
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">		
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="Name" [formControl]="form.controls['NAME']">
+          </md-input-container>
+        </div> 
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">	
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="Email" [formControl]="form.controls['EMAIL']">
+          </md-input-container>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">		
+          <md-select placeholder="Role" fxFlex="100" [formControl]="form.controls['ROLE']">
+            <md-option *ngFor="let role of roleList" [value]="role">
+              {{ role }}
+            </md-option>
+          </md-select>
+        </div> 
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">	
+          <md-select placeholder="Department" fxFlex="100" [formControl]="form.controls['DEPARTMENT']">
+            <md-option *ngFor="let dept of deptList" [value]="dept">
+              {{ dept }}
+            </md-option>
+          </md-select>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">		
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="Status" [formControl]="form.controls['STATUS']">
+          </md-input-container>
+        </div> 
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">	
+        </div>
+      </div>   
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" (click)='closeDialog()'>Cancel</button>
+        <button md-raised-button color="primary" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+      </div>
+    </div>
+</form>

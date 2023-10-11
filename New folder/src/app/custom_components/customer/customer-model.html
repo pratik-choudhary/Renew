@@ -1,0 +1,110 @@
+<form [formGroup]="form" style="padding-top:10px;padding-bottom:10px">
+  <div fxLayout="column">
+    <div fxLayout="row">
+      <div fxLayout="column" fxFlex="100" fxLayoutAlign="space between">
+
+        <div class="mb-1" fxFlex="100" style="margin-right:10px">
+
+          <div class="suzlon-input" style="width:100%;">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+              <small style="color: red;">*</small>
+            </span>
+            <input type="text" class="suzlon-input" [formControl]="form.controls['NAME']" style="width: 97%; padding: 5px;border-radius: 4px;"
+              pattern="^\s?[a-zA-Z0-9-.@#$()_\s]{1,}$">
+            <div>
+              <small *ngIf="form.controls['NAME'].hasError('required') && form.controls['NAME'].touched" class="mat-text-warn">Required</small>
+            </div>
+            <div>
+              <small *ngIf="form.controls['NAME'].hasError('pattern') && form.controls['NAME'].dirty" class="mat-text-warn">Name can contain alphabets,Numbers, - , . , @ , # , $ , & , ) , ( , _ and space</small>
+            </div>
+            <div>
+              <small *ngIf="form.controls['NAME'].hasError('customerNameValidator') && form.controls['NAME'].dirty" class="mat-text-warn">Customer Name already exists</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-1" fxFlex="100" style="margin-right:10px">
+          <div class="suzlon-input" style="width:100%;">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Country
+              <small style="color: red;">*</small>
+            </span>
+            <select placeholder="Country" [formControl]="form.controls['country']" [(ngModel)]="selectedCountry" (change)="onCountryChange()"
+              style="width: 100%; padding: 5px;border-radius: 4px;">
+              <option *ngFor="let country of countrylist" [value]="country.id">
+                {{ country.name }}
+              </option>
+            </select>
+            <small *ngIf="form.controls['country'].hasError('required') && form.controls['country'].touched" class="mat-text-warn">Required</small>
+          </div>
+        </div>
+
+        <div class="mb-1" fxFlex="100" style="margin-right:10px">
+
+
+          <div class="suzlon-input" style="width:100%;">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">State
+              <small style="color: red;">*</small>
+            </span>
+            <select placeholder="State" [formControl]="form.controls['state']" style="width: 100%; padding: 5px;border-radius: 4px;"
+              [(ngModel)]="selectedState">
+              <option *ngFor="let state of statelist" [value]="state.id">
+                {{ state.name }}
+              </option>
+            </select>
+            <small *ngIf="form.controls['state'].hasError('required') && form.controls['state'].touched" class="mat-text-warn">Required</small>
+          </div>
+        </div>
+
+
+
+
+
+
+        <div class="mb-1" fxFlex="100" style="margin-right:10px">
+          <div class="suzlon-input" style="width:100%;">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Status
+              <small style="color: red;">*</small>
+            </span>
+            <select placeholder="Status" [formControl]="form.controls['STATUS']" style="width: 100%; padding: 5px;border-radius: 4px;">
+              <option *ngFor="let status of statusList" [value]="status">
+                {{ status }}
+              </option>
+            </select>
+            <small *ngIf="form.controls['STATUS'].hasError('required') && form.controls['STATUS'].touched" class="mat-text-warn">Required</small>
+          </div>
+        </div>
+
+
+
+
+
+
+
+      </div>
+      <div fxLayout="column" fxFlex="100">
+        <div class="mb-1" style="margin-left:10px">
+          <div class="suzlon-input" style="width:100%;">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Address
+              <small style="color: red;">*</small>
+            </span>
+            <textarea style="height:85px;width: 100%; padding: 5px;border-radius: 4px;" [formControl]="form.controls['ADDRESS']"></textarea>
+            <small *ngIf="form.controls['ADDRESS'].hasError('required') && form.controls['ADDRESS'].touched" class="mat-text-warn">Required</small>
+            <div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <button md-raised-button color="accent" (click)='closeDialog()'>Cancel</button>
+      <button md-raised-button color="primary" (click)="onSubmit()" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+    </div>
+  </div>
+  <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>
+
+</form>

@@ -1,0 +1,301 @@
+<div id="site-dropdown">
+    <div fxLayout="column">
+        <div class="dropdown-label">Select Site :</div>
+        <p-dropdown [options]="sites" placeholder="Select Site" (onChange)="findLocationById(selectedSite)"
+            [(ngModel)]="selectedSite" [filter]="true" filterBy="label">
+        </p-dropdown>
+    </div>
+</div>
+<div *ngIf="selectedSite">
+    <div style="margin-top:20px">
+        <md-content class="md-padding">
+            <div>
+                <div class="ui-widget-header">
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                        <div fxLayout="row" fxGap="5px">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input #gb1 type="text" pInputText size="30" placeholder="Search by location name">
+                            <div style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;"
+                                *ngIf="locationList">Total Count {{locationList.length}}</div>
+                        </div>
+
+                        <div fxLayout="row" (click)="createLocation(0)">
+
+                            <md-icon class="material-icons" style="color: #00968c;cursor: pointer;">add_box</md-icon>
+                            <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;">Add
+                                New Location</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <p-dataTable [value]="locationList" [rows]="10" [paginator]="true" [responsive]="true"
+                        [editable]="true" [immutable]="false" [globalFilter]="gb1" sortMode="multiple"
+                        [scrollable]="true" scrollHeight="400px" scrollWidth="100%">
+
+                        <p-column field="name" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Location Name
+                                <small style="color: red;">*</small>
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text"
+                                    [disabled]="row.status=='Published' || row.status=='In Progress' || row.status=='Complete'"
+                                    (change)="showSaveButton(row,i)" placeholder="Location Name" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="project" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Project"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Project
+                                <small style="color: red;">*</small>
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                {{row[col.field].name}}
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <p-dropdown [(ngModel)]="row[col.field]"
+                                    [disabled]="row.status=='Published' || row.status=='In Progress' || row.status=='Complete'"
+                                    [options]="projects" [autoWidth]="false" [style]="{'width':'100%'}" appendTo="body"
+                                    placeholder="select project"></p-dropdown>
+                            </ng-template>
+                        </p-column>
+
+
+                        <p-column field="model" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Model" [editable]="true"
+                            [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Model
+                                <small style="color: red;">*</small>
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                {{row[col.field].name}}
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <p-dropdown [(ngModel)]="row[col.field]"
+                                    [disabled]="row.status=='Published' || row.status=='In Progress' || row.status=='Complete'"
+                                    (onFocus)="getProjectSpecificModels(row)" (onChange)="showSaveButton(row,i)"
+                                    [options]="models" [autoWidth]="false" [style]="{'width':'100%'}" appendTo="body"
+                                    placeholder="select model"></p-dropdown>
+                            </ng-template>
+                        </p-column>
+
+
+
+
+
+
+                        <p-column field="planned_start_date" header="Planned Start Date" [editable]="true"
+                            [style]=" {'overflow':'visible','word-wrap': 'break-word','width':'150px' }" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Planned Start Date
+                                <small style="color: red;">*</small>
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                {{row[col.field]|date:'dd-MMM, yyyy' }}
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <p-calendar dateFormat="dd-M,yy"
+                                    [disabled]="row.status=='Published' || row.status=='In Progress' || row.status=='Complete'"
+                                    [(ngModel)]="row[col.field]" appendTo="body" (onSelect)="showSaveButton(row,i)">
+                                </p-calendar>
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="planned_end_date" header="Planned End Date" [editable]="true"
+                            [style]=" {'overflow':'visible','word-wrap': 'break-word','width':'150px' }" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Planned End Date
+                                <small style="color: red;">*</small>
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                {{row[col.field]|date:'dd-MMM, yyyy' }}
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <p-calendar dateFormat="dd-M,yy"
+                                    [disabled]="row.status=='Published' || row.status=='In Progress' || row.status=='Complete'"
+                                    [(ngModel)]="row[col.field]" appendTo="body" (onSelect)="showSaveButton(row,i)">
+                                </p-calendar>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="latitude" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Latitude
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="Latitude" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+                        <p-column field="longitude" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Longitude
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="Longitude" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+                        <p-column field="village" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Village
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="Village" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+                        <p-column field="taluka" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Taluka
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="Taluka" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+                        <p-column field="district" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                District
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="District" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="wtg_capacity" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                WTG Capacity
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="WTG Capacity" pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="survey_number" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Location Name"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Survey No
+                            </ng-template>
+
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <input type="text" [disabled]="(row.status=='Complete' || row.latlong_flag ==false)"
+                                    (change)="showSaveButton(row,i)" placeholder="Survey No." pInputText
+                                    [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="status" [style]="{'word-wrap': 'break-word','width':'150px'}" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Status
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                <span #x> {{ getColor(x,row) }} {{ row[col.field] }}</span>
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <p-dropdown [(ngModel)]="row[col.field]"
+                                    [disabled]="row.status=='Published' || row.status=='In Progress' || row.status=='Complete'"
+                                    (onChange)="showSaveButton(row,i)" [options]="status_arr" [autoWidth]="false"
+                                    [style]="{'width':'100%'}" required="true" appendTo="body"></p-dropdown>
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="feeder" [style]="{'word-wrap': 'break-word','width':'150px'}" header="Project"
+                            [editable]="true" [sortable]="true">
+                            <ng-template pTemplate="header">
+                                Feeders
+                                <small style="color: red;">*</small>
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" pTemplate="body">
+                                <span *ngIf="row[col.field]!=null && row[col.field]!=undefined">{{row[col.field].name}}</span>
+                            </ng-template>
+                            <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                                <p-dropdown *ngIf="feeders.length > 0" [(ngModel)]="row[col.field]"                                    
+                                    [options]="feeders" (onChange)="showSaveButton(row,i)" [autoWidth]="false" [style]="{'width':'100%'}" appendTo="body"
+                                    placeholder="select feeder"></p-dropdown>
+                            </ng-template>
+                        </p-column>
+
+                        <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                            <ng-template pTemplate="header">
+                            </ng-template>
+                            <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
+                                <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                    <md-icon *ngIf="rowData.saveFlag" (click)="saveEditLocation(rowData,index)"
+                                        class="icon-20 material-icons"
+                                        style="cursor: pointer;font-size: 20px;color: #103a84;">save</md-icon>
+                                    <md-icon *ngIf="rowData.saveFlag == false" class="icon-20 material-icons"
+                                        style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+                                </div>
+                            </ng-template>
+                        </p-column>
+
+                        
+
+
+
+                        <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                            <ng-template pTemplate="header">
+                            </ng-template>
+                            <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
+                                <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                    <md-icon *ngIf="rowData.id == null || rowData.id == 0 "
+                                        (click)="deleteEmptyRow(index)" class="icon-20 material-icons"
+                                        style="cursor: no-drop;font-size: 20px;color: gray;">delete</md-icon>
+                                    <div *ngIf="tableFlag==false">
+                                        <md-icon
+                                            *ngIf="rowData.id != null && rowData.id != 0 && rowData.copyFlag == false"
+                                            (click)="copyLocation(index)" class="icon-20 material-icons"
+                                            style="cursor:pointer;font-size: 20px;color: #103a84;">content_copy
+                                        </md-icon>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-column>
+                        <!-- <p-column>
+                        <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
+                            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                <md-icon class="icon-20" *ngIf="rowData.status=='Draft' && currentUser.role == 'admin'"" (click)="removeLocation(rowData)" label="Delete" style="cursor:pointer;color: #23375b;">delete</md-icon>
+                            </div>
+                        </ng-template>
+                    </p-column> -->
+                    </p-dataTable>
+                </div>
+            </div>
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body">
+            </p-confirmDialog>
+            <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true"
+                appendTo="body">
+                <p>{{Notification}}</p>
+                <p-footer>
+                    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+                </p-footer>
+            </p-dialog>
+        </md-content>
+    </div>
+</div>

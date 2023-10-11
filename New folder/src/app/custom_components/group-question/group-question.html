@@ -1,0 +1,126 @@
+<form [formGroup]="form" style="display:block !important;" (ngSubmit)="saveTemplate()">
+<div fxLayout="row" fxLayoutWrap fxFlex>
+      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top border-left">
+        
+        <div class="title">
+            Question
+            <small class="mat-text-warn">*</small>
+         </div>
+         <div class="suzlon-input2"> 
+               <input type="number" placeholder="Question number" [formControl]="form.controls['QUESTION_NO']">
+         </div>
+         <div>
+            <textarea [formControl]="form.controls['QUESTION']"  placeholder="Write your question" type="text" style="margin:16px 0;width:100%;"></textarea>
+         </div>
+      </div>
+      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
+         <div class="title">
+            Specification
+            <small class="mat-text-warn">*</small>
+         </div>
+         <div>
+            <md-radio-group [disabled]="checklistStatus == 'published'" [formControl]="form.controls['SPECIFICATION_TYPE']" style="padding:16px;">
+               <md-radio-button value="text" style="margin-right: 15px;">Text</md-radio-button>
+               <md-radio-button value="select" style="margin-right: 15px;">Dropdown</md-radio-button>
+               <md-radio-button value="range">Range</md-radio-button>
+            </md-radio-group>
+         </div>
+         <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='text' || form.controls['SPECIFICATION_TYPE']['_value']=='range'">
+            <textarea [formControl]="form.controls['SPECIFICATION']" placeholder="Specification" type="text" style="margin:16px 0;width:100%;"></textarea>
+         </div>
+         <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='select'" class="mb-1" formArrayName="SPECIFICATION_OPTIONS">
+            <div fxLayout="row" *ngFor="let option of form.controls.SPECIFICATION_OPTIONS.controls;
+               let i=index;let last=last;" id="option-array">
+               <md-input-container fxFlex [formGroupName]="i">
+                  <input mdInput 
+                     formControlName="OPTION_DESCRIPTION">
+               </md-input-container>
+               <img *ngIf="last" src="assets/images/plus-circle-outline.svg" style="margin: 0 8px;cursor: pointer;" (click)="addSpecification()">
+               <img *ngIf="form.controls.SPECIFICATION_OPTIONS.controls.length > 1" src="assets/images/close-circle-outline.svg" (click)="removeSpecification(i)" style="cursor:pointer">
+            </div>
+         </div>
+         <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='range'">
+            <div fxLayout="row" fxLayoutAlign="space-brtween">
+               <md-input-container style="margin: 0 10px;">
+                  <input mdInput placeholder="Min Value" [formControl]="form.controls['MIN_RANGE']">
+               </md-input-container>
+               <md-input-container style="margin: 0 10px;">
+                  <input mdInput placeholder="Max Value" [formControl]="form.controls['MAX_RANGE']">
+               </md-input-container>
+            </div>
+         </div>
+      </div>
+      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
+         <div class="title">
+            Actual
+         </div>
+         <div>
+            <md-radio-group [disabled]="checklistStatus == 'published'" [formControl]="form.controls['ACTUAL_TYPE']" style="padding:16px;">
+               <md-radio-button value="text" style="margin-right: 15px;">Text</md-radio-button>
+               <md-radio-button [disabled]="form.controls['SPECIFICATION_TYPE']['_value']=='select'" value="select" style="margin-right: 15px;">Dropdown</md-radio-button>
+            </md-radio-group>
+         </div>
+         <div *ngIf="form.controls['ACTUAL_TYPE']['_value']=='text'"> 
+            <textarea  [formControl]="form.controls['ACTUAL']" placeholder="Actual value" type="text" style="margin:16px 0;width:100%;"></textarea>
+            <small *ngIf="form.controls['ACTUAL'].hasError('required') && form.controls['ACTUAL'].touched" class="mat-text-warn">Required.</small>
+         </div>
+         <div *ngIf="form.controls['ACTUAL_TYPE']['_value']=='select'" class="mb-1" formArrayName="SPECIFICATION_OPTIONS">
+            <div fxLayout="row" *ngFor="let option of form.controls.ACTUAL_OPTIONS.controls;
+               let i=index;let last=last;" id="option-array">
+               <md-input-container fxFlex [formGroupName]="i">
+                  <input mdInput 
+                     formControlName="OPTION_DESCRIPTION">
+               </md-input-container>
+               <img *ngIf="last" src="assets/images/plus-circle-outline.svg" style="margin: 0 8px;cursor: pointer;" (click)="addActual()">
+               <img *ngIf="form.controls.ACTUAL_OPTIONS.controls.length > 1" src="assets/images/close-circle-outline.svg" (click)="removeActual(i)" style="cursor:pointer">
+            </div>
+         </div>
+      </div>  
+      <!-- <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-left">
+         <div class="title">
+            Status
+         </div>
+         <div fxLayout="column">
+             <div class="mb-1" formArrayName="OPTIONS">
+               <div fxLayout="row" *ngFor="let option of form.controls.OPTIONS.controls;
+                  let i=index;let last=last;" id="option-array">
+                  <md-input-container fxFlex [formGroupName]="i">
+                     <input mdInput 
+                        formControlName="OPTION_DESCRIPTION">
+                  </md-input-container>
+                  <img *ngIf="last" src="assets/images/plus-circle-outline.svg" style="margin: 0 8px;cursor: pointer;" (click)="addLink()">
+                  <img *ngIf="form.controls.OPTIONS.controls.length > 1" src="assets/images/close-circle-outline.svg" (click)="removeLink(i)" style="cursor:pointer">
+               </div>
+            </div> 
+         </div>
+      </div> -->
+      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-left">
+         <div>
+            <div class="title" style="margin-bottom: 16px;">
+               Required
+            </div>
+            <div style="margin-left: 16px;margin-bottom: 6px;">
+               <md-checkbox [formControl]="form.controls['PHOTO']" style="margin-right: 15px;">Photo</md-checkbox>
+            </div>
+            <div style="margin-left: 16px;margin-bottom: 6px;">
+               <md-checkbox [formControl]="form.controls['DOCUMENT']" style="margin-right: 15px;">Document</md-checkbox>
+            </div>
+         </div>
+      </div>
+      <div fxFlex="100" fxFlex.gt-md="33" class="question-section">
+         <div class="title">
+            Criticality
+         </div>
+         <div>
+            <md-radio-group [disabled]="checklistStatus == 'published'" [formControl]="form.controls['CRITICALITY']" style="padding:16px;">
+               <md-radio-button value="red" style="margin-right: 15px;">Red</md-radio-button>
+               <md-radio-button value="yellow" style="margin-right: 15px;">Yellow</md-radio-button>
+               <md-radio-button value="green">Green</md-radio-button>
+            </md-radio-group>
+         </div>
+      </div> 
+      <div fxFlex="100" fxFlex.gt-md="33" class="question-section">
+         <button md-raised-button color="primary" style="margin-left: 10px" [disabled]="!form.valid" (click)="duplicateQuestion()">Duplicate</button>
+      </div>       
+   </div>
+</form>

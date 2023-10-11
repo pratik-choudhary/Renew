@@ -1,0 +1,76 @@
+<md-toolbar color="primary">
+  <div class="breadcrumb">
+      <span>
+        <a style="padding-left: 5px;" (click)="goBack()">Project ></a>
+      </span>
+      <span >
+        <a style="padding-left: 5px;">{{name}} </a>
+      </span>
+  </div>  
+  <md-toolbar-row> 
+  </md-toolbar-row>
+</md-toolbar>
+<div id="stages_ins" fxLayout="row"  fxLayoutWrap="wrap"  fxLayoutAlign="center start">
+  <div style="padding: 5px" fxFlex="100">
+    <md-card class="mat-card-top">
+        <md-card-content>
+          <div fxLayout="column" fxLayoutWrap="wrap">
+            <md-tab-group >
+              <md-tab *ngFor="let stage of stageList">
+                <ng-template md-tab-label>{{stage.name}}</ng-template>
+                <div style="padding-bottom: 0">
+                  <form  fxLayout="column">
+                    <div fxLayout="row">
+                      <div fxFlex="33" style="margin-right:10px">	
+                        <md-input-container  fxFlex="100" >
+                          <input mdInput [mdDatepicker]="startDatePicker" placeholder="Plan Start date" [formControl]="form.controls['startDate']">
+                          <button mdSuffix [mdDatepickerToggle]="startDatePicker"></button>
+                        </md-input-container>
+                        <md-datepicker #startDatePicker [touchUi]="touch"></md-datepicker>
+                      </div>
+                      <div fxFlex="33">	
+                        <md-input-container fxFlex="100">
+                          <input mdInput [mdDatepicker]="endDatePicker" placeholder="Plan End date" [formControl]="form.controls['endDate']">
+                          <button mdSuffix [mdDatepickerToggle]="endDatePicker"></button>
+                        </md-input-container>
+                        <md-datepicker #endDatePicker [touchUi]="touch"></md-datepicker>
+                      </div>
+                      <div fxFlex="33" style="margin-right:10px;margin-left: 10px;">	
+                        <md-input-container fxFlex="100">
+                          <input mdInput placeholder="Project Manager" [mdAutocomplete]="reactiveAutoUser" [formControl]="userCtrl">
+                        </md-input-container>
+                        <md-autocomplete #reactiveAutoUser="mdAutocomplete" [displayWith]="displayFn">
+                          <md-option *ngFor="let u of reactiveUsers | async" [value]="u.name" style="height:50px">
+                            <md-item-template>
+                              <span style="display:block;">
+                                <span>
+                                  {{u.name}}
+                                </span>
+                              </span>
+                            </md-item-template>
+                          </md-option>
+                        </md-autocomplete>
+                      </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end end">
+                        <a class="add-btn" (click)="saveStage()">Save stage</a>
+                    </div>
+                  </form>
+                </div>
+              
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 8px;">
+            <div><a (click)="loadChecklists()" 
+              style="text-decoration: underline;
+               color: #26a69a;">Assign Checklist</a> </div>  
+            <div fxLayout="row" fxLayoutAlign="end center">
+              <a class="add-btn" (click)="loadChecklists();">Save</a>
+            </div>
+          </div>  
+          <app-checklist-ins *ngFor="let c of checklist_forms;let i = index" (afterdelete)="removeCheklistIns($event,i)"></app-checklist-ins>
+        </md-tab>
+        </md-tab-group>
+        </div>
+        </md-card-content>
+    </md-card>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{modelName}}</div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;" (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+<div id="question-list" style="overflow-y: overlay;height: 478px;max-height: 478px;min-height: 478px;">
+    <md-tab-group [(selectedIndex)]="active_tab">
+        <md-tab label="List">
+            <div>
+                <div style="margin-bottom: 7px;">
+                    <span style="font-size:14px;">{{milestone_no}}) {{milestone_name}}</span>
+                    <span fxFlex></span>
+                    <span class="tip-text"> Tip: Click on individual question for details.</span>
+                </div>
+                <app-question-table *ngIf="milestone_id" [is_wtg]="is_wtg" [department_id]="department_id" [milestoneId]="milestone_id" (onQuestionSelect)="selectQuestion($event)"></app-question-table>
+            </div>
+        </md-tab>
+        <md-tab [disabled]="selected_question == undefined" label="Details" fxLayout="row">
+            <div style="display:flex">
+                <div style="width:100%" fxLayout="column">
+                    <div class="question-label">Question</div>
+                    <div *ngIf="selected_question" class="question">{{selected_question.QUESTION}}</div>
+                    <div fxLayout="row">
+                        <div fxFlex="60">
+                            <div class="specification-label">Specification</div>
+                            <div *ngIf="selected_question" class="question">{{selected_question.SPECIFICATION}}</div>
+                        </div>
+                        <div fxFlex="40">
+                            <div class="specification-label">Actual</div>
+                            <div *ngIf="selected_question" class="question">{{selected_question.ACTUAL}}</div>
+                        </div>
+                    </div>
+                    <app-question-timeline [history]="history"></app-question-timeline>
+                </div>
+            </div>
+        </md-tab>
+    </md-tab-group>
+</div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog>

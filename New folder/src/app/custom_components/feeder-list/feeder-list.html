@@ -1,0 +1,136 @@
+<div id="site-dropdown">
+    <div fxLayout="column">
+        <div class="dropdown-label">Select Site :</div>
+        <p-dropdown [options]="sites" placeholder="Select Site" (onChange)="findFeederById(selectedSite)" [(ngModel)]="selectedSite" [filter]="true" filterBy="label"></p-dropdown>
+    </div>
+</div>
+
+<div *ngIf="selectedSite" style="margin-top:30px">
+    <div style="margin-top:20px">
+        <md-content class="md-padding">
+            <div style="margin-top:-20px;">
+                <div class="ui-widget-header">
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                        <div fxLayout="row" fxGap="5px">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input #gb type="text" pInputText size="30" placeholder="Search by feeder name">
+                            <div *ngIf="feeder_values != undefined && feeder_values != null" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count {{feeder_values.length}}</div>
+
+                        </div>
+
+                        <div fxLayout="row" (click)="createFeeder()">
+
+                            <md-icon class="material-icons" style="color: #00968c;cursor: pointer;">add_box</md-icon>
+                            <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer;">Add New Feeder</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p-dataTable [value]="feeder_values" [rows]="10" [paginator]="true" [responsive]="true" [editable]="true" [immutable]="false" [globalFilter]="gb" sortMode="multiple">
+                    <p-column field="name" [editable]="true" [sortable]="true">
+                        <ng-template pTemplate="header">
+                            Name <small style="color: red;">*</small>
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <input type="text" [disabled]="row.status == 'Started' || row.status == 'Approved' || row.status == 'Completed'" (change)="showSaveButton(row.index)" placeholder="Feeder Name" pInputText [(ngModel)]="row[col.field]" style="margin-bottom:4px" />
+                        </ng-template>
+                    </p-column>
+                    <p-column field="substation" [editable]="true" [sortable]="true">
+                        <ng-template pTemplate="header">
+                            Substation <small style="color: red;">*</small>
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            {{row[col.field].name}}
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-dropdown [disabled]="row.status == 'Started' || row.status == 'Approved' || row.status == 'Completed'" [(ngModel)]="row[col.field]" (onChange)="showSaveButton(row.index)" [options]="substations" [autoWidth]="false" [style]="{'width':'100%'}" placeholder="Select Substation"
+                                required="true" appendTo="body" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="planned_start_date" header="Planned Start Date" [editable]="true" [style]=" {'overflow':'visible' }" [sortable]="true">
+                        <ng-template pTemplate="header">
+                            Planned Start Date <small style="color: red;">*</small>
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            {{row[col.field]|date:'dd-MMM, yyyy' }}
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-calendar dateFormat="dd-M,yy" [disabled]="row.status == 'Started' || row.status == 'Approved' || row.status == 'Completed'" [(ngModel)]="row[col.field]" appendTo="body" (onSelect)="showSaveButton(row.index)"></p-calendar>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="planned_end_date" header="Planned End Date" [editable]="true" [style]=" {'overflow':'visible' }" [sortable]="true">
+                        <ng-template pTemplate="header">
+                            Planned End Date <small style="color: red;">*</small>
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            {{row[col.field]|date:'dd-MMM, yyyy' }}
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-calendar dateFormat="dd-M,yy" [disabled]="row.status == 'Started' || row.status == 'Approved' || row.status == 'Completed'" [(ngModel)]="row[col.field]" appendTo="body" (onSelect)="showSaveButton(row.index)"></p-calendar>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="status" header="Status" [editable]="true" [sortable]="true">
+                        <ng-template pTemplate="header">
+                            Status
+                        </ng-template>
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-dropdown [disabled]="row.status == 'Started' || row.status == 'Approved' || row.status == 'Completed'" [(ngModel)]="row[col.field]" (onChange)="showSaveButton(row.index)" [options]="status_arr" [autoWidth]="false" [style]="{'width':'100%'}" required="true"
+                                appendTo="body"></p-dropdown>
+                        </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                        <ng-template pTemplate="header">
+                        </ng-template>
+                        <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+                            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                <md-icon *ngIf="row.saveFlag" (click)="saveEditFeeder(row,row.index)" class="icon-20 material-icons" style="cursor: pointer;font-size: 20px;color: #23375b;">save</md-icon>
+                                <md-icon *ngIf="row.saveFlag == false" class="icon-20 material-icons" style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                        <ng-template pTemplate="header">
+                        </ng-template>
+                        <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+                            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                <md-icon *ngIf="row.id == null || row.id == 0 " (click)="deleteEmptyRow(index)" class="icon-20 material-icons" style="cursor: no-drop;font-size: 20px;color: gray;">delete</md-icon>
+                                <div *ngIf="row.id !== null && row.id !== 0 && row.status != 'Started' && row.status != 'Completed' && row.status != 'Approved'" (click)="startFeeder(row.id,row.name)" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                                    <a style="color:#fff">Start</a>
+                                </div>
+                                <div *ngIf="row.id !== null && row.id !== 0 && row.status == 'Completed'" (click)="approveFeeder(row.id)" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                                    <a style="color:#fff">Approve</a>
+                                </div>
+                                <div *ngIf="row.status == 'Approved' && row.summary" class="green-circle">{{row.summary.ok}}</div>
+                                <div *ngIf="row.status == 'Approved'  && row.summary" class="red-circle">{{row.summary.not_ok}}</div>
+                                <div *ngIf="row.status == 'Approved' && row.summary" class="gray-circle">{{row.summary.todo}}</div>
+                                <md-icon *ngIf="row.status == 'Approved' && row.summary" (click)="openChecklists(row.summary.location_id,row.summary.stage_id)" class="icon-20 material-icons" style="cursor: pointer;color:gray;margin-top: 12px;font-size: 20px;">visibility</md-icon>
+
+                                <div *ngIf="row.status == 'Started' && row.summary" class="green-circle">{{row.summary.ok}}</div>
+                                <div *ngIf="row.status == 'Started'  && row.summary" class="red-circle">{{row.summary.not_ok}}</div>
+                                <div *ngIf="row.status == 'Started' && row.summary" class="gray-circle">{{row.summary.todo}}</div>
+                                <md-icon *ngIf="row.status == 'Started' && row.summary" (click)="openChecklists(row.summary.location_id,row.summary.stage_id)" class="icon-20 material-icons" style="cursor: pointer;color:gray;margin-top: 12px;font-size: 20px;">visibility</md-icon>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                        <ng-template pTemplate="header">
+                            Feeder Certificate
+                        </ng-template>
+                        <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+                            <a style="color: #00978c;text-decoration: underline;cursor: pointer;" *ngIf="row.status == 'Approved' && row.summary && row.isUsed == 1" (click)="generateFeederCertificate(row)">Generate Feeder Certificate</a>
+                        </ng-template>
+                    </p-column>
+
+                </p-dataTable>
+            </div>
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+            <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+                <p>{{Notification}}</p>
+                <p-footer>
+                    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+                </p-footer>
+            </p-dialog>
+        </md-content>
+    </div>
+</div>

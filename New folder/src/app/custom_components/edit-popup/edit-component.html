@@ -1,0 +1,39 @@
+<form  fxLayout="column" [formGroup]="form" (ngSubmit)="updateQuestion()">
+<h2 md-dialog-title>Edit component</h2>
+<md-dialog-content style="height: auto;overflow:hidden;">
+	<div  fxLayout="column">
+		<div class="mb-1">
+          <md-input-container style="width: 100%">
+            <input mdInput placeholder="Question" [formControl]="form.controls['label']">
+          </md-input-container>
+          <small *ngIf="form.controls['label'].hasError('required') && form.controls['label'].touched" class="mat-text-warn">Required.</small>
+        </div>  
+        <div class="mb-1">
+          <md-input-container style="width: 100%">
+            <input mdInput placeholder="key" [formControl]="form.controls['name']">
+          </md-input-container>
+          <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" class="mat-text-warn">Required.</small>
+        </div>
+        <div class="mb-1">
+          <md-input-container style="width: 100%">
+            <input mdInput placeholder="placeholder" [formControl]="form.controls['placeholder']">
+          </md-input-container>
+        </div>
+        <div class="mb-1"  formArrayName="OPTIONS">
+            <div fxLayout="row" *ngFor="let option of form.controls.OPTIONS.controls;
+            let i=index;let last=last;">
+                <md-input-container fxFlex [formGroupName]="i">
+                  <input mdInput placeholder="Options" 
+                  formControlName="OPTION_DESCRIPTION">
+                </md-input-container>
+                <img *ngIf="last" src="assets/images/plus-circle-outline.svg" style="margin: 0 8px;cursor: pointer;" (click)="addLink()">
+                <img *ngIf="form.controls.OPTIONS.controls.length > 1" src="assets/images/close-circle-outline.svg" (click)="removeLink(i)" style="cursor:pointer">
+            </div>
+        </div>
+    </div>
+</md-dialog-content>
+<md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+	<button md-raised-button color="accent"  [md-dialog-close]="false">Cancel</button>
+    <button md-raised-button color="primary" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+</md-dialog-actions>
+</form>

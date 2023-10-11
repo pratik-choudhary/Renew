@@ -1,0 +1,175 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;color:#fff">Documents</div>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+        </div>
+    </div>
+</md-toolbar>
+<div fxLayout="row">
+    <md-card style="width:100%;margin-top:-30px;">
+        <div fxFlex="27">
+            <md-card style="height:570px;margin-top:0px;margin-left:0px;margin-bottom:0px;overflow:auto;background: #f0f0f1;border-right: 1px solid #aeaeb8;">
+                <div style="background-color:#ceecea;padding:10px;border-radius:5px;">
+                    <span style="font-size: 17px; margin-left: 31px; color: #5c5c5c;"> Sites</span>
+                </div>
+                <div style="padding-top:25px;padding-left:20px;">
+                    <p-tree [style]="{'border-width':'0','background': '#f0f0f1'}" [value]="files" selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+                </div>
+            </md-card>
+        </div>
+        <div fxFlex="75" fxLayout="column" (click)="disableContextMenu()" oncontextmenu="return false;">
+            <div>
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <div *ngIf="display_path.length > 0">
+                        <ul class="breadcrumb">
+                            <li *ngFor="let item of display_path,let i=index;">
+                                <a (click)="navigate(item,i)">{{item.display_path}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div *ngIf="openItems.length > 0" style="margin-top:16px;margin-right:10px;">
+                        <span style="margin-top:10px;margin-left:10px;font-size: 13px; background:#eee;padding: 5px 16px;color: #0275d8;"> Items: {{openItems.length}} </span>
+                    </div>
+                </div>
+                <div style="margin-left: 30px;height: 440px;overflow: auto;" *ngIf="typeFlag  && typeFlag == 'folder'" fxLayout="row" fxLayoutGap="110px" fxLayoutWrap>
+                    <div *ngFor="let item of openItems">
+                        <div fxLayout="row" fxFlex="100">
+                            <div (click)="onItemSelect(item)" *ngIf="item.collapsedIcon && item.type == 'folder'">
+                                <md-icon svgIcon="folder" class="icon-20 material-icons" style="height:60px;width:60px;cursor:pointer;"></md-icon>
+                            </div>
+                            <div *ngIf="item.type == 'folder'" style="margin-top:5px;font-size:12px;width:60px;">{{item.label}}({{item.content_count}})</div>
+                        </div>
+                    </div>
+                </div>
+                <div div style="margin-left: 30px;overflow:auto;height:440px;" *ngIf="typeFlag  && typeFlag == 'file'" fxLayout="column" fxLayoutGap="5px" fxLayoutWrap>
+                    <!-- <div fxLayout="row" *ngFor="let item of openItems"  fxLayoutAlign="space-between">
+                        <div #file fxLayout="row" *ngIf="item.icon && item.type=='file'" (contextmenu)="onrightClick($event,item)" (click)="openFile(item)">
+                            <md-icon svgIcon="pdf" class="icon-20 material-icons" *ngIf="item.extension == '.pdf' " style="height:30px;width:30px;cursor:pointer;"></md-icon>
+                            <md-icon svgIcon="jpg" class="icon-20 material-icons" *ngIf="item.extension == '.jpeg' || item.extension == '.jpg' " style="height:30px;width:30px;cursor:pointer;"></md-icon>
+                            <md-icon svgIcon="xls" class="icon-20 material-icons" *ngIf="item.extension == '.xls' || item.extension == '.xlsx' " style="height:30px;width:30px;cursor:pointer;"></md-icon>
+                            <md-icon svgIcon="doc" class="icon-20 material-icons" *ngIf="item.extension == '.doc' || item.extension == '.docx' " style="height:30px;width:30px;cursor:pointer;"></md-icon>
+                            <div *ngIf="item.type=='file'" style="margin-top:5px;font-size:12px;">{{item.label}}</div>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="50px"  style="margin-top:5px;margin-right:20px">
+                        <div *ngIf="item.type=='file'" style="margin-top:5px;font-size:12px;">{{item.creater_name}}</div>
+                        <div *ngIf="item.type=='file'" style="margin-top:5px;font-size:12px;">{{item.creation_time | date:'dd-MMM, yyyy'}}</div>
+                        </div>
+                    </div> -->
+
+                    <div fxLayout="column">
+                        <div>
+                            <!-- <input #gb type="text" pInputText size="30" placeholder="Search by file name"> -->
+                            <div class="ui-widget-header" style="width: 96%;">
+                                <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                                    <div fxLayout="row" fxGap="5px">
+                                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                                        <input #gb type="text" pInputText size="30" placeholder="Search by file name">
+                                        <div *ngIf="openItems!= undefined && openItems!= null" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count {{openItems.length}}</div>
+                                    </div>
+
+                                    <div fxLayout="row" style="text-align:center;" fxGap="">
+                                        <md-icon *ngIf="deleteFileFlag == true" class="icon-20" (click)="deleteFiles()" label="Delete" style="cursor:pointer;color: #23375b;">delete</md-icon>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div>
+                            <p-dataTable [value]="openItems" [responsive]="true" [rows]="7" [paginator]="true" [globalFilter]="gb" sortMode="multiple" [style]="{'padding-right':'26px'}">
+                                <p-column [style]="{'width':'40px','word-wrap': 'break-word','text-align':'center'}">
+                                    <ng-template pTemplate="header">
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" pTemplate="body">
+                                        <div><img src="assets/images/pdf_file.jpg" (contextmenu)="onrightClick($event,row)" (click)="openFile(row)" class="icon-20 material-icons" *ngIf="row.extension == '.pdf' " style="height:30px;width:30px;cursor:pointer;"></div>
+                                        <div><img src="assets/images/jpg_file.jpg" (contextmenu)="onrightClick($event,row)" (click)="openFile(row)" class="icon-20 material-icons" *ngIf="row.extension == '.jpeg' || row.extension == '.jpg' " style="height:30px;width:30px;cursor:pointer;"></div>
+                                        <div><img src="assets/images/xls_file.jpg" (contextmenu)="onrightClick($event,row)" (click)="openFile(row)" class="icon-20 material-icons" *ngIf="row.extension == '.xls' || row.extension == '.xlsx' " style="height:30px;width:30px;cursor:pointer;"></div>
+                                        <div><img src="assets/images/doc_file.jpg" (contextmenu)="onrightClick($event,row)" (click)="openFile(row)" class="icon-20 material-icons" *ngIf="row.extension == '.doc' || row.extension == '.docx' " style="height:30px;width:30px;cursor:pointer;"></div>
+                                        <div><img src="assets/images/png_file.jpg" (contextmenu)="onrightClick($event,row)" (click)="openFile(row)" class="icon-20 material-icons" *ngIf="row.extension == '.png'" style="height:30px;width:30px;cursor:pointer;">                                            </div>
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="label" [style]="{'width':'150px','word-wrap': 'break-word'}">
+                                    <ng-template pTemplate="header">
+                                        Name
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" pTemplate="body">
+                                        <span style="cursor:pointer" (contextmenu)="onrightClick($event,row)" (click)="openFile(row)">{{row[col.field]}}</span>
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="creater_name" [style]="{'width':'50px','word-wrap': 'break-word'}">
+                                    <ng-template pTemplate="header">
+                                        Created by
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" pTemplate="body">
+                                        {{row[col.field]}}
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="new_flag" [style]="{'width':'20px','word-wrap': 'break-word'}">
+                                    <ng-template pTemplate="header">
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" pTemplate="body">
+                                        <span *ngIf="row.new_flag == 1" style="color:#00ff00">New</span>
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="creation_time" [style]="{'width':'50px','word-wrap': 'break-word'}">
+                                    <ng-template pTemplate="header">
+                                        Created Date
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" pTemplate="body">
+                                        {{row[col.field] | date:'dd-MMM, yyyy'}}
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="creation_time" [style]="{'width':'50px','word-wrap': 'break-word'}">
+                                    <ng-template pTemplate="header">
+                                        Created Time
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" pTemplate="body">
+                                        {{row[col.field] | date:'h:mm:ss a'}}
+                                    </ng-template>
+                                </p-column>
+                                <p-column [style]="{'width':'50px','word-wrap': 'break-word','text-align':'center'}">
+                                    <ng-template pTemplate="header">
+                                        Delete
+                                    </ng-template>
+                                    <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="body">
+                                        <md-checkbox *ngIf="currentUser.user_id == row.created_by" (change)="setDeleteFlag(i)" [checked]="delete_flag"></md-checkbox>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" *ngIf="openItemFlag == true" fxLayoutAlign="end end" style="margin-bottom:20px;margin-right: 25px;border-top:1px solid  #aeaeb8;padding-top:10px;">
+                <div fxLayout="row" *ngIf="this.currentUser.role == 'admin' || ((this.currentUser.role=='qa'||this.currentUser.role=='QA'||this.currentUser.role=='ADMIN'||this.currentUser.role=='admin' ) && this.currentUser.department_id == 12)">
+                    <div>
+                        <label class="input-label"> Choose File
+                            <input type="file" [(ngModel)]="upload_text_box" (change)="changeFile($event)" multiple/>
+                        </label>
+                    </div>
+                    <div class="file_count">
+                        <span *ngIf="file_count">{{file_count}}</span>
+                    </div>
+                    <div>
+                        <button md-raised-button color="primary" [disabled]="disable_button" (click)="uploadFile()" style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-card>
+</div>
+
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+<div *ngIf="contextmenu==true">
+    <!-- <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [deleteItem]="deleteItem" (refresh)="onDelete($event)"></app-contextmenu> -->
+</div>

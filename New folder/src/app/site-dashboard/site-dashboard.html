@@ -1,0 +1,192 @@
+<md-toolbar color="primary">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex class="header-text" style="margin-bottom:16px;margin-top:16px;">Site Dashboard</div>
+        <div fxFlex class="header-text" style="margin-left:410px;margin-bottom:16px;margin-top:16px;">{{selectedvalue}}
+        </div>
+    </div>
+    <md-toolbar-row style="height: 36px;">
+    </md-toolbar-row>
+</md-toolbar>
+<md-card class="mat-card-top" style="margin-top: -64px;" *ngIf="dpr_dashboard==false">
+    <md-card-content>
+        <div *ngIf="show_country_dashboard_flag == true && show_dashboard_flag == false && show_graph_flag == false">
+            <div fxLayout="row" fxLayoutAlign="space-between" fxGap="5px" style="padding: 10px;">
+                <div>
+                    <i class="fa fa-search" style="margin: 10px 10px 0 0; font-size: 20px;"></i>
+                    <input type="text" pInputText size="30" [(ngModel)]="searchTerm" (ngModelChange)="search()"
+                        placeholder="Search by title" style="height: 40px;">
+                </div>
+                <div *ngIf="dataJSON != undefined && dataJSON != null"
+                    style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:5px;margin-right: 20px;">
+                    <a *ngIf="showDPRLink==true"(click)="showDPRDashboard()"
+                        style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Show
+                        DPR Dashboard</a>
+                    <a (click)="onShowBarGraphClick()"
+                        style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Show
+                        Bar Graph</a>
+                    <a (click)="onShowGraphClick()"
+                        style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">Show
+                        Stacked Bar Graph</a> Total Count {{dataJSON.length - 1}}</div>
+            </div>
+            <div fxLayout="row" fxLayoutWrap>
+                <span fxFlex.xs="100" fxFlex.sm="50" fxFlex="33" style="padding: 5px;"
+                    *ngFor="let item of dataJSON;let i=index;">
+                    <md-card [ngClass]="{'card1':item.site_id!=0,'card_site':item.site_id==0}" style="cursor:pointer;"
+                        (click)="openSiteDashboard(item.site_id,item.site_name)">
+                        <div fxLayout="column">
+                            <div fxLayout="row" fxLayoutAlign="space-around" class="site_title"><b
+                                    style="font-size: 20px;color:white;">{{item.site_name}}</b></div>
+                            <div fxLayout="row">
+                                <div fxLayout="column" style="border-right: 2px solid #777;" fxFlex="50">
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Total
+                                            WTGs:</span><span>{{item.total_WTGS}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Not
+                                            Started:</span><span>{{item.not_started}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" mdTooltipPosition="above"
+                                        mdTooltip="Civil:{{item.civil_completed_count}}/{{item.civil_total_count}}  &#013;    Electrical:{{item.electrical_completed_count}}/{{item.electrical_total_count}}    &#013;     Mechanical:{{item.mechanical_completed_count}}/{{item.mechanical_total_count}}&#013; WTG Traceability Civil:{{item.wtg_civil_completed_count}}/{{item.wtg_civil_total_count}}&#013; WTG Traceability Electrical:{{item.wtg_electrical_completed_count}}/{{item.wtg_electrical_total_count}} &#013; WTG Traceability Mechanical:{{item.wtg_mechanical_completed_count}}/{{item.wtg_mechanical_total_count}}"
+                                        fxLayoutAlign="space-between center">
+                                        <span>PQHC:</span><span>{{item.pqhc}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Pre-Comm:</span><span>{{item.pre_com}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Safe-Run:</span><span>{{item.safe_run}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Commissioning:</span><span>{{item.commissioning}}</span></div>
+                                </div>
+                                <div fxLayout="column" fxFlex="50">
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Configuration:</span><span>{{item.config}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>HOTO:</span><span>{{item.hoto_signoff}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Maintenance:</span><span>{{item.maintenance}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>STPT:</span><span>{{item.stpt}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>COD:</span><span>{{item.cod}}</span></div>
+                                    <div fxLayout="row" style="margin: 0px 10px;" fxLayoutAlign="space-between center">
+                                        <span>Completed:</span><span>{{item.completed}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-card>
+                </span>
+            </div>
+
+        </div>
+
+        <div *ngIf="show_dashboard_flag == true && show_graph_flag == false && show_graph_bar_flag == false">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <div>
+                    <md-icon (click)="onBackClick()" mdTooltip="Back" class="icon-20 material-icons"
+                        style="cursor: pointer;color:gray;margin-top: 12px;font-size: 35px;">navigate_before</md-icon>
+                </div>
+                <div>
+                    <span class="site-label">{{site_name}}</span>
+                </div>
+                <div>
+                    <div>
+                        <a (click)="generateDQRReports()"
+                            style="color: #00978c;text-decoration: underline;cursor: pointer;margin-top:5px;margin-bottom:10px;margin-left: 12px;">DQR
+                            Reports</a>
+                    </div>
+                </div>
+
+            </div>
+            <div *ngIf="site_id && stages.length>0" class="mdl-stepper-horizontal-alternative"
+                style="margin-bottom:35px">
+                <div class="mdl-stepper-step">
+                    <div class="mdl-stepper-circle" style="background-color:#fe0000 !important;"><span
+                            [hidden]="totalNotStartedLocationCount==0">{{totalNotStartedLocationCount}}</span></div>
+                    <div class="stage-info">
+                        <div>Not Started</div>
+                    </div>
+                    <div class="mdl-stepper-bar-left"></div>
+                    <div class="mdl-stepper-bar-right"></div>
+                </div>
+                <div (click)="filterDashboardByStage(s.stage.id,i)" style="cursor:pointer" class="mdl-stepper-step"
+                    *ngFor="let s of stages,let i= index" #ns>
+                    <div [ngClass]="{'flagfalse':filterFlag[i]==false,'flagtrue':filterFlag[i]==true}"
+                        [ngStyle]="{'background-color':getColor(s.stage.name)}"><span
+                            [hidden]="s.checklist_count==0">{{s.checklist_count}}</span></div>
+                    <div class="stage-info">
+                        <div
+                            [ngClass]="{'stagePQHC': s.stage.name == 'PQHC','stageSTPT':s.stage.name == 'STPT','stageCoD':s.stage.name == 'CoD','stageCommissioning':s.stage.name == 'Commissioning','.stageMaintain_TT':s.stage.name == 'Maintain & TT','stageSafeRun': s.stage.name == 'Safe Run','stageHOTO_Sign-Off': s.stage.name == 'HOTO Sign-Off'}">
+                            {{s.stage.name}}</div>
+                    </div>
+                    <div class="mdl-stepper-bar-left"></div>
+                    <div class="mdl-stepper-bar-right"></div>
+                </div>
+
+            </div>
+            <site-dashboard-list *ngIf="selectedSite" [stageId]="stageId" [siteId]="site_id"
+                (count)="stageCount($event)" (notify)="showTable($event)"></site-dashboard-list>
+
+        </div>
+        <div *ngIf="show_graph_flag == true">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div>
+                    <md-icon (click)="onBackClickGraph()" class="icon-20 material-icons" mdTooltip="Back"
+                        style="cursor: pointer;color:gray;margin-top: 12px;font-size: 35px;">navigate_before</md-icon>
+                </div>
+                <div style="margin-top: 5px;margin-left: 25px;">
+                    <div>
+                        Select Sites
+                    </div>
+                    <div>
+                        <p-multiSelect [style]="{'width': '250px'}" (onChange)="selectSitesForGraphs($event)"
+                            [filterPlaceholder]="value" [options]="site_menu_graph" [(ngModel)]="selected_sites">
+                        </p-multiSelect>
+                    </div>
+                </div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div>
+                <div *ngIf="barChartLabels.length > 0" style="display: block;height:450px;">
+                    <canvas baseChart [datasets]="barChartData" style="display: block;height:450px;"
+                        [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                        [colors]="chartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="show_graph_bar_flag == true">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div>
+                    <md-icon (click)="onBackBargraph()" mdTooltip="Back" class="icon-20 material-icons"
+                        style="cursor: pointer;color:gray;margin-top: 12px;font-size: 35px;">navigate_before</md-icon>
+                </div>
+                <div style="margin-top: 5px;margin-left: 25px;">
+                    <div>
+                        Select Sites
+                    </div>
+                    <div>
+                        <p-multiSelect [style]="{'width': '250px'}" (onChange)="selectSitesForGraphs($event)"
+                            [filterPlaceholder]="value" [options]="site_menu_graph" [(ngModel)]="selected_sites">
+                        </p-multiSelect>
+                    </div>
+                </div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div>
+                <div *ngIf="barChartLabels.length > 0" style="height:450px;">
+                    <canvas baseChart [datasets]="barChartData" style="height:450px;" [labels]="barChartLabels"
+                        [options]="barChartOptions_bar" [legend]="barChartLegend" [colors]="chartColors"
+                        [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </md-card-content>
+</md-card>
+<md-card class="mat-card-top" style="margin-top: -64px;">
+    <app-dpr-dashboard (notify)="backFromDPR($event)" *ngIf="dpr_dashboard==true"></app-dpr-dashboard>
+</md-card>

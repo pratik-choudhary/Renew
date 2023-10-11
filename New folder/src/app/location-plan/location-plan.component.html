@@ -1,0 +1,133 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="margin-bottom:42px;margin-top:16px;color:#fff">Location Plan</div>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="end end">
+            <!--  <button md-raised-button class="suzlon-button" (click)="openDialog()">
+                <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+                <span>Add Location</span>
+            </button> -->
+        </div>
+    </div>
+</md-toolbar>
+<div fxLayout="row" id="location-plan" fxLayoutWrap="wrap" fxLayoutAlign="center start">
+    <div style="padding: 1px;" fxFlex="100">
+        <md-card class="mat-card-top" style="margin-top: -30px;">
+            <md-card-content>
+                <div id="site-dropdown" fxLayout="row" fxLayoutAlign="space-between" fxLayoutWrap>
+                    <div fxLayout="column">
+                    <div class ="dropdown-label">Select Site :</div>
+                    <div><p-dropdown [options]="sites" placeholder="Select site" [(ngModel)]="selectedSite" [filter]="true" filterBy="label" (onChange)="loadProjects(selectedSite)"
+                        [style]="{'margin':'3px'}"></p-dropdown></div>
+                    </div>
+                    <div fxLayout="column">
+                        <div class ="dropdown-label"> Select Project :</div>
+                        <div><p-dropdown [options]="Projects" placeholder="Select project" [(ngModel)]="selectedProject" [filter]="true" filterBy="label"
+                        (onChange)="loadLocations(selectedProject)" [style]="{'margin':'3px'}"></p-dropdown></div>
+                    </div>
+                    <div fxLayout="column">
+                        <div class ="dropdown-label">Select Location :</div>
+                        <div><p-dropdown [options]="locations" placeholder="Select Location" [(ngModel)]="selectedLocation" [filter]="true" filterBy="label"
+                        (onChange)="loadChecklistInstances(selectedLocation)" [style]="{'margin':'3px'}"></p-dropdown></div>
+                    </div>
+                </div>
+                <div *ngIf="selectedLocation" fxLayout="row" fxLayoutAlign="end end" fxLayoutWrap fxLayoutGap="5px">
+                    <div fxLayout="column">
+                        <div>Location Start Date</div>
+                        <div>
+                            <p-calendar [minDate] = "location_start_date_min_limit" dateFormat="dd-M,yy"  (onSelect)="changeLocationDate()" [(ngModel)]="location_start_date" appendTo="body"></p-calendar>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                            <div>Location End Date</div>
+                            <div>
+                                <p-calendar  [minDate] = "location_end_date_min_limit" dateFormat="dd-M,yy"  (onSelect)="changeLocationDate()" [(ngModel)]="location_end_date" appendTo="body"></p-calendar>
+                            </div>
+                    </div>
+                    <div fxLayout="column" *ngIf="current_location.status != 'Published'">
+                            <div></div>
+                            <div>
+                                <md-icon class="icon-20-without-padding" *ngIf="updateLocationFlag==true" (click)="updateLocationDate()" style="cursor:pointer;color: #23375b;">save</md-icon>
+                                <md-icon class="icon-20-without-padding" *ngIf="updateLocationFlag==false" style="cursor:pointer;color:gray;">save</md-icon>
+                            </div>
+                    </div>
+                </div>
+                <div *ngIf="locationDateFlag == true" class="ui-widget-header" fxLayout="row" fxLayoutAlign="space-between" style="padding:4px 10px;border-bottom: 0 none;">
+                    <div>
+                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                        <input #gb type="text" pInputText size="50" placeholder="Search">
+                    </div>
+                    <div *ngIf="checklists.length>0 && current_location.status != 'Published'" (click)="publishLocation()" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                        <a style="color:#fff">Publish</a>
+                    </div>
+                </div>
+                <p-dataTable   [value]="checklists" rowGroupMode="subheader" groupField="initial_stage_id" [responsive]="true" [editable]="true"
+                    [globalFilter]="gb">
+                    <ng-template pTemplate="rowgroupheader" let-rowData>
+                        <div fxLayout="row" fxLayoutAlign="space-between">
+                            <div style="width:33%">Stage- {{rowData['stage']['name']}}</div>
+                            <div style="width:33%;cursor:pointer;">
+                                <p-calendar dateFormat="dd-M,yy" [minDate]="location_start_date"  [maxDate]="location_end_date" [disabled]="current_location.status == 'Published'" [(ngModel)]="rowData['stage']['planned_start_date']"
+                                    (onSelect)="showStageSaveButton(rowData)" appendTo="body"></p-calendar>
+                            </div>
+                            <div style="width:33%;cursor:pointer;">
+                                <p-calendar dateFormat="dd-M,yy" [minDate]="rowData['stage']['planned_end_date_min']"  [maxDate]="location_end_date" [disabled]="current_location.status == 'Published'" [(ngModel)]="rowData['stage']['planned_end_date']"
+                                    (onSelect)="showStageSaveButton_endDate(rowData)" appendTo="body"></p-calendar>
+                            </div>
+                            <div style="width:80px;text-align: center;">
+                                <a *ngIf="current_location.status == 'Published' && rowData.stage.status != 'started' && rowData.stage.status != 'completed' && (rowData['stage']['name'] =='PQHC' || rowData['stage']['name'] =='Substation' || rowData['stage']['name'] =='Feeder')" style="cursor: pointer;background: #26a69a; color: #fff; padding: 2px 6px; border-radius: 2px; border: 1px solid #2aa99d;"
+                                    (click)="startStage(rowData)">Start</a>
+                                <a *ngIf="current_location.status == 'Published' && rowData.stage.status == 'started'">Started</a>
+                                <a *ngIf="current_location.status == 'Published' && rowData.stage.status == 'completed'">Completed</a>
+                                <md-icon *ngIf="rowData.stage.saveFlag && current_location.status != 'Published'" (click)="updateStageIns(rowData)" class="icon-20 material-icons"
+                                    style="cursor: pointer;font-size: 20px;color: #23375b;">save</md-icon>
+                                <md-icon *ngIf="rowData.stage.saveFlag == false && current_location.status != 'Published'" class="icon-20 material-icons"
+                                    style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <p-column field="name" header="Checklist" [style]="{'word-wrap': 'break-word'}"></p-column>
+                    <p-column  field="planned_start_date" header="Planned Start Date" [style]="{'cursor': 'pointer'}" [editable]="true">
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                        {{row[col.field]|date:'dd-MMM, yyyy' }}
+                    </ng-template>
+                    
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-calendar dateFormat="dd-M,yy" [disabled]="current_location.status == 'Published'" [readonlyInput]="current_location.status == 'Published'"
+                            [minDate]="location_start_date"  [maxDate]="location_end_date"  [(ngModel)]="row[col.field]" appendTo="body" (onSelect)="showSaveButton(i)"></p-calendar>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="planned_end_date" header="Planned End Date" [style]="{'cursor': 'pointer'}" [editable]="true">
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                        {{row[col.field]|date:'dd-MMM, yyyy' }}
+                    </ng-template>
+                    
+                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+                            <p-calendar dateFormat="dd-M,yy" [disabled]="current_location.status == 'Published'" [readonlyInput]="current_location.status == 'Published'"
+                            [minDate]="row.planned_end_date_min"  [maxDate]="location_end_date"   [(ngModel)]="row[col.field]" appendTo="body" (onSelect)="showSaveButton_endDate(i)"></p-calendar>
+                        </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'80px'}">
+                        <ng-template pTemplate="header">
+                        </ng-template>
+                        <ng-template let-rowData="rowData" pTemplate="body" let-rowIndex="rowIndex">
+                            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                                <md-icon *ngIf="rowData.saveFlag && current_location.status != 'Published'" (click)="saveEditLocationPlan(rowData,rowIndex)"
+                                    class="icon-20 material-icons" style="cursor: pointer;font-size: 20px;color: #23375b;">save</md-icon>
+                                <md-icon *ngIf="rowData.saveFlag == false && current_location.status != 'Published'" class="icon-20 material-icons" style="cursor: no-drop;font-size: 20px;color: gray;">save</md-icon>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+                <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+                <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+                        <p>{{Notification}}</p>
+                            <p-footer>
+                                <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+                            </p-footer>
+                </p-dialog>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

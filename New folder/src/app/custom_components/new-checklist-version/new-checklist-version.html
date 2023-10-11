@@ -1,0 +1,24 @@
+<form [formGroup]="form" style="padding-top:10px;padding-bottom:10px">
+    <div fxLayout="column" fxLayoutAlign="space-between">
+        <div class="suzlon-input" [formGroup]="form">
+            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Revision</span>
+            <input type="number" class="suzlon-input" style="width:20%;" [formControl]="form.controls['VERSION']" [min]="selectedChecklistVersion">
+            <div>
+                <small *ngIf="form.controls['VERSION'].hasError('min') && form.controls['VERSION'].dirty" class="mat-text-warn">Revision already exists</small>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end center" style="margin-top:20px;">
+            <button md-raised-button color="accent" (click)="closeDialog()">Cancel</button>
+            <button md-raised-button color="primary" (click)="submitNewChecklistVersion()" style="margin-left:5px;" [disabled]="!form.valid">Submit</button>
+        </div>
+
+    </div>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+        <p>{{Notification}}</p>
+        <p-footer>
+                <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+        </p-footer>
+    </p-dialog>
+
+</form>

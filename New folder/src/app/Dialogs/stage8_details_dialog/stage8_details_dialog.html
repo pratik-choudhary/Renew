@@ -1,0 +1,60 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">STPT Form</div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="stpt_details.length > 0" style="padding:20px 20px 10px 20px">
+        <div fxLayout="column" style="margin-bottom:10px">
+        <div fxFlex="30"><span style="margin-right: 6px;">MA - 97% for 240Hrs:</span><span>{{stpt_details[0].machine_availability_1}}</span></div>
+        <div fxFlex="30"><span style="margin-right:10px">MA - 99% for 72Hs:</span><span>{{stpt_details[0].machine_availability_2}}</span></div>
+        </div>
+    <p-dataTable [value]="stpt_details" [rows]="10" [paginator]="true" [responsive]="true" [editable]="true" [immutable]="false"
+        [globalFilter]="gb1" sortMode="multiple">
+        <p-column  field="stpt_date" header="Date">
+            <ng-template let-col let-row="rowData" pTemplate="body">
+                <div class="right_aligned_div">
+                    {{row[col.field]|date:'dd-MMM, yyyy' }}
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column  field="field1" header="% Machine Availability">
+            <ng-template let-col let-row="rowData" pTemplate="body">
+                <div class="right_aligned_div">
+                    {{row[col.field]}}
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column  field="field2" header="BD Hours">
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                        <div class="right_aligned_div">
+                            {{row[col.field]}}
+                        </div>
+                    </ng-template>
+        </p-column>
+        <p-column  field="field3" header="Remark">
+                <ng-template let-col let-row="rowData" pTemplate="body">
+                        <div class="right_aligned_div">
+                            {{row[col.field]}}
+                        </div>
+                    </ng-template>
+        </p-column>
+        </p-dataTable>
+</div>
+
+    <div fxLayout="row" fxLayoutAlign="end center" style="padding:10px 20px 20px 20px">
+        <button md-raised-button color="accent" (click)='closeDialog()' style="margin-left: 10px"  type="button">Cancel</button>
+    </div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+  </p-dialog>
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

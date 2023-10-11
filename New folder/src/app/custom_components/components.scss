@@ -1,0 +1,20 @@
+.table{
+	width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    thead{
+    	tr{
+    	   padding:16px;
+    	   height:30px;
+    	   background:#F1F9FF;
+    	}
+    }
+    tbody{
+     tr{
+     	height: 125px;
+     }
+    }
+    td{
+    	border:1px solid #cccaca;
+    }
+}

@@ -1,0 +1,44 @@
+<form [formGroup]="form" id="feeder-creation">
+  <div fxLayout="column">
+      <div class="mb-1">
+        <h4 style="margin:0">{{modelname}}</h4>
+      </div>
+      <div fxLayout="row">
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">		
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="Name" [formControl]="form.controls['NAME']">
+          </md-input-container>
+        </div> 
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">
+
+            <md-input-container fxFlex="100">
+              <input mdInput placeholder="Substation" [mdAutocomplete]="reactiveAutoSite" [formControl]="siteCtrl">
+            </md-input-container>
+            <md-autocomplete #reactiveAutoSite="mdAutocomplete" multiple [displayWith]="displayFn">
+              <md-option  *ngFor="let site of reactiveSites | async" [value]="site" style="height:40px">
+                <md-item-template>
+                  <span style="display:block;">
+                    <span>
+                      {{site.name}}
+                    </span>
+                  </span>
+                </md-item-template>
+              </md-option>
+            </md-autocomplete>
+        </div>
+      </div> 
+      <div fxLayout="row">   
+        <div class="mb-1" fxFlex="50" style="margin-right:10px">	
+          <md-input-container fxFlex="100">
+            <input mdInput placeholder="Status" [formControl]="form.controls['STATUS']">
+          </md-input-container>
+        </div>
+        <div class="mb-1" fxFlex="50" style="margin-left:10px">
+        </div>
+      </div>   
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" (click)='closeDialog()'>Cancel</button>
+        <button md-raised-button color="primary" (click)="addFeeder()" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
+      </div>
+    </div>
+</form>

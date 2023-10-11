@@ -1,0 +1,31 @@
+<div>
+    <md-card class="white-background analytic-status-header-card" style="margin: 20px;">
+            <md-card-title>Configuration Questions</md-card-title>
+        <div style="padding-left:10px;padding-bottom:15px;" *ngIf="configurationQuestions">
+            <div fxLayout="column" *ngFor="let question of configurationQuestions,let i = index" style="padding:8px">
+                <div fxLayout="row">
+                    <md-icon *ngIf="!question.isFilled" style="cursor:pointer" (click)="openConfigurationPopup(i)">check_box_outline_blank</md-icon>
+                    <md-icon *ngIf="question.isFilled" style="cursor:pointer" (click)="uncheckQuestion(i)">check_box</md-icon> 
+                    <div>{{question.question}}</div>
+                </div>
+                <div fxLayout="column" style="width:30%;margin-top:15px;margin-bottom:15px" *ngIf="question.isFilled == true" fxLayoutAlign="start center">
+                    <table cellspacing="5">
+                        <tr>
+                        <td>Remark:</td><td>{{question.remark}}</td>
+                        </tr>
+                        <tr>
+                        <td>Filled By:</td><td>{{question.filled_by_name}}</td>
+                        </tr>
+                        <tr>
+                        <td>Updated at:</td><td>{{question.filled_date | date:'dd-MMM, yyyy'}} {{question.filled_time}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div> 
+            
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <div style="padding-right: 10px;padding-bottom: 5px;"><a style="cursor:pointer;text-decoration: underline !important;color: #00968b !important;" (click)="goToDashboard()">Back</a></div>
+        </div>    
+    </md-card>
+</div>

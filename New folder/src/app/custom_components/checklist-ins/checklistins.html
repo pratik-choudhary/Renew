@@ -1,0 +1,47 @@
+<div fxLayout="row" fxLayoutAlign="end">
+<div class="delete-circle">
+    <md-icon class="delete-icon" (click)="deleteChecklistIns()">delete</md-icon>
+</div>
+<div class="checklist-instance-div" fxFlex="100">    
+<form fxLayout="column">
+        <div fxLayout="row">
+            <div  fxFlex="33" style="margin-right:10px">	
+                <md-select placeholder="Checklist" fxFlex="100" [formControl]="form.controls['checklist']" (change)="showHOD()">
+                    <md-option *ngFor="let type of checkList" [value]="type">
+                        {{ type }}
+                    </md-option>
+                </md-select>
+            </div>
+            <div fxFlex="33" *ngIf="HOD" class="hod-name" fxLayout="row" fxlayoutAlign="center center" style="justify-content: center;">
+                <div class="hod-name-inner-div">HOD:Amit</div>
+            </div>
+            <div style="margin-left:24px;margin-right:10px;width:calc(33% - 34px)">	
+                <md-select placeholder="QA (Reviewer)" fxFlex="100" [formControl]="form.controls['projectManager']">
+                    <md-option *ngFor="let type of userList" [value]="type">
+                        {{ type }}
+                    </md-option>
+                </md-select>
+            </div>
+        </div>
+        <div fxLayout="row">
+        <div  fxFlex="33" style="margin-right:10px">	
+            <md-input-container  fxFlex="100" >
+            <input mdInput [mdDatepicker]="startDatePicker" placeholder="Plan Start date" [formControl]="form.controls['startDate']">
+            <button mdSuffix [mdDatepickerToggle]="startDatePicker"></button>
+            </md-input-container>
+            <md-datepicker #startDatePicker [touchUi]="touch"></md-datepicker>
+        </div>
+        <div  fxFlex="33" style="margin-left:10px">	
+            <md-input-container fxFlex="100">
+            <input mdInput [mdDatepicker]="endDatePicker" placeholder="Plan End date" [formControl]="form.controls['endDate']">
+            <button mdSuffix [mdDatepickerToggle]="endDatePicker"></button>
+            </md-input-container>
+            <md-datepicker #endDatePicker [touchUi]="touch"></md-datepicker>
+        </div>
+        <div class="assign-milestone-link" fxFlex="33" style="margin-left:10px">	
+            <div  style="text-align: center;" (click)="assignMilestones()">Assign Milestone</div>
+        </div>
+        </div>
+    </form>
+</div>  
+</div>  

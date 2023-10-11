@@ -1,0 +1,1112 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text"
+        style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Summary</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon"
+        style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div>
+<div style="padding:10px;">
+<p-dataTable [value]="location_data_summary" [responsive]="true" [immutable]="false" [globalFilter]="gb">
+    <p-column field="project_definition" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Project Definition
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="cf_new" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        CF/New
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="client_name" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Client Name
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="state" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        State
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="site" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Site
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="model" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Model
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="capacity" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Capacity
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="feeder_no" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Feeder no
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="location" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Location no
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="survey_no" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Survey no
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="village" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Village
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="taluka" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Taluka/Mandal
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="district" [editable]="false" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        District
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="dispatch_clearance_date" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Dispatch Clearance Date
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="po_commissioning_date" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        PO Commissioning Date
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="laf_mom_release" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        LAF/ MoM Release
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="conditional_laf_workfront" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Conditional LAF/Work front available for Execution
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="laf_mom_acceptance" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        LAF/ MoM Acceptance (Ready for Excavation incl pathway clearance)
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="soil_testing" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Soil Testing
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="re_engg" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Re-engg
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="approach_road" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Approch road
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="stub_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Stub receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="stub_hw_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Stub H/w Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="lattice_tower_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Lattice Tower Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="lattice_internal_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Lattice Internals Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="tadap_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        T Adap Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="tplate_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        T Plate Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="t1_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        T1 Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="t2_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        T2 Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="t3_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        T3 Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="t4_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        T4 Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="full_tower_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Full Tower Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="tower_hardware_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Tower Hardware Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="cable_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Cable Reciept
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="power_panel_converter_panel_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Power Panel & Convertor panel Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="dfig_panel_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        DFIG Panel receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="transformer_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Transformer Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="hub_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Hub Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="hub_kit_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Hub Kit Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="nacelle_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Nacelle Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="nacelle_kit_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Nacelle Kit Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="blade_with_service_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Blade with Service kit Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="lift" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Lift
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="full_wtg_reciept" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Full WTG Receipt
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="wtg_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG WCC offered to customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="wtg_wcc_completed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_material_reciept_anchor_bolts_studs_for_tub_model" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil Material Receipt - Anchor Bolts and Studs for Tub Model
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_material_reciept_ar_lsp_for_tub_model" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil Material Receipt - AR/LSP for Tub Model
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_material_reciept_tmt" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil Material Receipt - TMT
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_material_reciept_packing_plate_for_tub_model " [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil Material Receipt - Packing plate for Tub Model
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="electrical_material_reciept_css" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Electrical Material Receipt - CSS
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="electrical_material_reciept_ctpt" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Electrical Material Receipt - CT PT
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="electrical_material_reciept_la" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Electrical Material Receipt - LA
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="electrical_material_reciept_rsj_pole" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Electrical Material Receipt -RSJ Pole
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="electrical_material_reciept_conductor" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Electrical Material Receipt - Conductor
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="excavation" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Excavation
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="pcc" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        PCC
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_pcc_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil PCC WCC offered to customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_pcc_wcc_completed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil PCC WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="stub_assembly_ar_assembly" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Stub Assembly/ AR Assly
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="stub_erection" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Stub Erection
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="reinforcement_binding_and_formwork" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Reinforcement Binding & Formwork
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="shuttering" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Shuttering
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="foundation_casting_raft" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Foundation - Casting Raft
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="foundation_casting_pedestal" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Foundation - Casting Pedestal-(Foundation concrete)
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="completion_of_foundation" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Completion of foundation
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="seven_day_test_report" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        7 Day Test Report
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="twenty_eight_day_test_report" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        28 Day Test Report
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil WCC offered to customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="civil_wcc_completed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Civil WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="dp_yard_civil_plinth_platform" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        DP Yard civil plinth /platform
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="trafo_css_erection" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Trafo/CSS erection
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="ctpt_erection" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        CTPT erection (For metering only)
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="metering_and_plumbing_work" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Metering & plumbing work
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+    <p-column field="earthing_strip_laying" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Earthing strip laying
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="lt_cable_laying_and_termination" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        LT cable laying Cable laying and Termination between Generator and LT terminals of Transformer
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+    <p-column field="completion_of_dp_yard" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Completion of DP Yard (Civil+Elect)
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="scope_of_lnt_lines_in_total_no_of_poles" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Scope of Int line in total no. of poles
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="survey_done_in_total_nos_int" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Survey done in total nos.
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="pit_excavations_in_nos_int" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Pit Excavation in nos
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="pole_erection_in_nos_int" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Pole erection in nos.
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="pole_stringing_in_nos_int" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Pole stringing in nos
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="internal_line_completion" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Internal line completion
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="scope_of_external_line_in_total_no_of_poles" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Scope of Ext line in total no. of poles
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="surve_done_in_total_nos_ext" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Survey done in total nos.
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="pit_excavations_in_nos_ext" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Pit Excavation in nos
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="pole_erection_no_nos_ext" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Pole erection in nos.
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="pole_stringing_in_nos_ext" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Pole stringing in nos
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="external_line_completion" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        External line completion
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="electrical_dp_yard_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Elect DP yard WCC offered to customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="electrical_dp_yard_wcc_completed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Elect DP yard WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="electrical_33kv_line_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Elect 33kv line WCC offered to customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="electrical_33kv_line_wcc_completed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Elect 33kv line WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="assembly_lattice_start" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Assembly Lattice Start
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="assembly_lattice_finisih" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Assembly Lattice Finish
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="assembly_transition_adapter" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Assembly Transition Adaptor
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+
+    <p-column field="crane_boomup" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Crane Boomup
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+
+    <p-column field="erection_of_is4" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Erection of IS4
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+
+    <p-column field="erection_of_is3" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Erection of IS3
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="erection_of_is2" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Erection of IS2
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="erection_of_lattice_tower" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Erection of Lattice Tower
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="erection_of_tubular_tower" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Erection of Tubular Tower
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="erection_nacelle" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Erection Nacelle
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="rotor_assembly" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Rotor Assembly
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="crane_package" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Crane Package
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="wtg_erection" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG Erection
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="lift_landing_platform" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Lift landing platform
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="lift_installation" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Lift Installation
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="lift_ftu" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Lift FTU (Fit To Use)
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+
+    <p-column field="wtg_cable_termination" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG Cable Termination
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="mech_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Mech WCC offered to customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="mech_wcc_completed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Mech WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="wtg_pre_commissioning" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG Pre-commissioning
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="safe_run" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Safe Run
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="ceig_approval" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        CEIG approval
+      </ng-template>
+
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="wtg_commissioning" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG Commissioning
+      </ng-template>
+
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="wtg_in_generation" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        WTG Commissioning
+      </ng-template>
+
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="comm_wcc_offered_to_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Comm WCC offered to customer
+      </ng-template>
+
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="comm_wcc_competed_by_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Comm WCC completed by customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" pTemplate="body">
+        {{row[col.field] }}
+      </ng-template>
+    </p-column>
+
+    <p-column field="risk_remark" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Risk/Remark
+      </ng-template>
+    </p-column>
+
+    <p-column field="mitigation_plan" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Mitigation plan
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="name_of_civil_contractor" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Name of Civil Contractor
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="name_of_electrical_contractor_dp_yard" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Name of Electrical Contractor - DP Yard
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="name_of_electrical_contractor_elect_yard" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Name of Electrical Contractor - Elect Line
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="name_of_assembly_contractor" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Name of Assembly contractor
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+
+
+    <p-column field="name_of_mechanical_contractor" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Name of Mechanical contractor
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="name_of_cable_termination" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        Name of Cable Termination
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="hoto_projects_oms" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        HO/TO - Projects/ OMS
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+
+    <p-column field="hoto_customer" [style]="{'width':'120px'}">
+      <ng-template pTemplate="header">
+        HOTO - Customer
+      </ng-template>
+      <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
+        {{row[col.field]}}
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+
+
+
+
+</div>

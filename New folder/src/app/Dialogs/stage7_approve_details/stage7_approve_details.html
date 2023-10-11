@@ -1,0 +1,37 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Remark
+            </div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+<div style="padding:20px">
+    <div fxLayout="column" fxLayoutGap="10px">
+        <md-radio-group fxLayout="column" fxLayoutWrap="wrap">
+            <md-radio-button *ngFor="let label of approve_labels" (change)="onApproveChange($event)" [value]="label.id" fxFlex="25" style="padding:8px 0px;">{{label.name}}</md-radio-button>
+        </md-radio-group>
+        <div class="mb-1" fxFlex="100">
+            <div *ngIf="approve_type == 2" class="suzlon-input mb-1" style="width:100%">
+                <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Remark
+                </span>
+                <textarea class="suzlon-input" [(ngModel)]="remark" (ngModelChange)="remarkChange()"></textarea>
+                
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button md-raised-button color="primary" [disabled]="emptyFlag" style="margin-left: 10px" (click)="submitDetails()" type="button">Submit</button>
+        </div>
+    </div>
+    <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+        <p>{{Notification}}</p>
+        <p-footer>
+            <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+        </p-footer>
+    </p-dialog>
+    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

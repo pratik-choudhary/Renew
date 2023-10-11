@@ -1,0 +1,47 @@
+<md-icon class="material-icons mat-icon close-popup" (click)="closeDialog()">close</md-icon>
+<div class="popup-title">
+    Milestones
+</div>
+<div class="milestones-div">
+    <div class="milestone-div">
+        <div fxFlex>
+        <div class="checklist-no">Milestone : 1</div>
+        <div>Tower assembly & Erection</div>
+        </div>
+        <div fxFlex="40" style="margin: 0 20px;">	
+            <md-select fxFlex="100" placeholder="Assign to">
+            <md-option *ngFor="let type of userList" [value]="type">
+                {{ type }}
+            </md-option>
+            </md-select>
+        </div>
+    </div>
+    <hr>
+    <div class="milestone-div">
+        <div fxFlex> 
+        <div class="checklist-no">Milestone : 2</div>
+        <div>Stub top dimensions at diagonals (Measured at top side of corner leg )</div>
+        </div> 
+        <div fxFlex="40" style="margin: 0 20px;">	
+            <md-select fxFlex="100" placeholder="Assign to">
+            <md-option *ngFor="let type of userList" [value]="type">
+                {{ type }}
+            </md-option>
+            </md-select>
+        </div>
+    </div>
+    <hr>
+    <div class="milestone-div">
+        <div fxFlex>
+        <div class="checklist-no">Milestone :3</div>
+        <div>Level at 4 legs at top of the stub with reference to remaining 3 Legs</div>
+        </div> 
+        <div fxFlex="40" style="margin: 0 20px;">	
+            <md-select fxFlex="100" placeholder="Assign to">
+            <md-option *ngFor="let type of userList" [value]="type">
+                {{ type }}
+            </md-option>
+            </md-select>
+        </div>
+    </div>  
+</div>

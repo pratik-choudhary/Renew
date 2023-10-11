@@ -1,0 +1,26 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+      <div>
+        <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{title}}</div>
+      </div>
+      <div>
+        <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+          (click)="closeDialog()">close</md-icon>
+      </div>
+    </div>
+  </div>
+<div style="padding:20px">
+     <div>
+        <span>Enter Remark <small style="color: red;">*</small></span>
+        <textarea placeholder="Type your remark" [(ngModel)]="remark" type="text" style="margin:16px 0;width:100%;"></textarea>
+     </div>
+     <div fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="primary" [disabled]="!remark" (click)="submitRemark()" style="margin-left: 10px" type="button">Submit</button>
+    </div>
+</div>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+  <p>{{Notification}}</p>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,40 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Site
+                Map
+            </div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+
+
+
+<!--
+<agm-map [latitude]="lat" [longitude]="lng" style="height:90%;" [zoom]="10">
+    <agm-marker *ngFor="let location of locations" [latitude]="location.location.latitude" [label]="location.label"
+        [longitude]="location.location.longitude">
+        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="false" [isOpen]="true" [latitude]="location.latitude"
+            [longitude]="location.longitude">
+            <ng-template>
+                <table style="font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;border-collapse: collapse;width: 100%;">
+                    <tr style="tr:nth-child(even){background-color: #f2f2f2;}">
+                        <td style="border: 1px solid #ddd;padding: 8px;"><span style="font-weight: bold;color: #26a69a;">Name</span></td>
+                        <td style="border: 1px solid #ddd;padding: 8px;">{{location.location.name}}</td>
+                    </tr>
+                    
+                    <tr style="tr:nth-child(even){background-color: #f2f2f2;}">
+                        <td style="border: 1px solid #ddd;padding: 8px;"><span style="font-weight: bold;color: #26a69a;">Current Stage</span></td>
+                        <td style="border: 1px solid #ddd;padding: 8px;"><span *ngIf="location.current_stage != null">{{location.current_stage.stage.name}}</span></td>
+                    </tr>
+                </table>
+            </ng-template>
+        </agm-snazzy-info-window>
+    </agm-marker>
+</agm-map> -->
+<div id="map">
+</div>

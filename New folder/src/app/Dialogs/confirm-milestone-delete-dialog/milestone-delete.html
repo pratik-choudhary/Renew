@@ -1,0 +1,18 @@
+<div style="background:#26a69a;height:40px;" color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Delete Milestone</div>
+        </div>
+        <div>
+            <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+                (click)="closeDialog()">close</md-icon>
+        </div>
+    </div>
+</div>
+<md-dialog-content style="height: 115px;">
+    <h2 md-dialog-title style="padding-top:10px">Are you sure you want to delete Milestone?</h2>
+    <md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+        <button md-raised-button color="accent" [md-dialog-close]="false">No</button>
+        <button md-raised-button color="primary" style="margin-left: 10px" (click)="confirm()">Yes</button>
+    </md-dialog-actions>
+</md-dialog-content>
