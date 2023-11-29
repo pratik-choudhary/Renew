@@ -15,8 +15,27 @@ export class AuthGuard implements CanActivate {
             if(this.user_info)
                 return true;
             else{
-                var info =this.api_service.getUserInformation(JSON.parse(localStorage.getItem('UserToken')).token);
-                this.setUserInfo(JSON.parse(info));
+                 var info =this.api_service.getUserInformation(JSON.parse(localStorage.getItem('UserToken')).token);
+                // var info = {
+                //     "team": [],
+                //     "user_id": 212,
+                //     "name": "PM",
+                //     "firstName": null,
+                //     "lastName": null,
+                //     "department": "PMO",
+                //     "department_id": 13,
+                //     "role": "PM",
+                //     "employee_id": null,
+                //     "is_dashboard_user": true,
+                //     "employeeId": null,
+                //     "employeeName": null,
+                //     "codeValue": null,
+                //     "employeeEmail": "t.pm",
+                //     "status": null,
+                //     "password": null
+                // }
+              // this.setUserInfo(info);
+              this.setUserInfo(JSON.parse(info));
                 return true;
             }    
         }

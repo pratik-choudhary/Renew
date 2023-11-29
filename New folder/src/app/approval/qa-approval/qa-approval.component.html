@@ -1,0 +1,364 @@
+<md-toolbar color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div style=" margin-left: -38px; margin-top: -25px;">
+      <ul class="breadcrumb">
+        <li>
+          <a style="padding-left: 12px;color:#23375b;background:#f6f7f9;"
+            ng-class="someBooleanInScope? 'color-0' : 'color-1'">Approval</a>
+        </li>
+        <li>
+          <a></a>
+        </li>
+      </ul>
+    </div>
+    <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="space-between">
+    </div>
+
+  </div>
+</md-toolbar>
+<md-card style="margin-top: -25px;height: 90%;">
+  <md-content>
+    <div class="ui-widget-header">
+      <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+        <div fxLayout="row" fxGap="5px">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="30" [(ngModel)]="searchTerm" (ngModelChange)="search()"
+            placeholder="Search By Checklist">
+        </div>
+
+        <!-- <div fxLayout="row">
+                  <div *ngIf="pmScheduleData != undefined && pmScheduleData != null && selectdtab == 'PM Schedule' "
+                      style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-right: 20px">Total Count
+                      {{pmScheduleData.length}}</div>
+                  <div *ngIf="pmScheduleDataApprove != undefined && pmScheduleDataApprove != null && selectdtab == 'Approvals' "
+                      style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-right: 20px">Total Count
+                      {{pmScheduleDataApprove.length}}</div>
+              </div> -->
+        <div *ngIf="selectedContent=='section'" style="padding: 10px;">
+
+        </div>
+      </div>
+    </div>
+
+
+    <md-tab-group (click)="onTabChange($event)">
+      <md-tab label="QA Review" clickable>
+
+        <p-dataTable #dt [value]="QAApprovalData" [rows]="14" [paginator]="true" [responsive]="true" [immutable]="false"
+          [globalFilter]="gb" sortMode="multiple">
+          <p-column [style]="{'width':'40px'}">
+            <ng-template pTemplate="header">
+              <div style="font-weight: 900; color: black;" title="Site">Site
+              </div>
+            </ng-template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <div *ngIf="row.SiteName != null" style="text-transform: capitalize;">
+                {{row.SiteName}}</div>
+            </template>
+          </p-column>
+          <p-column [style]="{'width':'70px'}">
+            <ng-template pTemplate="header">
+              <div style="font-weight: 900; color: black;">Location</div>
+            </ng-template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <div *ngIf="row.FunctionalLocation != null" style="text-transform: capitalize;">
+                {{row.FunctionalLocation}}</div>
+            </template>
+          </p-column>
+          <p-column [style]="{'width':'60px'}">
+            <ng-template pTemplate="header">
+              <div style="font-weight: 900; color: black;">Checklist</div>
+            </ng-template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <div *ngIf="row.ChecklistName != null" style="text-transform: capitalize;">
+                {{row.ChecklistName}}</div>
+            </template>
+          </p-column>
+          <p-column [style]="{'width':'30px'}">
+            <ng-template pTemplate="header">
+              <div style="font-weight: 900; color: black;">Manintenance Type</div>
+            </ng-template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <div *ngIf="row.ChecklistMaintenanceType != null" style="text-transform: capitalize;text-align: center;">
+                {{row.ChecklistMaintenanceType }}</div>
+            </template>
+          </p-column>
+
+          <p-column [style]="{'width':'30px'}">
+            <ng-template pTemplate="header">
+              <div style="font-weight: 900; color: black;">No Of Checkpoints</div>
+            </ng-template>
+            <template let-col let-row="rowData" pTemplate="body">
+              <div *ngIf="row.NumberOfCheckpoints != null" style="text-transform: capitalize;text-align: center;">
+                {{row.NumberOfCheckpoints }}</div>
+            </template>
+          </p-column>
+
+          <p-column [style]="{'width':'10px'}">
+            <ng-template pTemplate="header">
+              <div style="font-weight: 900; color: black;">Action</div>
+            </ng-template>
+            <ng-template let-col let-row="rowData" pTemplate="body">
+              <div fxLayout="row" style="text-decoration:underline;cursor:pointer" (click)="openSections(row)">
+                <!-- <div>{{row.checklist.SECTION_COUNT}}</div> -->
+                <div style="margin-left: 11px;margin-top: -14px;text-align: center;">
+                  <md-icon class="icon-20 material-icons"
+                    style="color:gray;margin-top: 18px;font-size: 20px;text-align: center;"
+                    title="View">visibility</md-icon>
+                </div>
+              </div>
+            </ng-template>
+          </p-column>
+
+        </p-dataTable>
+
+      </md-tab>
+    </md-tab-group>
+
+
+
+  </md-content>
+</md-card>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+  <p>{{Notification}}</p>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+  </p-footer>
+</p-dialog>
+<div [hidden]="isSeeHistoryDiv" class="history">
+  <div class="history-inner">
+    <div fxLayout="row">
+      <div *ngIf="headerName=='Check Point'" fxFlex="95%">
+        <a (click)="toggleDisplaySeeHistory()" class="history-title" >
+          <img class="history-left-arrow" src="../../assets/images/left-arrow.png" alt="left arrow">{{headerName}}
+        </a>
+      </div>
+      <div *ngIf="headerName=='Check Point History'" fxFlex="95%">
+        <a (click)="BackCheckPoint()" class="history-title" >
+          <img class="history-left-arrow" src="../../assets/images/left-arrow.png" alt="left arrow">{{headerName}}
+        </a>
+      </div>
+      
+      <div fxFlex="5%">
+        <a *ngIf="headerName=='Check Point'" (click)="SeeHistory()" class="history-title">
+          <span class="material-icons" style="color:#10673a;font-size: 30px;
+         margin-top: 14px;" title="History">history</span>
+        </a>
+
+        <a *ngIf="headerName=='Check Point History'" (click)="toggleDisplaySeeHistory()" class="history-title">
+          <md-icon style="font-size: 35px;color: #1b5e20; margin-top: 14px;" title="List">grid_on</md-icon>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="headerName=='Check Point'">
+
+      <form [formGroup]="Form" (ngSubmit)="submitForm()">
+        <div>
+          <div fxLayout="row" style="margin-top: 10px">
+
+            <div fxFlex="40%" class="suzlon-input ">
+              <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Site
+              </span>
+              <input type="text" style="font-size: 11px !important"
+                class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="name" disabled />
+            </div>
+            <div fxFlex="10%" class="lable">
+            </div>
+            <div fxFlex="50%" class="suzlon-input ">
+              <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Location
+              </span>
+              <input type="text" style="font-size: 11px !important"
+                class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="Location" disabled />
+            </div>
+
+          </div>
+          <div fxLayout="row" style="margin-top: 5px">
+            <div fxFlex="40%" class="suzlon-input ">
+              <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">ManintenanceType
+              </span>
+              <input type="text" style="font-size: 11px !important"
+                class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="pmType" disabled />
+            </div>
+            <div fxFlex="10%" class="lable">
+            </div>
+            <!-- <div fxFlex="50%" class="suzlon-input ">
+                  <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Milestone Name
+                  </span>
+                  <input type="text" style="font-size: 11px !important"
+                      class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="milestone" disabled />
+              </div> -->
+            <div fxFlex="50%" class="suzlon-input ">
+              <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Checklist Name
+              </span>
+              <input type="text" style="font-size: 11px !important"
+                class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="checklistName" disabled />
+            </div>
+          </div>
+
+          <div fxLayout="row" style="margin-top: 5px">
+            <div fxFlex="100%">
+              <span class="lable"> Check Point:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{selectedRowQuestionName}}</span>
+            </div>
+          </div>
+
+          <div fxLayout="row" style="margin-top:5px">
+            <div fxFlex="100%">
+              <span class="lable"> Check Point Type:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{selectedQuestionType}}</span>
+            </div>
+          </div>
+          <div fxLayout="row" style="margin-top:5px">
+            <div fxFlex="100%">
+              <span class="lable">Submitted Value:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{selectedSubmittedValue}}</span>
+            </div>
+          </div>
+          <div fxLayout="row" style="margin-top:5px">
+            <div fxFlex="85%">
+              <span class="suzlon-input ng-pristine ng-invalid ng-touched"> <textarea
+                  [formControl]="Form.controls['remark']" placeholder="Remark" type="text"
+                  style="width:80%;height: 50px "></textarea></span>
+            </div>
+          </div>
+
+
+
+
+          <div fxLayout="row" style="margin-top: 5px">
+
+          </div>
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+            <div *ngFor="let imagePath of selectImages; let i = index" style=" margin-bottom: 10px;">
+              <img [src]="imagePath" [alt]="'Image ' + (i + 1)" width="150" height="100"
+                (dblclick)="openDialog($event)">
+            </div>
+          </div>
+          <!-- <div fxLayout="row">
+              <div  *ngFor="let imagePath of selectImages; let i = index" fxFlex="33%" class="image-container" >
+               <md-icon  class="icon-20 material-icons mat-icon"  style="color:#1b5e20;" title="Download"   ><a [href]="imagePath" download >cloud_download</a></md-icon>
+              </div>
+          </div> -->
+          <div fxLayout="row" style="margin-top: 10px">
+            <div fxFlex="20%">
+              <div class="suzlon-input ">
+                <button type="button" md-raised-button color="primary" (click)="SendForCorrection()" style="font-size: 12px;padding: 0 10px;
+                    border-radius: 10px;min-width: 100px">
+                   Send For Correction
+                </button>
+              </div>
+            </div>
+            <div fxFlex="60%">
+            </div>
+            <div fxFlex="20%">
+              <div class="suzlon-input ">
+                <button type="button" md-raised-button color="primary" (click)="ConfirmOk()" style="font-size: 12px;padding: 0 10px;
+                      border-radius: 10px;min-width: 112px">
+                  Confirm Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" style="margin-top: 10px">
+          <div fxFlex="10%">
+            <div>
+              <!-- <button type="button" md-raised-button color="primary" style="font-size: 12px;padding: 0 10px;
+                    border-radius: 10px;min-width: 100px">
+             <span class='material-icons'>arrow_back</span> 
+            </button> -->
+
+              <button type="button" style="background: white;
+            border: none;" [disabled]="QuestionIndex == 0" (click)="previousQuestion()">
+                <!-- Font size reduced -->
+                <md-icon style="font-size: 35px;color: #1b5e20" title="Previous">arrow_circle_left </md-icon>
+              </button>
+            </div>
+          </div>
+          <div fxFlex="70%">
+          </div>
+          <div fxFlex="10%">
+            <div>
+              <!-- <button type="button" md-raised-button color="primary" (click)="toggleDisplaySeeHistory()" style="font-size: 12px;padding: 0 10px;
+                      border-radius: 10px;min-width: 112px">
+             <span class="material-icons">arrow_forward</span>
+            </button> -->
+              <button type="button" style="background: white;
+            border: none;" (click)="nextQuestion()">
+                <!-- Font size reduced -->
+                <md-icon style="font-size: 35px;color: #1b5e20;margin-left: 70px;"
+                  title="Next">arrow_circle_right</md-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div fxLayout="row" style="margin-top: 10px">
+              <div fxFlex="80%">
+              </div>
+
+              <div fxFlex="20%">
+                  <div class="suzlon-input ">
+                      <button type="button" md-raised-button style="background: #f5f5f5;"
+                          (click)="toggleDisplaySeeHistory()">
+                          Cancel
+                      </button>
+                  </div>
+              </div>
+              <div fxFlex="20%">
+                  <div class="suzlon-input ">
+                      <button type="submit" md-raised-button color="primary">
+                          Submit
+                      </button>
+                  </div>
+              </div>
+          </div> -->
+      </form>
+    </div>
+    <div *ngIf="headerName=='Check Point History'">
+      <div fxLayout="row" style="margin-top: 5px">
+        <div fxFlex="100%">
+          <span class="lable"> Check Point:- </span> <span
+            class="suzlon-input ng-pristine ng-invalid ng-touched">{{selectedRowQuestionName}}</span>
+        </div>
+      </div>
+      <div *ngFor="let question of HistoryData">
+        <div style="margin-top: 5px" class="card">
+          <div fxLayout="row">
+            <div fxFlex="35%">
+              <span class="lable" style="margin-top: 0px"> Submitted Value:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{question.SubmittedValue}}</span>
+            </div>
+            <div fxFlex="35%">
+              <span class="lable" style="margin-top: 0px"> Stage:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{question.Stage}}</span>
+            </div>
+            <div fxFlex="30%">
+              <span class="lable" style="margin-top: 0px"> Remark :- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{question.Remark}}</span>
+            </div>
+          </div>
+         
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+            <div *ngFor="let imagePath of question.Images; let i = index" style="margin-top: 10px">
+              <img [src]="imagePath" [alt]="'Image ' + (i + 1)" width="150" height="100"
+                (dblclick)="openDialog($event)">
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex="35%">
+              <span class="lable" style="margin-top: 0px"> Created By:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{question.CreatedBy}}</span>
+            </div>
+            <div fxFlex="30%">
+            </div>
+            <div fxFlex="35%">
+              <span class="lable" style="margin-top: 0px"> Created Date:- </span> <span
+                class="suzlon-input ng-pristine ng-invalid ng-touched">{{question.CreatedDate |date:'dd-MMM, yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>

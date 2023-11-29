@@ -13,5 +13,5 @@ export class DatepickerComponent {
   maxDate: Date;
   startAt: Date;
   date: Date;
-  dateFilter = (date: Date) => date.getMonth() % 2 === 1 && date.getDate() % 2 === 0;
+  dateFilter = (date: Date) => date.getMonth() % 2 === 0 && date.getDate() % 2 === 1;
 }

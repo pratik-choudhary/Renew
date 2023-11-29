@@ -13,7 +13,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
                         <div fxLayout="row" fxGap="5px">
                             <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                            <input #gb type="text" pInputText size="30" placeholder="Search by feeder name">
+                            <input #gb type="text" pInputText size="30" placeholder="Search By feeder name">
                             <div *ngIf="feeder_values != undefined && feeder_values != null" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count {{feeder_values.length}}</div>
 
                         </div>
@@ -95,10 +95,10 @@
                         <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
                             <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
                                 <md-icon *ngIf="row.id == null || row.id == 0 " (click)="deleteEmptyRow(index)" class="icon-20 material-icons" style="cursor: no-drop;font-size: 20px;color: gray;">delete</md-icon>
-                                <div *ngIf="row.id !== null && row.id !== 0 && row.status != 'Started' && row.status != 'Completed' && row.status != 'Approved'" (click)="startFeeder(row.id,row.name)" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                                <div *ngIf="row.id !== null && row.id !== 0 && row.status != 'Started' && row.status != 'Completed' && row.status != 'Approved'" (click)="startFeeder(row.id,row.name)" style="background: #1b5e20;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
                                     <a style="color:#fff">Start</a>
                                 </div>
-                                <div *ngIf="row.id !== null && row.id !== 0 && row.status == 'Completed'" (click)="approveFeeder(row.id)" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                                <div *ngIf="row.id !== null && row.id !== 0 && row.status == 'Completed'" (click)="approveFeeder(row.id)" style="background: #1b5e20;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
                                     <a style="color:#fff">Approve</a>
                                 </div>
                                 <div *ngIf="row.status == 'Approved' && row.summary" class="green-circle">{{row.summary.ok}}</div>
@@ -118,7 +118,7 @@
                             Feeder Certificate
                         </ng-template>
                         <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
-                            <a style="color: #00978c;text-decoration: underline;cursor: pointer;" *ngIf="row.status == 'Approved' && row.summary && row.isUsed == 1" (click)="generateFeederCertificate(row)">Generate Feeder Certificate</a>
+                            <a style="color:#1b5e20;text-decoration: underline;cursor: pointer;" *ngIf="row.status == 'Approved' && row.summary && row.isUsed == 1" (click)="generateFeederCertificate(row)">Generate Feeder Certificate</a>
                         </ng-template>
                     </p-column>
 

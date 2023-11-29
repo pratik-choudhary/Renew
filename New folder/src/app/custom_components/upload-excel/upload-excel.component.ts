@@ -7,13 +7,14 @@ import { AuthGuard } from 'app/services/auth-guard';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { UploadExcelDialog } from 'app/Dialogs/upload_excel/upload_excel.component';
+import * as toastr from 'toastr';
 @Component({
   selector: 'app-upload-excel',
   templateUrl: './upload-excel.html'
 })
 export class ExcelUploadComponent implements OnInit {
   @Input() createdBy: any;
-  @Input() checklistId: any;
+  @Input() sheetName: any;
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   display=false;
   Notification:any;
@@ -28,6 +29,7 @@ export class ExcelUploadComponent implements OnInit {
   sections: any;
   user_info: any;
   sectionFlag = false;
+  uploadCode: any;
   constructor(private api_service: ApiService, private snackbar: MdSnackBar,public dialogRef: MdDialogRef<UploadExcelDialog>,
     public viewContainerRef: ViewContainerRef, private auth_service: AuthGuard,private router:Router) {
        this.user_info = this.auth_service.getUserInfo();
@@ -55,13 +57,23 @@ export class ExcelUploadComponent implements OnInit {
       this.notify.emit('failed');
     }
   }
-  uploadFile() {
+  uploadChecklist() {
     this.disable_button = true;
-     this.api_service.upload(this.fileToUpload, this.checklistId,  this.user_info.user_id).then((res: string) => {
+    this.sheetName;
+
+    if(this.sheetName=="Import Checklist Excel"){
+      this.uploadCode=3;
+    }else if(this.sheetName=="Import PM Schedule Excel"){
+      this.uploadCode=4;
+    }
+    debugger;
+     this.api_service.uploadChecklist(this.fileToUpload, this.uploadCode,  this.user_info.user_id).then((res: string) => {
         this.disable_button = false;
         setTimeout(()=>{
-          this.Notification = res;
-          this.display = true;
+          toastr.success(' Excel Uploaded Successfully', 'Success');
+          this.notify.emit('success');
+         // this.Notification = "Checklist Excel Uploaded Successfully";
+         // this.display = true;
         }, 400);
 
       }, (err) => {
@@ -78,8 +90,10 @@ export class ExcelUploadComponent implements OnInit {
         {
           this.SendingStatus = true;
           setTimeout(()=>{
-          this.Notification = 'An error occurred during checklist import.';
-          this.display = true;
+            toastr.error('An error occurred during  import.', 'Error');
+            this.notify.emit('failed');
+          //this.Notification = 'An error occurred during checklist import.';
+          //this.display = true;
           }, 400);
         }
         

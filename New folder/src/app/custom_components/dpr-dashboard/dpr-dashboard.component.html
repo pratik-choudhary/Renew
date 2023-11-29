@@ -4,7 +4,7 @@
       <md-icon (click)="onBackClick()" mdTooltip="Back" class="icon-20 material-icons"
         style="cursor: pointer;color:gray;margin-top: 12px;font-size: 35px;">navigate_before</md-icon>
     </div>
-    <div style="padding-top: 5px;"><span style="font-size: 25px;font-weight: bold;color: #26a69a;">DPR Dashboard</span>
+    <div style="padding-top: 5px;"><span style="font-size: 25px;font-weight: bold;color: #1b5e20;">DPR Dashboard</span>
     </div>
     <div></div>
   </div>
@@ -17,7 +17,7 @@
         <div fxLayout="row" fxGap="5px" #click>
           <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
           <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="search()" pInputText size="30"
-            placeholder="Search by Site Name">
+            placeholder="Search By Site Name">
         </div>
         <div>
           <span>
@@ -251,7 +251,7 @@
         </p-column>
         <p-column field="hoto_customer" [style]="{'width':'100px'}">
             <ng-template pTemplate="header">
-                HOTO Customer
+              DIGIROM Customer
             </ng-template>
           <ng-template let-rowData="rowData" let-rowIndex='i' pTemplate="body">
             <div style="text-align: center;">

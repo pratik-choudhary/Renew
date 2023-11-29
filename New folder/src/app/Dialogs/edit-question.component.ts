@@ -9,6 +9,7 @@ import { ItemFormDialog } from 'app/Dialogs/item_form.component';
 import { GroupQuestionComponent } from 'app/custom_components/group-question/group-question.component';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { ViewContainerRef } from '@angular/core';
+import * as toastr from 'toastr';
 
 
 @Component({
@@ -33,12 +34,15 @@ export class EditQuestionDialog {
   checklist_status= 'draft';
   MIN_RANGE: any;
   MAX_RANGE: any;
+  Unit: any;
   SPECIFICATION_OPTIONS: any = [];
   originalSpecification_options: any;
   originalActual_options: any;
   ACTUAL_OPTIONS: any = [];
   display=false;
-  Notification:any;  
+  Notification:any; 
+  Specifications: any = [];
+  formSubmitted: boolean = false;
  
   constructor(
       public dialog: MdDialog,
@@ -74,21 +78,24 @@ export class EditQuestionDialog {
         if (this.data.checklist_status) {
           this.checklist_status = this.data.checklist_status;
         }
+        debugger
         this.milestone_id = this.data.milestone_id;
         this.patch_value = null;
   }
   ngOnInit() {
+    this.getAllSpecifications();
       this.model="Add Question";
       this.form = this.fb.group({
         QUESTION: [null, Validators.required],
         QUESTION_NO: [null, Validators.required],
         SPECIFICATION_TYPE: ['text', Validators.required],
-        SPECIFICATION: [null],
+        SPECIFICATION: [''],
         SPECIFICATION_OPTIONS: this.fb.array([
           this.initLink()
         ]),
-        MIN_RANGE: [null],
-        MAX_RANGE: [null],
+        MIN_RANGE: [''],
+        MAX_RANGE: [''],
+        Unit: [''],
         ACTUAL_TYPE: ['text'],
         ACTUAL: [''],
         ACTUAL_OPTIONS: this.fb.array([
@@ -111,15 +118,17 @@ export class EditQuestionDialog {
       this.group_question.push({});
       this.current_active_template = 0;
       if (this.data.question) {
+        debugger;
         let question = Object.assign({},this.data.question);
         this.model="Edit Question";
-        if (question.SPECIFICATION_TYPE === 'range') {
-          this.MIN_RANGE = question.MIN_RANGE;
-          this.MAX_RANGE = question.MAX_RANGE;
-        } else if (question.SPECIFICATION_TYPE === 'select') {
-          if ( question.SPECIFICATION_OPTIONS != undefined && question.SPECIFICATION_OPTIONS != null && question.SPECIFICATION_OPTIONS !== '' && question.SPECIFICATION_OPTIONS != 'null') {
-            this.originalSpecification_options = question.SPECIFICATION_OPTIONS;
-            this.SPECIFICATION_OPTIONS = question.SPECIFICATION_OPTIONS.split(',');
+        if (question.OptionType === 'Value') {
+          this.MIN_RANGE = question.MinRange;
+          this.MAX_RANGE = question.MaxRange;
+          this.Unit = question.RangeUnit;
+        } else if (question.OptionType === 'Dropdown') {
+          if ( question.OptionType != undefined && question.Options != null && question.Options !== '' && question.Options != 'null') {
+            this.originalSpecification_options = question.Options;
+            this.SPECIFICATION_OPTIONS = question.Options.split(',');
             var obj = [];
             for (let index = 0 ; index < this.SPECIFICATION_OPTIONS.length; index++ ) {
               obj.push({OPTION_DESCRIPTION: this.SPECIFICATION_OPTIONS[index]});
@@ -127,8 +136,8 @@ export class EditQuestionDialog {
                 this.addSpecification();
               }
             }
-            question.SPECIFICATION_OPTIONS = obj;
-            this.form.controls.SPECIFICATION_OPTIONS.setValue(question.SPECIFICATION_OPTIONS);
+            question.Options = obj;
+            this.form.controls.SPECIFICATION_OPTIONS.setValue(question.Options);
       }
         }
         if (question.ACTUAL_TYPE === 'select') {
@@ -146,19 +155,20 @@ export class EditQuestionDialog {
             this.form.controls.ACTUAL_OPTIONS.setValue(question.ACTUAL_OPTIONS);
           }
         }
-        this.form.controls.ACTUAL_TYPE.setValue(question.ACTUAL_TYPE);
-        this.form.controls.ACTUAL.setValue(question.ACTUAL);
-        this.form.controls.QUESTION.setValue(question.QUESTION);
-        this.form.controls.QUESTION_NO.setValue(question.QUESTION_NO);
-        this.form.controls.SPECIFICATION.setValue(question.SPECIFICATION);
-        this.form.controls.SPECIFICATION_TYPE.setValue(question.SPECIFICATION_TYPE);
-        this.form.controls.MIN_RANGE.setValue(question.MIN_RANGE);
-        this.form.controls.MAX_RANGE.setValue(question.MAX_RANGE);
-        this.form.controls.PHOTO.setValue(question.PHOTO);
-        this.form.controls.DOCUMENT.setValue(question.DOCUMENT);
-        this.form.controls.OPTION_TYPE.setValue(question.OPTION_TYPE);
-        this.form.controls.CRITICALITY.setValue(question.CRITICALITY);
-        this.form.controls.OPTIONS.setValue(question.OPTIONS);
+        // this.form.controls.ACTUAL_TYPE.setValue(question.ACTUAL_TYPE);
+        // this.form.controls.ACTUAL.setValue(question.ACTUAL);
+        this.form.controls.QUESTION.setValue(question.Question);
+        this.form.controls.QUESTION_NO.setValue(question.QuestionNo );
+        this.form.controls.SPECIFICATION.setValue(question.Specification);
+        this.form.controls.SPECIFICATION_TYPE.setValue(question.OptionType);
+        this.form.controls.MIN_RANGE.setValue(question.MinRange);
+        this.form.controls.MAX_RANGE.setValue(question.MaxRange);
+        this.form.controls.Unit.setValue(question.RangeUnit);
+        this.form.controls.PHOTO.setValue(question.NeedPhoto);
+        // this.form.controls.DOCUMENT.setValue(question.DOCUMENT);
+        this.form.controls.OPTION_TYPE.setValue(question.OptionType);
+        this.form.controls.CRITICALITY.setValue(question.Criticality);
+        this.form.controls.OPTIONS.setValue(question.Options);
         this.cdr.detectChanges();
       }
   }
@@ -203,43 +213,47 @@ export class EditQuestionDialog {
       }
     }
     saveQuestion() {
+      this.formSubmitted = true 
       if (this.form['_status'] == 'VALID') {
       var obj: { [k: string]: any } = {};
-      obj.ACTUAL = this.form.value.ACTUAL;
-      obj.ACTUAL_OPTIONS = this.form.value.ACTUAL_OPTIONS;
+      // obj.ACTUAL = this.form.value.ACTUAL;
+      // obj.ACTUAL_OPTIONS = this.form.value.ACTUAL_OPTIONS;
       var actual_option_string = '';
 
-      for (var i = 0; i < obj.ACTUAL_OPTIONS.length; i++) {
-        actual_option_string = actual_option_string + obj.ACTUAL_OPTIONS[i].OPTION_DESCRIPTION + ',';
-      }
+      // for (var i = 0; i < obj.ACTUAL_OPTIONS.length; i++) {
+      //   actual_option_string = actual_option_string + obj.ACTUAL_OPTIONS[i].OPTION_DESCRIPTION + ',';
+      // }
       actual_option_string = actual_option_string.substr(0, actual_option_string.length - 1);
-      obj.ACTUAL_OPTIONS = actual_option_string;
-      obj.ACTUAL_TYPE = this.form.value.ACTUAL_TYPE;
+      
       obj.CRITICALITY = this.form.value.CRITICALITY;
-      obj.DOCUMENT = this.form.value.DOCUMENT;
+      obj.DOCUMENT = false;
       obj.MAX_RANGE = this.form.value.MAX_RANGE;
+      obj.Unit = this.form.value.Unit;
       obj.MIN_RANGE = this.form.value.MIN_RANGE;
-      obj.OPTIONS = "OK,NOT OK";
       obj.OPTION_TYPE = this.form.value.OPTION_TYPE;
       obj.PHOTO = this.form.value.PHOTO;
       obj.QUESTION = this.form.value.QUESTION;
       obj.QUESTION_NO = this.form.value.QUESTION_NO;
       obj.SPECIFICATION = this.form.value.SPECIFICATION;
-      obj.SPECIFICATION_OPTIONS = this.form.value.SPECIFICATION_OPTIONS;
+      obj.OPTIONS = this.form.value.SPECIFICATION_OPTIONS;
       var specification_option_string = '';
-      for (var i = 0; i < obj.SPECIFICATION_OPTIONS.length; i++) {
-        specification_option_string = specification_option_string + obj.SPECIFICATION_OPTIONS[i].OPTION_DESCRIPTION + ',';
+      for (var i = 0; i < obj.OPTIONS.length; i++) {
+        specification_option_string = specification_option_string + obj.OPTIONS[i].OPTION_DESCRIPTION + ',';
 
       }
       specification_option_string = specification_option_string.substr(0, specification_option_string.length - 1);
-       obj.SPECIFICATION_OPTIONS = specification_option_string;
-      obj.SPECIFICATION_TYPE = this.form.value.SPECIFICATION_TYPE;
+       obj.OPTIONS = specification_option_string;
+      obj.OPTION_TYPE = this.form.value.SPECIFICATION_TYPE;
       if (this.data.question) {
-            this.api_service.updateQuestion(this.data.question.QUESTION_ID, obj).subscribe(
+        debugger;
+            this.api_service.updateQuestion(this.data.question.Id, obj).subscribe(
             data => {
+              this.formSubmitted = false
               setTimeout(()=>{
-                this.Notification = 'Question Edited Successfully';
-                this.display = true; 
+                toastr.success('Question Edited Successfully', 'Success');
+                this.dialogRef.close(true);
+                //this.Notification = 'Question Edited Successfully';
+                //this.display = true; 
               }, 400);
             },
             err => {
@@ -254,8 +268,10 @@ export class EditQuestionDialog {
                 else
                 {
                   setTimeout(()=>{
-                    this.Notification = 'Question Edit Failed';
-                    this.display = true;
+                    toastr.error('Question Edit Failed', 'Error');
+                    this.dialogRef.close(false);
+                   // this.Notification = 'Question Edit Failed';
+                   // this.display = true;
                   }, 400);
                 }
             });
@@ -264,8 +280,10 @@ export class EditQuestionDialog {
             data => {
               //this.snackbar.open('Question Added Successfully', 'Ok', this.config);  
               setTimeout(()=>{
-              this.Notification = 'Question Added Successfully';
-              this.display = true; 
+                toastr.success('Question Added Successfully', 'Success');
+                this.dialogRef.close(true);
+              //this.Notification = 'Question Added Successfully';
+              //this.display = true; 
             }, 400);
             },
             err => {
@@ -280,8 +298,10 @@ export class EditQuestionDialog {
                 else
                 {
                   setTimeout(()=>{
-                    this.Notification = 'Question Add Failed';
-                    this.display = true; 
+                    toastr.error('Question Add Failed', 'Error');
+                    this.dialogRef.close(false);
+                    //this.Notification = 'Question Add Failed';
+                    //this.display = true; 
                   }, 400);
                 }
             });
@@ -470,5 +490,12 @@ export class EditQuestionDialog {
       arrayControl.removeAt(0);
       this.form.controls.ACTUAL_TYPE.setValue('text');
     }
+  }
+
+  getAllSpecifications(){
+    this.api_service.getAllSpecifications().subscribe(
+      data => {
+        this.Specifications=data.data;
+      })
   }
 }

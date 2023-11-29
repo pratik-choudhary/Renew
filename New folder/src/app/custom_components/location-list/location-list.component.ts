@@ -157,7 +157,7 @@ export class LocationModelListComponent {
         }
         if(this.feeders.length == 0)
         {
-          this.Notification = 'Please add feeders for this site from HOTO Configuration';
+          this.Notification = 'Please add feeders for this site from DIGIROM Configuration';
           this.display = true;
         }
       }

@@ -1,0 +1,20 @@
+<!-- <div style="background:#1b5e20;height:40px;" color="primary">
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Attachment</div>
+    </div>
+    <div>
+      <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+        (click)="closeDialog()">close</md-icon>
+    </div>
+  </div>
+</div> -->
+<md-dialog-content style="height: 450px;padding: 0 13px" (click)="closeDialog()">
+  <!-- <create-area (notify)='onNotify($event)' [parentInput]="parentInput" (title)="getTitle($event)"></create-area> -->
+  <div fxLayout="row" style="margin-top: 10px">
+    <div fxFlex="33%" class="image-container">
+        <img [src]="imageUrl" alt="Image 1" width="615" height="402" (dblclick)="openDialog($event)">
+    </div>
+
+</div>
+</md-dialog-content>

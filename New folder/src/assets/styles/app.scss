@@ -9,6 +9,8 @@
 @import "scss/material";
 @import "scss/utilities/utilities";
 
+
+
 // #surveyElement {	
 //  	@import "scss/_bootstrap.css";
 // }		
@@ -33,6 +35,7 @@
 }
 .mat-dialog-content{
 	margin: 0 0 !important;
+
 }
 .mat-dialog-container {
 	padding: 0 !important;
@@ -57,7 +60,7 @@ label{
 	color:#23375b !important;
 }
 .suzlon-green-fg{
-	color:#01978C !important;
+	color:#10673a !important;
 }
 .suzlon-black-fg{
 	color:#2B2A29 !important;
@@ -79,7 +82,7 @@ label{
     color: #f5d36f;
 }
 .suzlon-green-bg{
-	background: #01978C !important;
+	background: #10673a !important;
 }
 .suzlon-black-bg{
 background: #2B2A29 !important;
@@ -90,13 +93,13 @@ background: #2B2A29 !important;
 .suzlon-button{
 	box-shadow: none !important;
     background: #fff !important;
-    color: #01978c !important;
-	border: 2px solid #01978c !important;
+    color: #10673a !important;
+	border: 2px solid #10673a !important;
 	border-radius: 7px !important;
 	font-weight: bold !important;
 	&:hover{
 		color:#fff !important;
-		background:#01978c !important;
+		background:#10673a !important;
 		border: none; 
 		svg{
 		 fill:#fff !important;	
@@ -106,8 +109,8 @@ background: #2B2A29 !important;
 .suzlon-button-small{
 	box-shadow: none !important;
     background: #fff !important;
-    color: #01978c !important;
-	border: 2px solid #01978c !important;
+    color: #10673a !important;
+	border: 2px solid #10673a !important;
 	border-radius: 7px !important;
 	font-weight: bold !important;
 	line-height: 30px;
@@ -115,7 +118,7 @@ background: #2B2A29 !important;
     padding: 0 12px;
 	&:hover{
 		color:#fff !important;
-		background:#01978c !important;
+		background:#10673a !important;
 		border: none; 
 		svg{
 		 fill:#fff !important;	
@@ -138,6 +141,22 @@ background: #2B2A29 !important;
   border: solid 1px #707070;
   box-shadow: 0 0 5px 1px #969696;
 }
+.suzlon-input input[type="email"] {
+	display: block;
+	  margin: 0;
+	  width: 98%;
+	  padding: 7px;
+	  font-family: sans-serif;
+	  font-size: 14px;
+	  border: solid 1px #dcdcdc;
+	  transition: box-shadow 0.3s, border 0.3s;
+	  border-radius: 4px;
+  }
+  .suzlon-input input[type="email"]:focus {
+	outline: none;
+	border: solid 1px #707070;
+	box-shadow: 0 0 5px 1px #969696;
+  }
 
 .suzlon-input input[type="select"] {
 	display: block;
@@ -196,14 +215,14 @@ background: #2B2A29 !important;
 	width: 18px !important;
 }
 .mat-radio-checked .mat-radio-outer-circle{
-	border-color: #01978C !important;
+	border-color: #10673a !important;
 }
 .mat-radio-outer-circle{
 	height:18px !important;
 	width: 18px !important;
 }	
 .mat-radio-inner-circle{
-	background-color: #01978C !important;
+	background-color:#10673a !important;
 	height:18px !important;
 	width: 18px !important;
 }
@@ -222,7 +241,7 @@ background: #2B2A29 !important;
 	font-size: 11px;
 }	
 .mat-checkbox-checked.mat-accent .mat-checkbox-background{
-	background-color: #01978C !important;
+	background-color:#10673a !important;
 }
 .mat-input-infix{
 	font-size:12px !important;
@@ -410,6 +429,27 @@ app-checklist , #assign-project{
 	background-color: #fff !important;
   }
 }
+.ui-dialog .ui-dialog-footer button.ui-button {
+	border:none;
+    background-color:#1b5e20 !important;
+    color: #fff !important;; /* Text color for the button */
+}
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+    color: #fff !important;
+}
+
+/* Change header color */
+.ui-dialog .ui-dialog-titlebar {
+	border:none;
+    background-color: #1b5e20 !important;
+    color: white !important;; /* Text color for the header */
+}
+.ui-dialog {
+    border: none !important;
+}
+.ui-paginator .ui-paginator-page.ui-state-active{
+	background-color: #1b5e20 !important;
+}
 #location-plan{
 	.ui-datatable tbody > tr.ui-widget-content.ui-datatable-odd {
 		background-color: #fff !important;
@@ -495,4 +535,27 @@ app-checklist , #assign-project{
 }
 .mat-dialog-container{
   height: auto !important;
+}
+.toast {
+	font-size: 13px !important;; /* Adjust the font size as needed */
+	font-family: inherit !important;; /* Maintain the same font family as the default */
+	color: white !important; /* Maintain the default text color */
+  }
+  
+  /* Override the font size for Toastr title */
+  .toast-title {
+	font-size: 15px !important; /* Adjust the title font size as needed */
+  }
+  .toast-success {
+	background-color:#1d9026 !important;;
+  }
+  #toast-container>div {
+	opacity: 1 !important;
+	box-shadow: none !important;
+	border-radius: 14px !important;
+	padding: 5px 5px 5px 50px;
+  }
+  .toast-top-right {
+    top: 12px !important;
+    right: 20px !important;
 }

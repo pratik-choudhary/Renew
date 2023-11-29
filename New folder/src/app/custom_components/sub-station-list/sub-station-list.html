@@ -78,10 +78,10 @@
                 <ng-template let-rowData="rowData" pTemplate="body" let-rowIndex="rowIndex">
                     <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
                         <md-icon *ngIf="rowData.id == null || rowData.id == 0" (click)="deleteEmptyRow(rowIndex)" class="icon-20 material-icons" style="cursor: no-drop;font-size: 20px;color: gray;">delete</md-icon>
-                        <div *ngIf="rowData.id !== null && rowData.id !== 0 && rowData.status != 'Started' && rowData.status != 'Completed' && rowData.status != 'Approved'" (click)="startSubstation(rowData.id,rowData.name)" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                        <div *ngIf="rowData.id !== null && rowData.id !== 0 && rowData.status != 'Started' && rowData.status != 'Completed' && rowData.status != 'Approved'" (click)="startSubstation(rowData.id,rowData.name)" style="background: #1b5e20;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
                             <a style="color:#fff">Start</a>
                         </div>
-                        <div *ngIf="rowData.id !== null && rowData.id !== 0 && rowData.status == 'Completed'" (click)="approveSubstation(rowData.id)" style="background: #26a69a;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
+                        <div *ngIf="rowData.id !== null && rowData.id !== 0 && rowData.status == 'Completed'" (click)="approveSubstation(rowData.id)" style="background: #1b5e20;padding: 2px 10px; border-radius: 4px;cursor: pointer;border: 1px solid #1e9c90;">
                             <a style="color:#fff">Approve</a>
                         </div>
                         <div *ngIf="rowData.status == 'Approved' && rowData.summary" class="green-circle">{{rowData.summary.ok}}</div>

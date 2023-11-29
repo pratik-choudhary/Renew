@@ -26,12 +26,12 @@
         shadow.inset = true;
         return result;
       }
-      result = scope.consumeLengthOrPercent(string);
+      var result = scope.consumeLengthOrPercent(string);
       if (result) {
         shadow.lengths.push(result[0]);
         return result;
       }
-      result = scope.consumeColor(string);
+      var result = scope.consumeColor(string);
       if (result) {
         shadow.color = result[0];
         return result;

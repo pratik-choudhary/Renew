@@ -7,13 +7,17 @@ import { ApiService } from 'app/services/api.service';
 import { DialogModule } from 'primeng/primeng';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { AuthGuard } from 'app/services/auth-guard';
+import * as toastr from 'toastr';
+
 @Component({
   selector: 'user-list',
   templateUrl: './user-list.html',
+  styleUrls: ['./user-list.scss'],
   providers: [ConfirmationService]
 })
 
 export class UserModelListComponent {
+  checklistForm: FormGroup
   @Input() data;
   userList: any;
   Notification: string;
@@ -28,30 +32,47 @@ export class UserModelListComponent {
       'value': 'Inactive'
     }
   ];
+  // roles = [
+  //   {
+  //     'label': 'Engineer',
+  //     'value': 'Engineer'
+  //   },
+  //   {
+  //     'label': 'PM',
+  //     'value': 'PM'
+  //   },
+  //   {
+  //     'label': 'HoD',
+  //     'value': 'HoD'
+  //   },
+  //   {
+  //     'label': 'QA',
+  //     'value': 'QA'
+  //   },
+  //   {
+  //     'label': 'ADMIN',
+  //     'value': 'ADMIN'
+  //   },
+  //   {
+  //     'label': 'Site_MIS',
+  //     'value': 'Site_MIS'
+  //   }
+  // ];
+  statusList = [
+    'Active', 'Inactive'
+  ];
   roles = [
     {
-      'label': 'Engineer',
-      'value': 'Engineer'
+      'role': 'Engineer'
     },
     {
-      'label': 'PM',
-      'value': 'PM'
+      'role': 'QA'
     },
     {
-      'label': 'HoD',
-      'value': 'HoD'
+      'role': 'ADMIN'
     },
     {
-      'label': 'QA',
-      'value': 'QA'
-    },
-    {
-      'label': 'ADMIN',
-      'value': 'ADMIN'
-    },
-    {
-      'label': 'Site_MIS',
-      'value': 'Site_MIS'
+      'role': 'SITE INCHARGE'
     }
   ];
   departments = [];
@@ -59,11 +80,26 @@ export class UserModelListComponent {
   departmentList: any;
   currentUser: any;
   departmentsCopy = [];
-  constructor(public dialog: MdDialog, private api_service: ApiService, private confirmationService: ConfirmationService, private auth_service: AuthGuard) {
+  isSeeHistoryDiv = true;
+  sites = [];
+  formSubmitted: boolean = false;
+  constructor(public dialog: MdDialog, private api_service: ApiService, private confirmationService: ConfirmationService, private auth_service: AuthGuard, private fb: FormBuilder,) {
     this.userList = [];
     this.rolesCopy = this.roles;
   }
   ngOnInit() {
+    this.getAllSite();
+    this.getAllDepartments();
+    this.checklistForm = this.fb.group({
+      name: ['', Validators.required],
+      emailId: ['', [Validators.required, Validators.email]],
+       password: [''],
+      department: ['', Validators.required],
+      role: ['', Validators.required],
+      Status: ['', Validators.required],
+      site: ['', Validators.required],
+      id: ['']
+    })
     this.getUsers();
     this.getDepartments();
     this.currentUser = this.auth_service.getUserInfo();
@@ -91,7 +127,7 @@ export class UserModelListComponent {
         this.api_service.checkStatus(err);
       });
   }
-  setDashboardUser(i: number) {    
+  setDashboardUser(i: number) {
     // if (this.userList[i].is_dashboard_user == true) {
     //   this.userList[i].is_dashboard_user = false;
     // }
@@ -101,15 +137,15 @@ export class UserModelListComponent {
     this.userList[i].saveFlag = true;
 
   }
-  getUsers() {    
+  getUsers() {
     this.api_service.getUsers().subscribe(
       data => {
         this.userList = [];
-        if (data != null) {
+        if (data.data != null) {
           this.userList = [];
           //data.reverse();
           var index = 0;
-          for (var i of data) {
+          for (var i of data.data) {
             var obj: { [k: string]: any } = {};
             obj.index = index;
             obj.employee_id = i.employee_id;
@@ -121,7 +157,13 @@ export class UserModelListComponent {
             obj.department = i.department;
             obj.department_id = i.department_id;
             obj.status = i.status;
-            obj.saveFlag = false;            
+            obj.saveFlag = false;
+            obj.siteNameList =[];
+            obj.siteIdList=[];
+            for(var site of i.siteList){
+              obj.siteNameList.push(site.Site);
+              obj.siteIdList.push(site.Id )
+            }
             this.userList.push(obj);
             index++;
           }
@@ -188,17 +230,23 @@ export class UserModelListComponent {
     }
     this.userList[i].saveFlag = true;
   }
+  lettersOnly(evnet) {
+
+  }
 
   onNotification() {
+    debugger;
     if (this.Notification == "User Updated Successfully") {
       this.display = false;
+      this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
       let save_count = this.userList.filter(x => x.saveFlag == true);
       if (save_count.length == 0) {
         this.getUsers();
       }
     }
-    if (this.Notification == "Failed to update" || this.Notification == "Invalid Roles") {
+    if (this.Notification == "User Update Failed" || this.Notification == "Invalid Roles") {
       this.display = false;
+      this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
     }
 
   }
@@ -237,51 +285,151 @@ export class UserModelListComponent {
       return false;
     }
   }
+  toggleDisplaySeeHistory() {
+    this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+  }
   saveEditUser(row, index) {
-    // console.log(row);
-    var obj: { [k: string]: any } = {};
-    obj.role = row.role;
-    var id;
-    for (var i of this.departmentList) {
-      if (i.name == row.department) {
-        id = i.id;
-        break;
-      }
-    }
-    obj.department_id = id;
-    obj.status = row.status;
-    obj.is_dashboard_user = row.is_dashboard_user;
-    if (this.validateRoles(obj.role, row.department) == false) {
-      this.confirmationService.confirm({
-        message: 'This will update user profile in the HOTO database. This may affect HOTO existing assignments.',
-        header: 'Confirmation',
-        icon: 'fa fa-info',
-        accept: () => {
-          this.api_service.updateUser(obj, row.user_id).subscribe(
-            data => {
-              if (data != null) {
-                this.userList.filter(x => x.user_id === row.user_id)[0].saveFlag = false;
-                setTimeout(() => {
-                  this.Notification = "User Updated Successfully";
-                  this.display = true;
-                }, 400);
-              }
-            },
-            err => {
-              // console.log(err);
-              this.api_service.checkStatus(err);
-              setTimeout(() => {
-                this.Notification = "Failed to update";
-                this.display = true;
-              }, 400);
-            });
-        }
-      });
-    }
-    else {
-      this.Notification = "Invalid Roles";
-      this.display = true;
-    }
+    debugger;
+    this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+    this.checklistForm.get('name').setValue(row.name);
+    this.checklistForm.get('emailId').setValue(row.email);
+    // this.checklistForm.get('password').setValue(row.name);
+    this.checklistForm.get('department').setValue(row.department_id);
+    this.checklistForm.get('role').setValue(row.role);
+    this.checklistForm.get('Status').setValue(row.status);
+     this.checklistForm.get('site').setValue(row.siteIdList);
+    this.checklistForm.get('id').setValue(row.user_id);
 
+
+
+
+
+    //console.log(row);
+
+
+
+    debugger;
+    // console.log(row);
+    // var obj: { [k: string]: any } = {};
+    // obj.role = row.role;
+    // var id;
+    // for (var i of this.departmentList) {
+    //   if (i.name == row.department) {
+    //     id = i.id;
+    //     break;
+    //   }
+    // }
+    // obj.department_id = id;
+    // obj.status = row.status;
+    // obj.is_dashboard_user = row.is_dashboard_user;
+    // if (this.validateRoles(obj.role, row.department) == false) {
+    //   this.confirmationService.confirm({
+    //     message: 'This will update user profile in the HOTO database. This may affect HOTO existing assignments.',
+    //     header: 'Confirmation',
+    //     icon: 'fa fa-info',
+    //     accept: () => {
+    //       this.api_service.updateUser(obj, row.user_id).subscribe(
+    //         data => {
+    //           if (data != null) {
+    //             this.userList.filter(x => x.user_id === row.user_id)[0].saveFlag = false;
+    //             setTimeout(() => {
+    //               this.Notification = "User Updated Successfully";
+    //               this.display = true;
+    //             }, 400);
+    //           }
+    //         },
+    //         err => {
+    //           // console.log(err);
+    //           this.api_service.checkStatus(err);
+    //           setTimeout(() => {
+    //             this.Notification = "Failed to update";
+    //             this.display = true;
+    //           }, 400);
+    //         });
+    //     }
+    //   });
+    // }
+    // else {
+    //   this.Notification = "Invalid Roles";
+    //   this.display = true;
+    // }
+
+  }
+  getAllSite() {
+    this.api_service.getAllSite().subscribe(
+      data => {
+        this.sites = data.data;
+      }, err => {
+        console.log(err);
+      });
+  }
+  getAllDepartments() {
+    this.api_service.getAllDepartments().subscribe(
+      data => {
+        this.departments = data.data;
+      },
+      err => {
+        console.log(err);
+        this.api_service.checkStatus(err);
+      });
+  }
+  submitUserForm() {
+    debugger
+    this.formSubmitted = true 
+    if (this.checklistForm.valid) {
+      debugger;
+      var obj = {
+        user_id: this.checklistForm.value.id,
+        name: this.checklistForm.value.name,
+        password: this.checklistForm.value.password,
+        employeeEmail: this.checklistForm.value.emailId,
+        department_id: this.checklistForm.value.department,
+        role: this.checklistForm.value.role,
+        status: this.checklistForm.value.Status,
+        siteIdList: this.checklistForm.value.site,
+        // siteIdList: [30083 ,30084,30085 ]
+      }
+      this.api_service.updateUser(obj, this.checklistForm.value.id).subscribe(
+        data => {
+          this.formSubmitted = false
+          if (data != null) {
+            // this.loadUsers();
+            setTimeout(() => {
+              toastr.success('User Updated Successfully', 'Success');
+              this.display = false;
+              this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+              let save_count = this.userList.filter(x => x.saveFlag == true);
+              if (save_count.length == 0) {
+                this.getUsers();
+              }
+              // this.Notification = "User Updated Successfully";
+              // this.display = true;
+            }, 400);
+          }
+        },
+        err => {
+          console.log(err);
+          this.api_service.checkStatus(err);
+          setTimeout(() => {
+            toastr.error('User Update Failed', 'Error');
+            this.display = false;
+            //this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+            // this.Notification = "User Update Failed";
+            // this.display = true;
+          }, 400);
+        });
+    }else{
+     
+      for (const key in this.checklistForm.controls) {
+        if (this.checklistForm.controls.hasOwnProperty(key)) {
+            const control = this.checklistForm.controls[key];
+            if (control.invalid) {
+                control.markAsDirty();
+                control.updateValueAndValidity({ onlySelf: true });
+            }
+        }
+    }
+    
+    }
   }
 }

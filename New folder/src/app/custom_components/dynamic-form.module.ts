@@ -24,6 +24,7 @@ import { FormSelectComponent } from './form-select/form-select.component';
 import { FormCheckboxComponent } from './form-checkbox/form-checkbox.component';
 import { FormRadioComponent } from './form-radio/form-radio.component';
 import {FormTextComponent } from './form-text/form-text.component';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {FormTextComponent } from './form-text/form-text.component';
     MdMenuModule,
     MdCheckboxModule,
     MdOptionModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    AutoCompleteModule
   ],
   declarations: [
     DynamicFieldDirective,

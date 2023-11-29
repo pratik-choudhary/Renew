@@ -1,4 +1,4 @@
-<div style="background:#26a69a;height:40px;" color="primary">
+<div style="background:#1b5e20;height:40px;" color="primary">
   <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
     <div>
       <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{modelName}}</div>
@@ -12,10 +12,10 @@
 
 <div *ngIf="!notificationFlag">
   <form fxLayout="column" [formGroup]="form" (ngSubmit)="createSection()" style="padding-top:10px;padding-bottom:25px">
-    <md-dialog-content style="height: auto;">
+    <md-dialog-content style="height: auto;overflow:hidden;">
 
-      <div fxLayout="column" fxLayoutAlign="space-evenly">
-
+      <div fxLayout="column" >
+<!-- 
         <div class="mb-1">
           <div class="suzlon-input">
             <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Number
@@ -35,14 +35,68 @@
             <input class="suzlon-input" type="text" [formControl]="form.controls['NAME']" style="width:100%">
           </div>
           <small *ngIf="form.controls['NAME'].hasError('required') && form.controls['NAME'].touched" class="mat-text-warn">Required.</small>
-        </div>
-
-
-
+        </div> -->
+        
+        <div >
+          <div  fxLayout="row"
+              style="margin-top:5px">
+              <div class="col-md-3">
+                  <div class="suzlon-input " style="width:135px">
+                      <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Category 1
+                          <small style="color: red;">*</small>
+                      </span>
+                      <select class="suzlon-input" formControlName="category1" placeholder="Select Category 1"
+                          style="width: 100%;
+                  padding: 6px;border-radius: 4px;border-color: #dcdcdc;" (change)="getAllCategory2s($event)">
+                          <option *ngFor="let category1 of category1s" [value]="category1">{{category1}}
+                          </option>
+                      </select>
+                      <span *ngIf="formSubmitted && !form.get('category1').valid"
+                          class="err-text validation-label">This
+                          field is required</span>
+                  </div>
+              </div>
+              <div class="col-md-3" style="margin-left: 50px;">
+                  <div class="suzlon-input " style="width:135px">
+                      <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Category 2
+                          <small style="color: red;">*</small>
+                      </span>
+                      <select class="suzlon-input" formControlName="category2" placeholder="Select Category 2"
+                          style="width: 100%;
+                  padding: 6px;border-radius: 4px;border-color: #dcdcdc;" (change)="getAllCategory3s($event)">
+                          <option *ngFor="let category2 of category2s" [value]="category2">{{category2}}
+                          </option>
+                      </select>
+                      <span *ngIf="formSubmitted && !form.get('category2').valid"
+                          class="err-text validation-label">This
+                          field is required</span>
+                  </div>
+              </div>
+              <div class="col-md-3" style="margin-left: 50px;">
+                  <div class="suzlon-input " style="width:135px">
+                      <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Category 3
+                          <small style="color: red;">*</small>
+                      </span>
+                      <select class="suzlon-input" formControlName="category3" placeholder="Select Category 3"
+                          style="width: 100%;
+                               padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                          <option *ngFor="let category3 of category3s" [value]="category3">{{category3}}
+                          </option>
+                      </select>
+                      <span *ngIf="formSubmitted && !form.get('category3').valid"
+                          class="err-text validation-label">This
+                          field is required</span>
+                  </div>
+              </div>
+          </div>
       </div>
+
+
+
+      </div> 
     </md-dialog-content>
-    <md-dialog-actions fxLayout="row" fxLayoutAlign="end center" style="margin-right:10px">
-      <button md-raised-button color="accent" [md-dialog-close]="false">Cancel</button>
+    <md-dialog-actions fxLayout="row" fxLayoutAlign="end center" style="margin-right:10px;margin-top: 20px">
+      <button md-raised-button style="background: #f5f5f5;" [md-dialog-close]="false">Cancel</button>
       <button md-raised-button color="primary" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
     </md-dialog-actions>
     <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">

@@ -58,14 +58,22 @@ export class SigninComponent implements OnInit {
     let pass = this.form.value.password;
 
     this.api_service.getUsersAuth(email, pass).subscribe(data => {
-      
-      if (data) {
+    //  data= {
+    //     "access_token": "BSrkAiEcOSCaI6JDhTvQYyWyF9RgyTwLLGc98mrF6i6y-g8LZMHHL0Se1wa7-AN92bhKuVzQl3Nnlnl0IpEO3L_lEAxoIDbn183URR1PMTRdHXB4cs0xFbQLc5BO2wpfQhEaaDDQm68i5lNCYd0pIzxAX4YJdQxKgcJD5hJ7n_mBQvYLhNc24cBS20ZC7vjbyfZUJ1W_fQo3yuT18H4LAoxO_xRXHMdYccDTvSOT-lo",
+    //     "token_type": "bearer",
+    //     "expires_in": 86399,
+    //     "userName": "t.pm",
+    //     "userId": "212",
+    //     ".issued": "Wed, 11 Oct 2023 14:44:21 GMT",
+    //     ".expires": "Thu, 12 Oct 2023 14:44:21 GMT"
+    // }
+       if (data) {
          localStorage.setItem('UserToken', JSON.stringify({ token: data.access_token}));
          //this.api_service.generateLocationDPRDashboard().subscribe(data=>{},err=>{});
          //this.api_service.generateHOTODashboard().subscribe(data=>{},err=>{});
          //this.api_service.generateDPRDashboard().subscribe(data => {},err=>{});             
-         this.router.navigate ( [ '/site-dashboard' ] );
-       }
+         this.router.navigate ( [ '/checklist' ] );
+        }
     },
     err => {
       var str = JSON.parse(err['_body']);

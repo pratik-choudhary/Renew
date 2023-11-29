@@ -12,7 +12,7 @@
 	font-size: 15px;
   text-decoration:underline;
 	&:hover{
-		color: #01978c;
+		color: #10673a;
 		cursor:pointer;
 	}
 }
@@ -22,7 +22,7 @@
 .filter-button{
   md-chip {
     width: 90px;
-    background-color: #26a69a;
+    background-color: #1b5e20;
   }
   .mat-icon{
     height:20px !important;
@@ -95,7 +95,7 @@
   padding: 5px 0 5px 30px;
   background: brown; /* fallback color */
   //background: hsla(34,85%,35%,1); 
-  background: #01978c; 
+  background:#10673a; 
   position: relative; 
   display: block;
   float: left;
@@ -108,7 +108,7 @@
   border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
   border-bottom: 50px solid transparent;
   //border-left: 30px solid hsla(34,85%,35%,1);
-  border-left: 25px solid #01978c;
+  border-left: 25px solid #10673a;
   position: absolute;
   top: 50%;
   margin-top: -50px; 

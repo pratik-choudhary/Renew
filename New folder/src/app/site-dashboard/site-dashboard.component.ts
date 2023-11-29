@@ -254,7 +254,7 @@ export class CreateSiteComponent implements OnInit {
 
   generateDPRLocationDashboard()
   {
-    this.api_service.generateLocationDPRDashboard().subscribe(data=>{},err=>{});
+    //this.api_service.generateLocationDPRDashboard().subscribe(data=>{},err=>{});
   }
 
   ngOnInit() {

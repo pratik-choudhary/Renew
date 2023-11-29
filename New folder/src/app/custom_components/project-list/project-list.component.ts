@@ -8,7 +8,7 @@ import {ApiService} from 'app/services/api.service';
 import { AddProjectDialog } from 'app/Dialogs/Project/project-dialog.component';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import {ConfirmDialogModule, ConfirmationService} from 'primeng/primeng';
-import { DialogModule} from  'primeng/primeng';
+//import { DialogModule} from  'primeng/primeng';
 import { AuthGuard } from 'app/services/auth-guard';
 
 

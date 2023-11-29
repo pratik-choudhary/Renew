@@ -24,18 +24,18 @@
             fxLayoutAlign="space-between">
         </div>
         <div *ngIf="selectedContent=='section'" style="margin-top: -20px;">
-            <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
+            <!-- <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
                 (click)="uploadExcelDialog()">
                 <md-icon class="material-icons">arrow_upward</md-icon>
                 <span>Import from Excel</span>
-            </button>
-            <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
+            </button> -->
+            <!-- <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
                 (click)="openImportMilestoneDialog()">
                 <md-icon class="material-icons">arrow_downward</md-icon>
                 <span>Import Milestone</span>
-            </button>
+            </button> -->
 
-            <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
+            <button *ngIf="status_of_selected_checklist === 'Draft'" md-raised-button class="suzlon-button-small"
                 (click)="createDialog()">
                 <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
                 <span>Add Milestone</span>
@@ -50,22 +50,25 @@
             <div *ngIf="selectedContent=='checklist'" fxLayout="row" fxLayoutAlign="space-between"
                 style="padding:6px 10px;">
                 <div fxLayout="row" fxGap="5px">
-                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <i class="fa fa-search" style="margin:4px 4px 0 0;font-size: 23px"></i>
                     <input type="text" pInputText size="30" [(ngModel)]="searchTerm" (ngModelChange)="search()"
-                        placeholder="Search by checklist">
+                        placeholder="Search By Checklist Name">
                     <div style="margin-left: 20px;margin-top: auto;margin-bottom: auto;">
-                        <label for="">Model No</label>
-                        <select>
-                            <option [ngValue]="true">001</option>
-                            <option [ngValue]="false">002</option>
+                        <label for="">Model</label>
+                        <select style="width: 100px" (change)="getAllChecklists()" [(ngModel)]="selectedModel"
+                            name="model" placeholder="Select Model">
+                            <option *ngFor="let model of models" [value]="model">{{model}}
+                            </option>
                         </select>
                     </div>
                     <div style="margin-left: 20px;margin-top: auto;margin-bottom: auto;">
                         <label for="">PM Type</label>
-                        <select>
-                            <option [ngValue]="true">m1</option>
-                            <option [ngValue]="false">m2</option>
-                            <option [ngValue]="false">m3</option>
+
+                        <select style="width: 100px" (change)="getAllChecklists()" [(ngModel)]="selectedMaintenanceType"
+                            name="maintenanceType" placeholder="Select Model">
+                            <option *ngFor="let manintenancetype of maintenanceTypes" [value]="manintenancetype.Id">
+                                {{manintenancetype.PmType1}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -76,8 +79,17 @@
                         {{checklists.length}}</div>
                     <!-- <md-icon class="material-icons" (click)="openDialog()" style="color: #00968c;cursor: pointer;">add_box</md-icon> -->
                     <button
-                        style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background: #26a69a;"
-                        (click)="openDialog()">Create New Checklist</button>
+                        style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background:#f6f7f9;;color: #10673a;border: none"
+                        (click)="downloadTemplate()" title="Download  Template"> <md-icon
+                            style="font-size: 32px;">download</md-icon></button>
+                    <button
+                        style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background:#f6f7f9;;color: #10673a;border: none"
+                        (click)="uploadExcelDialog()" title="Import Checklist Excel" > <md-icon
+                            style="font-size: 32px;">upload</md-icon></button>
+                    <button
+                        style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background:#f6f7f9;;color: #10673a;border: none"
+                        (click)="openDialog()" title="Create New Checklist"><md-icon
+                            style="font-size: 32px;">add_circle</md-icon></button>
 
                     <!-- <div style="margin-top: 2px;color: #00978c;text-decoration: underline;cursor: pointer" [mdMenuTriggerFor]="menu">Filter</div>
                     <md-icon class="material-icons" style="color: #00968c;cursor: pointer" [mdMenuTriggerFor]="menu">arrow_drop_down</md-icon> -->
@@ -117,75 +129,107 @@
             <p-dataTable *ngIf="selectedContent=='checklist'" #dt [value]="checklists" [rows]="10" [paginator]="true"
                 [responsive]="true" [immutable]="false" [globalFilter]="gb" sortMode="multiple">
                 <!--(onPage)="paginate($event)" [(first)]="first"-->
-                <p-column field="CHECKLIST.MODEL.name" header="Model" [sortable]="true"
-                    [style]="{'width':'85px','word-wrap': 'break-word'}"></p-column>
-                <p-column field="CHECKLIST.DEPARTMENT.name" header="Department" [sortable]="true"
-                    [style]="{'width':'85px'}"></p-column>
-                <p-column field="STAGE.STAGE_NAME" header="Stage" [style]="{'word-wrap': 'break-word','width':'80px'}"
+                <p-column field="CHECKLIST.ModelName" header="Model" [sortable]="true"
+                    [style]="{'width':'100px','word-wrap': 'break-word'}"></p-column>
+                <!-- <p-column field="CHECKLIST.DEPARTMENT.name" header="Department" [sortable]="true"
+                    [style]="{'width':'85px'}"></p-column> -->
+                <!-- <p-column field="STAGE.STAGE_NAME" header="Stage" [style]="{'word-wrap': 'break-word','width':'80px'}"
+                    [sortable]="true"></p-column> -->
+                <p-column field="CHECKLIST.Name" header="Name" [style]="{'width':'180px','word-wrap': 'break-word'}"
                     [sortable]="true"></p-column>
-                <p-column field="CHECKLIST.NAME" header="Name" [style]="{'word-wrap': 'break-word'}"
-                    [sortable]="true"></p-column>
-                <p-column field="CHECKLIST.VERSION" header="Revision" [sortable]="true"
-                    [style]="{'width':'65px'}"></p-column>
-                <p-column field="CHECKLIST.STATUS" [sortable]="true" [style]="{'width':'60px'}">
+                <p-column field="CHECKLIST.Version" header="Revision" [sortable]="true"
+                    [style]="{'width':'100px'}"></p-column>
+                <p-column field="CHECKLIST.Status" [sortable]="true" [style]="{'width':'120px'}">
                     <ng-template pTemplate="header">Status</ng-template>
                     <ng-template let-row="rowData" pTemplate="body">
-                        <div [ngClass]="{'color-yellow-text':row.CHECKLIST.STATUS=='draft','color-green-text':row.CHECKLIST.STATUS=='published'}"
-                            style="text-transform:capitalize;">{{row.CHECKLIST.STATUS}}</div>
+                        <div [ngClass]="{'color-yellow-text':row.CHECKLIST.Status=='draft','color-green-text':row.CHECKLIST.status=='published'}"
+                            style="text-transform:capitalize;">{{row.CHECKLIST.Status}}</div>
                     </ng-template>
                 </p-column>
-                <p-column field="CHECKLIST.CREATER.name" header="Created By" [sortable]="true"
-                    [style]="{'width':'100px'}"></p-column>
-                <p-column field="CHECKLIST.CREATED_DATE" header="Created Date" [style]="{'width':'90px'}"
+                <p-column field="CHECKLIST.CheckedBy" header="Created By" [sortable]="true"
+                    [style]="{'width':'170px'}"></p-column>
+                <p-column field="CHECKLIST.CreatedAt" header="Created Date" [style]="{'width':'120px'}"
                     [sortable]="true">
                     <ng-template pTemplate="header">
                         Created Date
                     </ng-template>
                     <ng-template let-col let-row="rowData" pTemplate="body">
-                        {{row.CHECKLIST.CREATED_DATE|date:'dd-MMM, yyyy' }}
+                        {{row.CHECKLIST.CreatedAt|date:'dd-MMM, yyyy' }}
                     </ng-template>
                 </p-column>
-                <p-column field="CHECKLIST.LAST_UPDATED_DATE" header="Last Updated Date" [style]="{'width':'90px'}"
+                <p-column field="CHECKLIST.LastUpdatedDate" header="Last Updated Date" [style]="{'width':'145px'}"
                     [sortable]="true">
                     <ng-template pTemplate="header">
                         Last Updated Date
                     </ng-template>
                     <ng-template let-col let-row="rowData" pTemplate="body">
-                        {{row.CHECKLIST.LAST_UPDATED_DATE|date:'dd-MMM, yyyy' }}
+                        {{row.CHECKLIST.LastUpdatedDate|date:'dd-MMM, yyyy' }}
                     </ng-template>
                 </p-column>
-                <p-column header="Total Milestones" [style]="{'width':'80px'}">
+                <p-column header="Total Milestones" [style]="{'width':'50px'}">
                     <ng-template pTemplate="header">
-                        Total Milestones
+                        View
                     </ng-template>
                     <ng-template let-col let-row="rowData" pTemplate="body">
                         <div fxLayout="row" style="text-decoration:underline;cursor:pointer"
-                            (click)="openSections(row.CHECKLIST.NAME,row.CHECKLIST.CHECKLIST_ID,row.CHECKLIST.STATUS)">
-                            <div>{{row.CHECKLIST.SECTION_COUNT}}</div>
+                            (click)="openSections(row.CHECKLIST.Name,row.CHECKLIST.ChecklistId,row.CHECKLIST.Status)">
+                            <!-- <div>{{row.checklist.SECTION_COUNT}}</div> -->
                             <div style="margin-left: 11px;margin-top: -14px;">
                                 <md-icon class="icon-20 material-icons"
-                                    style="color:gray;margin-top: 12px;font-size: 20px;">visibility</md-icon>
+                                    style="color:gray;margin-top: 18px;font-size: 20px;"
+                                    title="View">visibility</md-icon>
                             </div>
                         </div>
                     </ng-template>
                 </p-column>
-                <p-column header="Pre-requisite" [style]="{'width':'50px'}">
+                <p-column header="Action" [style]="{'width':'50px'}">
+                    <ng-template pTemplate="header">
+                        Action
+                    </ng-template>
+                    <ng-template let-col let-row="rowData" pTemplate="body">
+                        <div fxLayout="row" style="text-decoration:underline;cursor:pointer"
+                            (click)="openNewChecklistVersionDialog(row.CHECKLIST.ChecklistId,row.CHECKLIST.Version,row.CHECKLIST.ModelName,row.CHECKLIST.Status)">
+                            <!-- <div>{{row.checklist.SECTION_COUNT}}</div> -->
+                            <div style="margin-left: 11px;margin-top: -14px;" *ngIf="row.CHECKLIST.Status=='Draft'">
+                                <md-icon class="icon-20 material-icons"
+                                    style="color:gray;margin-top: 16px;font-size: 24px;"
+                                    title="Publish">publish</md-icon>
+                            </div>
+                            <div style="margin-left: 11px;margin-top: -14px;" *ngIf="row.CHECKLIST.Status=='Published'">
+                                <md-icon class="icon-20 material-icons"
+                                    style="color:gray;margin-top: 16px;font-size: 20px;"
+                                    title="Create New Revision">add_box</md-icon>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <!-- <ng-template let-col let-row="rowData" pTemplate="body" >
+                        <div fxLayout="row" style="text-decoration:underline;cursor:pointer"
+                            (click)="openNewChecklistVersionDialog(row.CHECKLIST.ChecklistId,row.CHECKLIST.Version,row.CHECKLIST.ModelName)">
+                          
+                            <div style="margin-left: 11px;margin-top: -14px;" *ngIf="row.CHECKLIST.Status=='Published'">
+                                <md-icon class="icon-20 material-icons"
+                                    style="color:gray;margin-top: 12px;font-size: 20px;" title="Create New Revision">add_circle</md-icon>
+                            </div>
+                        </div>
+                    </ng-template> -->
+                </p-column>
+                <!-- <p-column header="Pre-requisite" [style]="{'width':'50px'}">
                     <ng-template let-col let-row="rowData" pTemplate="body">
                         <md-icon *ngIf="row.CHECKLIST.is_prerequisite == '1'" class="icon-20 material-icons"
                             style="color:lightgreen;margin-top: 12px;font-size: 20px;">check</md-icon>
                     </ng-template>
-                </p-column>
-                <p-column header="IMIC" [style]="{'width':'50px'}">
+                </p-column> -->
+                <!-- <p-column header="IMIC" [style]="{'width':'50px'}">
                     <ng-template let-col let-row="rowData" pTemplate="body">
                         <md-icon *ngIf="row.CHECKLIST.is_imic == '1'" class="icon-20 material-icons"
                             style="color:lightgreen;margin-top: 12px;font-size: 20px;">check</md-icon>
                     </ng-template>
-                </p-column>
-                <p-column [style]="{'word-wrap': 'break-word'}">
-                    <ng-template pTemplate="header">
-                    </ng-template>
-                    <ng-template let-col let-row="rowData" pTemplate="body" let-i="rowIndex">
-                        <div *ngIf="row.CHECKLIST.STATUS!='published'">
+                </p-column> -->
+                <!-- <p-column [style]="{'word-wrap': 'break-word'}"> -->
+                <!-- <ng-template pTemplate="header"> -->
+                <!-- </ng-template> -->
+                <!-- <ng-template let-col let-row="rowData" pTemplate="body" let-i="rowIndex"> -->
+                <!-- <div *ngIf="row.CHECKLIST.status!='published'">
                             <div fxLayout="row" fxLayoutGap="2px" fxLayoutWrap>
                                 <div *ngIf="row.CHECKLIST.SECTION_COUNT > 0" class="publish-button"
                                     (click)="publishChecklistStatus(row.CHECKLIST.CHECKLIST_ID)">
@@ -199,8 +243,8 @@
                                     <a>Delete</a>
                                 </div>
                             </div>
-                        </div>
-                        <div *ngIf="row.CHECKLIST.STATUS =='published'">
+                        </div> 
+                        <div *ngIf="row.CHECKLIST.status =='published'">
                             <div class="publish-button" fxLayout="row" style="width:77%;" fxLayoutWrap
                                 (click)="openNewChecklistVersionDialog(row.CHECKLIST.CHECKLIST_ID,row.CHECKLIST.VERSION,row.CHECKLIST.DEPARTMENT.id,row.CHECKLIST.MODEL.id,row.STAGE.STAGE_ID)">
                                 <a>Create New Revision </a>
@@ -210,9 +254,9 @@
                                     class="icon-20 material-icons" style="color:gray;margin-top: 12px;font-size: 20px;    margin-left: 20px;
                                 padding: 2px;">insert_drive_file</md-icon>
                             </div>
-                        </div>
-                    </ng-template>
-                </p-column>
+                        </div> -->
+                <!-- </ng-template> -->
+                <!-- </p-column> -->
             </p-dataTable>
 
         </div>
@@ -228,7 +272,7 @@
                 <div fxLayout="row" fxGap="5px" style="padding: 4px;">
                     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
                     <input type="text" pInputText size="30" [(ngModel)]="searchTermMilestone"
-                        (ngModelChange)="searchMilestone()" placeholder="Search by milestone">
+                        (ngModelChange)="searchMilestone()" placeholder="Search By Milestone">
                     <div *ngIf="sections != undefined && sections != null"
                         style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:2px">Total Count
                         {{sections.length}}</div>
@@ -237,14 +281,14 @@
             <div *ngIf="sections.length==0" class="empty-div px-10">
                 <span>No section in this checklist</span>
             </div>
-            <div fxLayout="row" fxLayoutAlign="start center" style="margin-left: 8px;" *ngIf="sections.length >0">
+            <!-- <div fxLayout="row" fxLayoutAlign="start center" style="margin-left: 8px;" *ngIf="sections.length >0">
                 <div *ngIf="!expandFlag"
                     style="font-size: 11px;margin-top: 2px;margin-right: 20px;color: #00978c;text-decoration: underline;cursor: pointer;"
                     (click)="openAllMilestones()">Expand</div>
                 <div *ngIf="expandFlag"
                     style="font-size: 11px;margin-top: 2px;margin-right: 20px;color: #00978c;text-decoration: underline;cursor: pointer;"
                     (click)="collapseMilestones()">Collapse</div>
-            </div>
+            </div> -->
             <div *ngIf="!expandFlag">
                 <md-card *ngFor="let section of sections" class="card-block">
                     <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom: 8px;">
@@ -257,35 +301,48 @@
                             </div>
                             <div fxLayout="column" fxLayoutAlign="start center" style="padding-top:8px;">
                                 <div class="secondary-text">No.</div>
-                                <div class="fs-12">{{section.MILESTONE_NO}}</div>
+                                <div class="fs-12">{{section.MilestoneNo}}</div>
                             </div>
                             <div>
-                                <md-card-subtitle>Milestone Name</md-card-subtitle>
+                                <md-card-subtitle>Category1</md-card-subtitle>
                                 <md-card-title
-                                    style="width:250px;word-wrap: break-word;">{{section.NAME}}</md-card-title>
+                                    style="width:120px;word-wrap: break-word;">{{section.Category1}}</md-card-title>
+                            </div>
+                            <div>
+                                <md-card-subtitle>Category2</md-card-subtitle>
+                                <md-card-title
+                                    style="width:120px;word-wrap: break-word;">{{section.Category2}}</md-card-title>
+                            </div>
+                            <div>
+                                <md-card-subtitle>Category3</md-card-subtitle>
+                                <md-card-title
+                                    style="width:120px;word-wrap: break-word;">{{section.Category3}}</md-card-title>
                             </div>
                         </div>
                         <div fxLayout="column" fxLayoutAlign="start center" style="padding-top:8px;">
                             <div class="secondary-text">Created By</div>
-                            <div class="fs-12" *ngIf="section.CREATER">{{section.CREATER.name}}</div>
+                            <div class="fs-12" *ngIf="section.CreatedBy">{{section.CreatedBy}}</div>
                         </div>
                         <div fxLayout="column" fxLayoutAlign="start center" style="padding-top:8px;margin-right: 10px;">
                             <div class="secondary-text">Created At</div>
-                            <div class="fs-12">{{section.CREATED_TIME|date:'dd-MMM, yyyy'}}</div>
+                            <div class="fs-12">{{section.CreatedAt|date:'dd-MMM, yyyy'}}</div>
                         </div>
                         <!-- <div class="section-count-div" (click)="openItemsFromSection(section)">
             <span>Questions: </span><span>{{section.CHECKLIST_ITEM.length}}</span>
             </div> -->
-                        <div *ngIf="status_of_selected_checklist != 'published'" style="display: flex;"
+                        <div *ngIf="status_of_selected_checklist === 'Draft'" style="display: flex;"
                             class="section-count-div">
+                            <!-- <button
+                    style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background: #10673a;"
+                     title="Add question" (click)="openQuestionPopup(section)"></button> -->
                             <div (click)="openQuestionPopup(section)">Add question</div>
-                            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="2px">
+                            <!-- <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="2px">
                                 <md-icon (click)="editDialog(section)" svgIcon="pencil" class="icon-20"
                                     style="cursor:pointer;margin-top: -2px !important;margin-left: 10px !important;margin-right: -25px !important;"></md-icon>
                                 <md-icon *ngIf="currentUser.role == 'admin'" (click)="deleteMilestoneDialog(section)"
                                     svgIcon="delete" class="icon-20"
                                     style="cursor:pointer;margin-top: -2px !important;margin-left: 10px !important;margin-right: -25px !important;color:#23375b"></md-icon>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div [ngClass]="{'hide-element':expanded_milestone!= section}"
@@ -296,19 +353,21 @@
                                     <div fxLayout="row" fxGap="5px">
                                         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
                                         <input [(ngModel)]="searchTermQuestion" (ngModelChange)="searchQuestions()"
-                                            type="text" pInputText size="30" placeholder="Search by question">
+                                            type="text" pInputText size="30" placeholder="Search By Question">
                                     </div>
                                 </div>
                             </div>
 
-                            <p-dataTable [value]="checklist_items" [responsive]="true" sortableRowGroup="false"
-                                rowGroupMode="subheader" groupField="ACTIVITY_ID" [sortableRowGroup]="false"
-                                [globalFilter]="gb3">
-                                <ng-template pTemplate="rowgroupheader" let-rowData>
-                                    <div style="display:flex">
-                                        <div style="width: calc(100% - 40px);">{{rowData['SORT_LEVEL']}})
-                                            {{rowData['ACTIVITY']}}</div>
-                                        <div *ngIf="status_of_selected_checklist != 'published'"
+
+                            <!-- <p-dataTable *ngIf="selectedContent=='checklist'" #dt [value]="checklists" [rows]="10" [paginator]="true"
+                            [responsive]="true" [immutable]="false" [globalFilter]="gb" sortMode="multiple"> -->
+                            <p-dataTable [value]="checklist_items" #dt sortMode="multiple" [responsive]="true"
+                                [immutable]="false" [globalFilter]="gb3" [paginator]="false">
+                                <!-- <ng-template pTemplate="rowgroupheader" let-rowData>
+                                    <div style="display:flex"> -->
+                                <!-- <div style="width: calc(100% - 40px);">{{rowData['SORT_LEVEL']}})
+                                            {{rowData['ACTIVITY']}}</div> -->
+                                <!-- <div *ngIf="status_of_selected_checklist != 'published'"
                                             style="margin-left:-140px">
                                             <div style="margin-left:248px">
                                                 <div (click)="addGroupTemplateInActivity(section,rowData)"
@@ -318,67 +377,84 @@
                                                         class="icon-20-without-padding blue-svg"></md-icon>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div style="margin-left:-160px" fxLayout="row">
+                                        </div> -->
+                                <!-- <div style="margin-left:-160px" fxLayout="row">
                                             <md-icon
                                                 *ngIf="status_of_selected_checklist != 'published' && currentUser.role == 'admin'"
                                                 (click)="openGroupQuestionDeletePopup(rowData.ACTIVITY_ID)"
                                                 svgIcon="delete" class="icon-20-without-padding"
                                                 style="cursor:pointer;margin-left:50px;margin-top:-4px;"></md-icon>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                                <p-column header="No." [style]="{'width':'50px'}">
+                                        </div> -->
+                                <!-- </div>
+                                </ng-template> -->
+                                <p-column [style]="{'width':'50px'}" [styleClass]="{'custom-header-class': true}">
+                                    <template let-col let-row="rowData" pTemplate="header">
+                                        <p style="font-weight: 900;color: black;"> No.</p>
+                                    </template>
                                     <template let-col let-row="rowData" pTemplate="body">
                                         <span
                                             *ngIf="row['SORT_LEVEL'] && row['HAS_CHILD']">{{row['SORT_LEVEL']}}.</span>
-                                        <span>{{row.QUESTION_NO}}</span>
+                                        <span>{{row.QuestionNo}}</span>
                                     </template>
                                 </p-column>
-                                <p-column header="Question">
+                                <p-column>
+                                    <ng-template pTemplate="header">
+                                        <div style="font-weight: 900; color: black;">Question</div>
+                                    </ng-template>
                                     <template let-col let-row="rowData" pTemplate="body">
                                         <div style="display:flex">
                                             <div
-                                                [ngClass]="{'bullet-dot-red':row.CRITICALITY=='red','bullet-dot-yellow':row.CRITICALITY=='yellow','bullet-dot-green':row.CRITICALITY=='green','ml-15':row.ACTIVITY}">
+                                                [ngClass]="{'bullet-dot-red':row.Criticality=='red','bullet-dot-yellow':row.Criticality=='yellow','bullet-dot-green':row.Criticality=='green','ml-15':row.ACTIVITY}">
                                             </div>
-                                            <span>{{row.QUESTION}}</span>
+                                            <span>{{row.Question}}</span>
                                         </div>
                                     </template>
                                 </p-column>
-                                <p-column header="Specification Type" [style]="{'width':'110px'}">
+                                <p-column [style]="{'width':'110px'}">
+                                    <ng-template pTemplate="header">
+                                        <div style="font-weight: 900; color: black;">Type</div>
+                                    </ng-template>
                                     <template let-col let-row="rowData" pTemplate="body">
-                                        <div *ngIf="row.SPECIFICATION_TYPE != null" style="text-transform: capitalize;">
-                                            {{row.SPECIFICATION_TYPE}}</div>
+                                        <div *ngIf="row.OptionType != null" style="text-transform: capitalize;">
+                                            {{row.OptionType }}</div>
                                     </template>
                                 </p-column>
-                                <p-column header="Specification">
+                                <p-column>
+                                    <ng-template pTemplate="header">
+                                        <div style="font-weight: 900; color: black;">Specification</div>
+                                    </ng-template>
                                     <template let-col let-row="rowData" pTemplate="body">
-                                        <div *ngIf="row.SPECIFICATION != null">{{row.SPECIFICATION}}</div>
-                                        <div *ngIf="row.MIN_RANGE != null && row.MAX_RANGE != null">[{{row.MIN_RANGE}} -
-                                            {{row.MAX_RANGE}}]</div>
+                                        <div *ngIf="row.specification!= null">{{row.Specification}}</div>
                                         <div
-                                            *ngIf="row.SPECIFICATION_OPTIONS != null && row.SPECIFICATION_OPTIONS != 'null'">
-                                            <span>{{row.SPECIFICATION_OPTIONS}}</span>
+                                            *ngIf="row.MaxRange != null && row.MinRange != null && row.MinRange != '' && row.MaxRange != '' ">
+                                            [ {{row.MinRange}} -
+                                            {{row.MaxRange}} ] {{row.Specification}}</div>
+                                        <div
+                                            *ngIf="row.OptionType != null && row.OptionType != 'null' && row.MinRange == '' && row.MaxRange == ''">
+                                            <span>{{row.Specification}}</span>
+                                        </div>
+                                        <div *ngIf="row.Options != null && row.Options != 'null'">
+                                            <span>{{row.Options}}</span>
                                         </div>
                                     </template>
                                 </p-column>
-                                <p-column [style]="{'width':'50px'}">
+                                <p-column [style]="{'width':'50px'}" *ngIf="status_of_selected_checklist === 'Draft'">
                                     <ng-template pTemplate="header"></ng-template>
                                     <ng-template let-row="rowData" pTemplate="body">
-                                        <md-icon *ngIf="row.QUESTION != null"
+                                        <md-icon *ngIf="row.Question != null"
                                             (click)="openQuestionEditPopup(section,row)" svgIcon="pencil"
                                             class="icon-20-without-padding" style="cursor:pointer"></md-icon>
                                     </ng-template>
                                 </p-column>
-                                <p-column [style]="{'width':'50px'}">
+                                <!-- <p-column [style]="{'width':'50px'}">
                                     <ng-template pTemplate="header"></ng-template>
                                     <ng-template let-row="rowData" pTemplate="body">
                                         <md-icon
-                                            *ngIf="status_of_selected_checklist != 'published' && row.QUESTION_NO!=null && row.QUESTION!=null && currentUser.role == 'admin'"
+                                            *ngIf="status_of_selected_checklist != 'published' && row.questionNo!=null && row.question!=null && currentUser.role == 'admin'"
                                             (click)="openQuestionDeletePopup(row.QUESTION_ID)" svgIcon="delete"
                                             class="icon-20-without-padding" style="cursor:pointer"></md-icon>
                                     </ng-template>
-                                </p-column>
+                                </p-column> -->
                             </p-dataTable>
                         </div>
                     </div>
@@ -400,7 +476,7 @@
                                 <div class="fs-12">{{section.MILESTONE_NO}}</div>
                             </div>
                             <div>
-                                <md-card-subtitle>Milestone Name</md-card-subtitle>
+                                <md-card-subtitle></md-card-subtitle>
                                 <md-card-title
                                     style="width:250px;word-wrap: break-word;">{{section.NAME}}</md-card-title>
                             </div>
@@ -416,14 +492,13 @@
                         <!-- <div class="section-count-div" (click)="openItemsFromSection(section)">
                   <span>Questions: </span><span>{{section.CHECKLIST_ITEM.length}}</span>
                   </div> -->
-                        <div *ngIf="status_of_selected_checklist != 'published'" style="display: flex;"
+                        <div *ngIf="status_of_selected_checklist === 'Draft'" style="display: flex;"
                             class="section-count-div">
                             <div (click)="openQuestionPopup(section)">Add question</div>
                             <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="2px">
                                 <md-icon (click)="editDialog(section)" svgIcon="pencil" class="icon-20"
                                     style="cursor:pointer;margin-top: -2px !important;margin-left: 10px !important;margin-right: -25px !important;"></md-icon>
-                                <md-icon
-                                    *ngIf="status_of_selected_checklist != 'published' && currentUser.role == 'admin'"
+                                <md-icon *ngIf="status_of_selected_checklist === 'Draft' && currentUser.role == 'admin'"
                                     (click)="deleteMilestoneDialog(section)" svgIcon="delete" class="icon-20"
                                     style="cursor:pointer;margin-top: -2px !important;margin-left: 10px !important;margin-right: -25px !important;"></md-icon>
                             </div>
@@ -440,24 +515,24 @@
                                         <!-- <input [attr.id]="section.NAME" type="text" pInputText size="30" placeholder="Search by question"> -->
                                         <input [attr.id]="section.NAME+i" [(ngModel)]="searchTermQuestionExpanded[i]"
                                             (ngModelChange)="searchQuestionsExpanded(i)" type="text" pInputText
-                                            size="30" placeholder="Search by question">
+                                            size="30" placeholder="Search By Question">
                                     </div>
                                 </div>
                             </div>
-                            <p-dataTable #table [value]="section.CHECKLIST_ITEMS" [responsive]="true"
-                                sortableRowGroup="false" rowGroupMode="subheader" groupField="ACTIVITY_ID"
-                                [sortableRowGroup]="false">
+                            <p-dataTable #table class="fixed-height-table" [value]="section.CHECKLIST_ITEMS"
+                                [responsive]="true" sortableRowGroup="false" rowGroupMode="subheader"
+                                groupField="ACTIVITY_ID" [sortableRowGroup]="false">
                                 <ng-template pTemplate="rowgroupheader" let-rowData
                                     style="display:flex;width: calc(100vw - 82px);">
                                     <div style="display:flex;">
                                         <div style="width: calc(100% - 40px);">{{rowData['SORT_LEVEL']}})
                                             {{rowData['ACTIVITY']}}</div>
-                                        <div *ngIf="status_of_selected_checklist != 'published'"
+                                        <div *ngIf="status_of_selected_checklist === 'Draft'"
                                             style="margin-left:-140px">
                                             <div style="margin-left:248px">
                                                 <div (click)="addGroupTemplateInActivity(section,rowData)"
                                                     style="margin-left:-224px" fxLayout="row">
-                                                    <div style="cursor:pointer">Add question</div>
+                                                    <div style="cursor:pointer"></div>
                                                     <md-icon svgIcon="plus-circle-blue"
                                                         class="icon-20-without-padding blue-svg"></md-icon>
                                                 </div>
@@ -465,7 +540,7 @@
                                         </div>
                                         <div style="margin-left:-160px" fxLayout="row">
                                             <md-icon
-                                                *ngIf="status_of_selected_checklist != 'published' && currentUser.role == 'admin'"
+                                                *ngIf="status_of_selected_checklist === 'Draft' && currentUser.role == 'admin'"
                                                 (click)="openGroupQuestionDeletePopup(rowData.ACTIVITY_ID)"
                                                 svgIcon="delete" class="icon-20-without-padding"
                                                 style="cursor:pointer;margin-left:50px;margin-top:-4px;"></md-icon>
@@ -489,8 +564,8 @@
                                 </p-column>
                                 <p-column header="Specification Type">
                                     <template let-col let-row="rowData" pTemplate="body">
-                                        <div *ngIf="row.SPECIFICATION_TYPE != null" style="text-transform: capitalize;">
-                                            {{row.SPECIFICATION_TYPE}}</div>
+                                        <div *ngIf="row.OptionType != null" style="text-transform: capitalize;">
+                                            {{row.OptionType}}</div>
                                     </template>
                                 </p-column>
                                 <p-column header="Specification">
@@ -516,7 +591,7 @@
                                     <ng-template pTemplate="header"></ng-template>
                                     <ng-template let-row="rowData" pTemplate="body">
                                         <md-icon
-                                            *ngIf="status_of_selected_checklist != 'published' && row.QUESTION_NO!=null && row.QUESTION!=null && currentUser.role == 'admin'"
+                                            *ngIf="status_of_selected_checklist === 'Draft' && row.QUESTION_NO!=null && row.QUESTION!=null && currentUser.role == 'admin'"
                                             (click)="openQuestionDeletePopup(row.QUESTION_ID)" svgIcon="delete"
                                             class="icon-20-without-padding" style="cursor:pointer"></md-icon>
                                     </ng-template>
@@ -551,15 +626,211 @@
         </p-dialog>
         <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"
             appendTo="body"></p-confirmDialog>
+        <!-- <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body">
+                <p-footer>
+                    <button type="button" pButton  (click)="onSubmit()" label="Submit"></button>
+                    <button type="button" pButton  (click)="onCancel()" label="Cancel"></button>
+                </p-footer>
+            </p-confirmDialog> -->
     </md-content>
 </md-card>
 <div [hidden]="isSeeHistoryDiv" class="history">
     <div class="history-inner">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <a (click)="toggleDisplaySeeHistory()" class="history-title">
-                <img class="history-left-arrow" src="../../assets/images/left-arrow.png" alt="left arrow">Create  Checklist
+                <img class="history-left-arrow" src="../../assets/images/left-arrow.png" alt="left arrow">Create
+                Checklist
             </a>
         </div>
+        <form [formGroup]="checklistForm" (ngSubmit)="submitUserForm()">
+            <!-- <fieldset class="form-group "> -->
+            <div fxLayout="row" style="margin-top:5px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="text" class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="name"
+                            (keypress)="lettersOnly($event)" />
+                        <span *ngIf="formSubmitted && !checklistForm.get('name').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                        <!-- <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched"
+                            class="mat-text-warn">Required</small> -->
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 60px;">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Type
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="turbineType" placeholder="Select Type" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let type of allTurbineTypes" [value]="type.Id">{{type.TurbinType}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('turbineType').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:5px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">OEM Type
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="OEMType" placeholder="Select OEM Type" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let type of allOEMTypes" [value]="type">{{type}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('OEMType').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 50px;">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Model
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="model" placeholder="Select Model" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let model of models" [value]="model">{{model}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('model').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:5px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Maintenance Type
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="maintenanceType"
+                            placeholder="Select MaintenanceType Type" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let maintenanceType of maintenanceTypes" [value]="maintenanceType.Id">
+                                {{maintenanceType.PmType1}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('maintenanceType').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 50px;">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Revision Number
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="number" class="suzlon-input ng-pristine ng-invalid ng-touched"
+                            formControlName="revisionNumber" disabled />
+                        <span *ngIf="formSubmitted && !checklistForm.get('revisionNumber').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div formArrayName="categorys">
+                <div *ngFor="let categoryGroup of categoryGroups.controls; let i = index" fxLayout="row"
+                    style="margin-top:5px">
+                    <div class="col-md-3" [formGroupName]="i">
+                        <div class="suzlon-input " style="width:135px">
+                            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Category 1
+                                <small style="color: red;">*</small>
+                            </span>
+                            <select class="suzlon-input" formControlName="category1" placeholder="Select Category 1"
+                                style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;" (change)="getAllCategory2s($event,i)">
+                                <option *ngFor="let category1 of category1s" [value]="category1">{{category1}}
+                                </option>
+                            </select>
+                            <span *ngIf="formSubmitted && !categoryGroup.get('category1').valid"
+                                class="err-text validation-label">This
+                                field is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" [formGroupName]="i" style="margin-left: 50px;">
+                        <div class="suzlon-input " style="width:135px">
+                            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Category 2
+                                <small style="color: red;">*</small>
+                            </span>
+                            <select class="suzlon-input" formControlName="category2" placeholder="Select Category 2"
+                                style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;" (change)="getAllCategory3s($event,i)">
+                                <option *ngFor="let category2 of category2s[i]" [value]="category2">{{category2}}
+                                </option>
+                            </select>
+                            <span *ngIf="formSubmitted && !categoryGroup.get('category2').valid"
+                                class="err-text validation-label">This
+                                field is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" [formGroupName]="i" style="margin-left: 50px;">
+                        <div class="suzlon-input " style="width:135px">
+                            <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Category 3
+                                <small style="color: red;">*</small>
+                            </span>
+                            <select class="suzlon-input" formControlName="category3" placeholder="Select Category 3"
+                                style="width: 100%;
+                                     padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                                <option *ngFor="let category3 of category3s[i]" [value]="category3">{{category3}}
+                                </option>
+                            </select>
+                            <span *ngIf="formSubmitted && !categoryGroup.get('category3').valid"
+                                class="err-text validation-label">This
+                                field is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="row" style="margin-top:10px">
+                <div class="col-md-1">
+                    <div class="suzlon-input" style="width: 50px"> <!-- Button container width reduced -->
+                        <button type="button" style="background: white;
+                        border: none;" (click)="addCategoryGroup()">
+                            <!-- Font size reduced -->
+                            <md-icon style="font-size: 35px;color: #1b5e20"
+                                title="Add Category">add_circle_outline</md-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="suzlon-input" style="width: 65px"> <!-- Button container width reduced -->
+                        <button type="button" style="background: white;
+                            border: none;" (click)="removeCategoryGroup()">
+                            <!-- Font size reduced -->
+                            <md-icon style="font-size: 35px;color: red"
+                                title="Remove Category">remove_circle_outline</md-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="row" style="margin-top:10px;margin-left: 58%;">
+                <div class="col-md-3">
+                    <div class="suzlon-input ">
+                        <button type="submit" md-raised-button color="primary">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 10px">
+                    <div class="suzlon-input ">
+                        <button type="button" md-raised-button style="background: #f5f5f5;"
+                            (click)="toggleDisplaySeeHistory()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
 
         <!-- <div class="row mt-50"> -->
         <!-- <div class="col-lg-4 col-md-4 col-sm-12">

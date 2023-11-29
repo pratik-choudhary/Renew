@@ -70,6 +70,9 @@ import { DqrReportComponent } from './Dialogs/dqr-report/dqr-report.component';
 import { DprLocationSummaryComponent } from './Dialogs/dpr-location-summary/dpr-location-summary.component';
 import { SiteLevelHeaderFooterComponent } from './Dialogs/site-level-header-footer/site-level-header-footer.component';
 import { IssueRegisterComponent } from './Dialogs/issue-register/issue-register.component';
+import { ImageDialogComponent } from './Dialogs/image-dialog/image-dialog.component';
+
+
 
 
 //import { AgmCoreModule } from '@agm/core';
@@ -129,7 +132,10 @@ export function createTranslateLoader(http: Http) {
     DqrReportComponent,
     DprLocationSummaryComponent,
     SiteLevelHeaderFooterComponent,
-    IssueRegisterComponent
+    IssueRegisterComponent,
+    ImageDialogComponent,
+   
+
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -143,6 +149,7 @@ export function createTranslateLoader(http: Http) {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+   
     TranslateModule.forRoot({
       provide: TranslateLoader,
       useFactory: (createTranslateLoader),
@@ -209,7 +216,8 @@ export function createTranslateLoader(http: Http) {
   WtgTraceabilityUploadComponent,
   UploadHeaderFooterComponent,
   DqrReportComponent,
-  SiteLevelHeaderFooterComponent
+  SiteLevelHeaderFooterComponent,
+  ImageDialogComponent,
   ],
   providers: [
     ApiService,

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, URLSearchParams, ResponseContentType } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -24,8 +24,8 @@ export class ApiService {
 		//this.baseUrl   = '/hoto_be/api/'; //runtime url do not change 
 		//this.baseUrl = 'http://ec2-13-126-59-42.ap-south-1.compute.amazonaws.com/hoto/api/';
 		//this.baseUrl = 'http://localhost:50305/api/';
-		this.baseUrl = 'http://fleetmanager.mindnerves.com:11001/api/Login/login'
-		this.baseUrl ='https://mob.suzlon.com/hoto_be/api/';
+		this.baseUrl = 'http://fleetmanager.mindnerves.com:11001/api/'
+		//this.baseUrl ='https://mob.suzlon.com/hoto_be/api/';
 	}
 
 	getUserToken() {
@@ -41,11 +41,11 @@ export class ApiService {
 
 	getUsersAuth(email: string, password: string) {
 		let body = new URLSearchParams();
-		body.set('username', "t.pm");
-		body.set('password', "mnt");
+		body.set('username', email);
+		body.set('password', password);
 		body.set('grant_type', 'password');
 		//return this.http.post(this.baseUrl + 'v1/login', body, this.options).map((res: Response) => res.json());
-		return this.http.post('https://mob.suzlon.com/hoto_be/api/v1/login', body, this.options).map((res: Response) => res.json());
+		return this.http.post(this.baseUrl +'Login/login', body, this.options).map((res: Response) => res.json());
 	}
 	getUserInfoById(id: number) {
 		let options = this.getUserToken();
@@ -101,7 +101,7 @@ export class ApiService {
 	}
 	getUserInformation(token: string) {
 		let request = new XMLHttpRequest();
-		request.open('GET', 'https://mob.suzlon.com/hoto_be/api/master/user/get/info', false);  // `false` makes the request synchronous
+		request.open('GET', this.baseUrl +'master/user/get/info', false);  // `false` makes the request synchronous
 		request.setRequestHeader('Authorization', 'bearer ' + token);
 		request.setRequestHeader('device-id', 'web');
 		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -633,10 +633,10 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.get(this.baseUrl + 'model/published/project/' + project_id + '/model/' + model_id + '/checklists', options).map((res: Response) => res.json());
 	}
-	updateChecklistStatusById(id: number, status: any) {
-		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'checklist/' + id + '/status', status, options).map((res: Response) => res.json());
-	}
+	// updateChecklistStatusById(id: number, status: any) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.post(this.baseUrl + 'checklist/' + id + '/status', status, options).map((res: Response) => res.json());
+	// }
 	generateChecklistReports(checklist_ins_id: number, location_id: number, stage_id: number) {
 		let options = this.getUserToken();
 		var payload = {};
@@ -677,10 +677,10 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.get(this.baseUrl + 'checklist-details/department/' + id, options).map((res: Response) => res.json());
 	}
-	getSectionByChecklistId(id: number) {
-		let options = this.getUserToken();
-		return this.http.get(this.baseUrl + 'checklist/' + id + '/sections', options).map((res: Response) => res.json());
-	}
+	// getSectionByChecklistId(id: number) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.get(this.baseUrl + 'checklist/' + id + '/sections', options).map((res: Response) => res.json());
+	// }
 	getChecklistItemBySectionId(id: number) {
 		let options = this.getUserToken();
 		return this.http.get(this.baseUrl + 'sections/' + id + '/items', options).map((res: Response) => res.json());
@@ -705,14 +705,14 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.post(this.baseUrl + 'activity/question/' + id + '/delete', null, options).map((res: Response) => res.json());
 	}
-	createNewChecklistVersion(id: number, payload: any) {
-		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'checklist/clone/' + id, payload, options).map((res: Response) => res.json());
-	}
-	createSection(payload: any) {
-		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'checklist-section', payload, options).map((res: Response) => res.json());
-	}
+	// createNewChecklistVersion(id: number, VERSION: any) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.post(this.baseUrl + 'checklist/clone/' + id, payload, options).map((res: Response) => res.json());
+	// }
+	// createSection(payload: any) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.post(this.baseUrl + 'checklist-section', payload, options).map((res: Response) => res.json());
+	// }
 	deleteMilestoneById(id: number) {
 		let options = this.getUserToken();
 		return this.http.post(this.baseUrl + 'checklist/milestone/' + id + '/delete', null, options).map((res: Response) => res.json());
@@ -735,10 +735,10 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.post(this.baseUrl + 'cheklist-item', payload, options).map((res: Response) => res.json());
 	}
-	saveQuestion(payload: any, id: number) {
-		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'section/' + id + '/question', payload, options).map((res: Response) => res.json());
-	}
+	// saveQuestion(payload: any, id: number) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.post(this.baseUrl + 'section/' + id + '/question', payload, options).map((res: Response) => res.json());
+	// }
 	saveQuestions(payload: any, id: number) {
 		let options = this.getUserToken();
 		return this.http.post(this.baseUrl + 'section/' + id + '/questions', payload, options).map((res: Response) => res.json());
@@ -747,18 +747,18 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.post(this.baseUrl + 'questions/' + id, payload, options).map((res: Response) => res.json());
 	}
-	updateQuestion(id: number, payload: any) {
-		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'question/' + id, payload, options).map((res: Response) => res.json());
-	}
-	getQuestions(id: number) {
-		let options = this.getUserToken();
-		return this.http.get(this.baseUrl + 'section/' + id + '/questions', options).map((res: Response) => res.json());
-	}
+	// updateQuestion(id: number, payload: any) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.post(this.baseUrl + 'question/' + id, payload, options).map((res: Response) => res.json());
+	// }
+	// getQuestions(id: number) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.get(this.baseUrl + 'section/' + id + '/questions', options).map((res: Response) => res.json());
+	// }
 	//master apis
 	getAllDepartments() {
 		let options = this.getUserToken();
-		return this.http.get(this.baseUrl + 'v1/departments', options).map((res: Response) => res.json());
+		return this.http.get(this.baseUrl + 'Common/GetAllDepartments', options).map((res: Response) => res.json());
 	}
 	//area
 	deleteAreaById(id: any) {
@@ -934,13 +934,13 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.post(this.baseUrl + 'master/user/' + id + '/delete', null, options).map((res: Response) => res.json());
 	}
-	getUsers() {
-		let options = this.getUserToken();
-		return this.http.get(this.baseUrl + 'master/user', options).map((res: Response) => res.json());
-	}
+	// getUsers() {
+	// 	let options = this.getUserToken();
+	// 	return this.http.get(this.baseUrl + 'master/user', options).map((res: Response) => res.json());
+	// }
 	addUser(payload: any) {
 		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'master/user', payload, options).map((res: Response) => res.json());
+		return this.http.post(this.baseUrl + 'User/AddUser', payload, options).map((res: Response) => res.json());
 	}
 	getHODByDept(id: number) {
 		let options = this.getUserToken();
@@ -1144,10 +1144,10 @@ export class ApiService {
 		let options = this.getUserToken();
 		return this.http.get(this.baseUrl + 'v1/model/config/' + type + '/get', options).map((res: Response) => res.json());
 	}
-	updateUser(obj: any, id: number) {
-		let options = this.getUserToken();
-		return this.http.post(this.baseUrl + 'master/user/' + id, obj, options).map((res: Response) => res.json());
-	}
+	// updateUser(obj: any, id: number) {
+	// 	let options = this.getUserToken();
+	// 	return this.http.post(this.baseUrl + 'master/user/' + id, obj, options).map((res: Response) => res.json());
+	// }
 	getAllSubstation() {
 		let options = this.getUserToken();
 		return this.http.get(this.baseUrl + 'substation/checklists', options).map((res: Response) => res.json());
@@ -1284,6 +1284,180 @@ export class ApiService {
 			localStorage.clear();
 			this.router.navigateByUrl('/session/signin?error=timeout', { queryParams: { error: "timeout" } });
 		}
+	}
+
+
+	getAllTurbineType(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetAllTurbineType', options).map((res: Response) => res.json());
+
+	}
+	getAllOEMTypes(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetAllOEM', options).map((res: Response) => res.json());
+	}
+	getAllModels(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetAllModels', options).map((res: Response) => res.json());
+	}
+	getAllMaintenanceTypes(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetPMType', options).map((res: Response) => res.json());
+	}
+	getAllCategory1s(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetCategory1', options).map((res: Response) => res.json());
+	}
+	getAllCategory2s(category1){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetCategory2?category1='+ category1, options).map((res: Response) => res.json());
+	}
+	getAllCategory3s(category1,category2){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetCategory3?category1='+ category1+'&category2='+category2, options).map((res: Response) => res.json());
+	}
+	createCheckList(obj){
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'Checklist/CreateChecklist',obj, options).map((res: Response) => res.json());
+	}
+	getAllChecklistByModelIdAndPMType(modelId,pmType){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Checklist/GetChecklist?ModelName='+modelId+'&MaintenanceType='+pmType, options).map((res: Response) => res.json());	
+	}
+
+	getSectionByChecklistId(id: number) {
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Milestone/GettMilestoneByChecklistId?ChecklistId='+id, options).map((res: Response) => res.json());
+	}
+
+	getQuestions(id: number) {
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Question/GetQuestionByMilestoneId?MilestoneId='+id, options).map((res: Response) => res.json());
+	}
+	getAllSpecifications(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetAllCheckpointType', options).map((res: Response) => res.json());
+	}
+	saveQuestion(payload: any, id: number) {
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'Question/CreateQuestion?MilestoneId='+id, payload, options).map((res: Response) => res.json());
+	}
+	updateQuestion(id: number, payload: any) {
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'Question/UpdateQuestion?QuestionId='+ id, payload, options).map((res: Response) => res.json());
+	}
+	uploadChecklist(files: any, Id: number, CreatedBy: Number) {
+		return new Promise((resolve, reject) => {
+			let formData = new FormData();
+			let xhr = new XMLHttpRequest();
+			let token = JSON.parse(localStorage.getItem('UserToken')).token;
+			formData.append("file", files[0], files[0].name);
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						resolve(xhr.response);
+					} else {
+						reject(xhr.response);
+					}
+				}
+			}
+			xhr.open('POST', this.baseUrl + 'Common/UploadExcel?Type='+Id, true);
+			xhr.setRequestHeader('Authorization', 'bearer ' + token);
+			xhr.setRequestHeader('device-id', 'web');
+			//xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xhr.send(formData);
+		});
+	}
+	getAssetBySite(selectdSite){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetAssetMasterbySite?site='+selectdSite, options).map((res: Response) => res.json());
+	}
+	getAllSite(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetAllSite', options).map((res: Response) => res.json());
+	}
+	getPmScheduleBySiteOrModelOrPMType(site,model,pmtype){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetMaintenanceScheduleforall?site='+site+'&modelName='+model+'&maintenanceTypeId='+pmtype, options).map((res: Response) => res.json());
+	}
+	getPmScheduleBySiteOrModelOrPMTypedemo(site,model,pmtype){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetMaintenanceScheduleforall?site=&modelName=&maintenanceTypeId='+pmtype, options).map((res: Response) => res.json());
+	}
+	getUsers() {
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'User/GetAllUser', options).map((res: Response) => res.json());
+	}
+	updateUser(obj: any, id: number) {
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'User/UpdateUser/' + id, obj, options).map((res: Response) => res.json());
+	}
+	createNewChecklistVersion(id: number, version: any) {
+		
+		  // Get the authorization headers
+		  let options = this.getUserToken();
+
+		  // Construct the URL with query parameters
+		  let url = this.baseUrl + 'Checklist/checklist/clone?ChecklistId=' + id + '&Version=' + version;
+	  
+		  // Send an HTTP POST request
+		  return this.http.post(url, null, options).map((res: Response) => res.json());
+	}
+	createMilestone(payload: any) {
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'Milestone/CreateMilestone', payload, options).map((res: Response) => res.json());
+	}
+	getPMScheduleApproval(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetPmScheduleByRoleforApproval', options).map((res: Response) => res.json());
+	}
+	pmScheduleApprove(jobId){
+		let options = this.getUserToken();
+        return this.http.post(this.baseUrl + 'Common/PmScheduleByApproval?JobId='+jobId,null, options).map((res: Response) => res.json());
+	}
+	getLocationBySiteId(siteId){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetLocationBySite?siteId='+siteId, options).map((res: Response) => res.json());
+	}
+	getGetExecutionChecklistBySiteIdAndLocationAndPMType(site,location,pmtype){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Checklist/GetExecutionChecklist?siteId='+site+'&functionalLocation='+location+'&pmtypeId='+pmtype, options).map((res: Response) => res.json());
+	}
+	SendForCorrection(obj){
+		let options = this.getUserToken();
+        return this.http.post(this.baseUrl + 'Checklist/Excecution/SendforCorrectionQuestionInstances', obj, options).map((res: Response) => res.json());
+	}
+	UpdateQuestionInstance(obj){
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'Checklist/Excecution/UpdateQuestionInstance',obj, options).map((res: Response) => res.json());
+	}
+	getQADashboardChecklists(){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Checklist/GetQADashboardChecklists', options).map((res: Response) => res.json());
+
+	}
+	QuestionInsListByChecklistInsIdAndSiteAndLocationAndPMType(checklistInsId,site,location,pmType){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Checklist/QuestionInsListByChecklistInsId?checklistInsId='+checklistInsId+'&siteName='+site+'&functionalLocationName='+location+'&maintenance_type='+pmType, options).map((res: Response) => res.json());
+	}
+	SendForCorrectionQA(obj){
+		let options = this.getUserToken();
+		return this.http.post(this.baseUrl + 'Checklist/FinalApprovalFromQAQuestionwise',obj, options).map((res: Response) => res.json());
+	}
+	getQuestionHistoryByQuestionInsIdAndSiteAndLocationAndPMType(questioninsId,site,location,pmType){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Checklist/GetHistoryByChecklistInsId?checklistInsId='+questioninsId+'&siteName='+site+'&functionalLocationName='+location+'&maintenance_type='+pmType, options).map((res: Response) => res.json());
+
+	}
+	downloadTemplate(sheetName){
+		let options = this.getUserToken();
+		options.responseType = ResponseContentType.Blob;
+		return this.http.get(this.baseUrl + 'Checklist', options);
+	}
+	GetPmScheduleByJobId(jobId){
+		let options = this.getUserToken();
+		return this.http.get(this.baseUrl + 'Common/GetPmScheduleByJobId?JobId='+jobId, options).map((res: Response) => res.json());
+
 	}
 }
 

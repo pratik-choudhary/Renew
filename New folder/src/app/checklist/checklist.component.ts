@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Inject, Input } from '@angular/core';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { MdDialog, MdDialogRef, MdChipList, MD_DIALOG_DATA, MdIconRegistry } from '@angular/material';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { ChecklistFormDialog } from 'app/Dialogs/checklist_form.component';
 import { SectionFormDialog } from 'app/Dialogs/section_form.component';
 import { ItemFormDialog } from 'app/Dialogs/item_form.component';
@@ -20,6 +20,8 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { DialogModule, DataTable } from 'primeng/primeng';
 import { NotificationDialog } from 'app/Dialogs/notification-dialog/notification-dialog';
 import { AuthGuard } from 'app/services/auth-guard';
+import * as toastr from 'toastr';
+import * as FileSaver from 'file-saver';
 @Component({
   selector: 'app-checklist',
   templateUrl: './checklist.component.html',
@@ -29,6 +31,7 @@ import { AuthGuard } from 'app/services/auth-guard';
 export class ChecklistComponent implements OnInit {
   // @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
   @ViewChild('dt') dataTable: DataTable;
+  checklistForm: FormGroup
   display = false;
   Notification: string;
   json: any;
@@ -66,11 +69,23 @@ export class ChecklistComponent implements OnInit {
   questionsArray: any;
   public form: FormGroup;
   hideme = [];
-  first:number;
+  first: number;
   user_info: any;
-  currentUser:any;
-  loader=true;
+  currentUser: any;
+  loader = true;
   isSeeHistoryDiv = true;
+  isAddMoreflag = false;
+
+  allTurbineTypes = [];
+  allOEMTypes = [];
+  models = [];
+  maintenanceTypes = [];
+  category1s = [];
+  category2s = [];
+  category3s = [];
+  selectedMaintenanceType: any;
+  selectedModel: any;
+  formSubmitted: boolean = false;
   // expand row
   // Declare a mapping between action ids and their event listener
   myActions = {
@@ -95,9 +110,9 @@ export class ChecklistComponent implements OnInit {
     //role management
     this.user_info = this.auth_service.getUserInfo();
     if (this.user_info) {
-        if (this.user_info.role.toUpperCase() !== 'ADMIN' && this.user_info.role.toUpperCase() !== 'SITE_MIS' && this.user_info.role.toUpperCase() !== 'PM' && this.user_info.role.toUpperCase() !== 'QA') {
-          this.router.navigate(['/site-dashboard']);
-        }
+      if (this.user_info.role.toUpperCase() !== 'ADMIN' && this.user_info.role.toUpperCase() !== 'SITE_MIS' && this.user_info.role.toUpperCase() !== 'PM' && this.user_info.role.toUpperCase() !== 'QA') {
+        this.router.navigate(['/site-dashboard']);
+      }
     }
 
     this.iconRegistry.addSvgIcon(
@@ -118,8 +133,8 @@ export class ChecklistComponent implements OnInit {
     this.loadQuestions();
     this.statusValue = "Draft";
     this.status_of_selected_checklist = "draft";
-    this.first=1;
-    
+    this.first = 1;
+
   }
   private onDrop(args) {
     let [e, el] = args;
@@ -185,7 +200,20 @@ export class ChecklistComponent implements OnInit {
   }
 
   openDialog() {
-     this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+    
+    this.checklistForm = this.fb.group({
+      name: ['', Validators.required],
+      turbineType: ['', Validators.required],
+      OEMType: ['', Validators.required],
+      model: ['', Validators.required],
+      maintenanceType: ['', Validators.required],
+      revisionNumber: [1],
+      modelfilter: [''],
+      manintenancetypefilter: [''],
+      categorys: this.fb.array([]),
+    })
+    this.addCategoryGroup();
+    this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
     // let dialogRef = this.dialog.open(ChecklistFormDialog, {
     //   width: '60vw',
     //   disableClose: true
@@ -210,34 +238,36 @@ export class ChecklistComponent implements OnInit {
   }
 
   onNotification() {
-    
-    if(this.Notification =="Activity Question delete Failed"){
+    if(this.Notification == "Checklist Added Successfully"){
+      this.display = false;
+      this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+    }
+    if(this.Notification == "Checklist Add Failed"){
+      this.display = false;
+      this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+    }
+
+    if (this.Notification == "Activity Question delete Failed") {
       this.display = false;
     }
-    if(this.Notification == "Activity Question deleted Successfully")
-    {
+    if (this.Notification == "Activity Question deleted Successfully") {
       this.display = false;
-      if(this.expandFlag==true)
-      {
+      if (this.expandFlag == true) {
         this.openAllMilestones();
       }
-      else
-      {
+      else {
         this.loadSections();
       }
     }
-    if(this.Notification =="Question delete Failed"){
+    if (this.Notification == "Question delete Failed") {
       this.display = false;
     }
-    if(this.Notification == "Question deleted Successfully")
-    {
+    if (this.Notification == "Question deleted Successfully") {
       this.display = false;
-      if(this.expandFlag==true)
-      {
+      if (this.expandFlag == true) {
         this.openAllMilestones();
       }
-      else
-      {
+      else {
         this.loadSections();
       }
     }
@@ -273,18 +303,21 @@ export class ChecklistComponent implements OnInit {
       accept: () => {
         this.api_service.deleteChecklistById(checklist.CHECKLIST.CHECKLIST_ID).subscribe(
           data => {
-            setTimeout(()=>{
-            this.Notification = "Checklist deleted Successfully";
-            this.display = true;
-          }, 400);
+            setTimeout(() => {
+              toastr.success('Checklist Deleted Successfully', 'Success');
+              
+              //this.Notification = "Checklist deleted Successfully";
+             // this.display = true;
+            }, 400);
           },
           err => {
             console.log(err);
             this.api_service.checkStatus(err);
-            setTimeout(()=>{
-            this.Notification = "Checklist delete Failed";
-            this.display = true;
-          }, 400);
+            setTimeout(() => {
+              toastr.error('Checklist Delete Failed', 'Error');
+             // this.Notification = "Checklist delete Failed";
+             // this.display = true;
+            }, 400);
           });
       }
     });
@@ -298,17 +331,19 @@ export class ChecklistComponent implements OnInit {
       accept: () => {
         this.api_service.deleteMilestoneById(section.SECTION_ID).subscribe(
           data => {
-            setTimeout(()=>{
-            this.Notification = "Milestone deleted Successfully";
-            this.display = true;
-          }, 400);
+            setTimeout(() => {
+              toastr.success('Milestone Deleted Successfully', 'Success');
+              //this.Notification = "Milestone deleted Successfully";
+              //this.display = true;
+            }, 400);
           },
           err => {
             console.log(err);
             this.api_service.checkStatus(err);
-            setTimeout(()=>{
-            this.Notification = "Milestone delete Failed";
-            this.display = true;
+            setTimeout(() => {
+              toastr.error('Milestone Delete Failed', 'Error');
+              //this.Notification = "Milestone delete Failed";
+              //this.display = true;
             }, 400);
           });
       }
@@ -321,7 +356,7 @@ export class ChecklistComponent implements OnInit {
     let dialogRef = this.dialog.open(ChecklistFormDialog, {
       width: '80vw',
       data: {
-        date_flag : false,
+        date_flag: false,
         checklist: checklist
       },
       disableClose: true
@@ -333,12 +368,12 @@ export class ChecklistComponent implements OnInit {
       }
     });
   }
-  openEditDates(checklist){
+  openEditDates(checklist) {
     var name = checklist.CHECKLIST.NAME;
     let dialogRef = this.dialog.open(ChecklistFormDialog, {
       width: '80vw',
       data: {
-        date_flag : true,
+        date_flag: true,
         checklist: checklist
       },
       disableClose: true
@@ -365,16 +400,15 @@ export class ChecklistComponent implements OnInit {
     });
   }
 
-  openNewChecklistVersionDialog(id: any, version: any, dept: any, model: any, stage_id: number) {
+  openNewChecklistVersionDialog(id: any, version: any, model: any,status: any) {
+    if(status=='Published'){
     let dialogRef = this.dialog.open(NewChecklistVersionDialog, {
       width: '30vw',
       data: {
         'current_checklist_id': id,
         'current_checklist_version': version,
         'created_by': this.user_info.user_id,
-        'dept_id': dept,
         'model_id': model,
-        'stage_id': stage_id
       },
       disableClose: true
     });
@@ -384,46 +418,52 @@ export class ChecklistComponent implements OnInit {
         this.loadChecklists();
       }
     });
+  }else if(status=='Draft'){
+    this.publishChecklistStatus(id,version);
   }
-  publishChecklistStatus(id) {
+  }
+  publishChecklistStatus(id,version) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to publish this Checklist?',
       header: 'Confirmation',
       icon: 'fa fa-info',
       accept: () => {
-    var obj: { [k: string]: any } = {};
-    obj.STATUS = 'published';
-    this.api_service.updateChecklistStatusById(id, obj).subscribe(
-      data => {
-        setTimeout(() => {
-        this.Notification = 'Checklist published Successfully';
-        this.display = true;
-      }, 400);
-      },
-      err => { console.log(err);
-        this.api_service.checkStatus(err);
-        setTimeout(() => {
-        this.Notification = 'Checklist publish Failed';
-        this.display = true;
-      }, 400);
-      });
-    }});
+        // var obj: { [k: string]: any } = {};
+        // obj.STATUS = 'published';
+        this.api_service.createNewChecklistVersion(id,version).subscribe(
+          data => {
+            setTimeout(() => {
+              toastr.success('Checklist Published Successfully', 'Success');
+              //this.Notification = 'Checklist published Successfully';
+              //this.display = true;
+              this.loadChecklists();
+            }, 400);
+          },
+          err => {
+            console.log(err);
+            this.api_service.checkStatus(err);
+            setTimeout(() => {
+              toastr.error('Checklist Publish Failed', 'Error');
+            //  this.Notification = 'Checklist publish Failed';
+             // this.display = true;
+            }, 400);
+          });
+      }
+    });
   }
   createDialog() {
     var length;
-   for(var i of this.checklists)
-   {
-     if(i.CHECKLIST.CHECKLIST_ID==this.selected_checklist_id)
-     {
+    for (var i of this.checklists) {
+      if (i.CHECKLIST.CHECKLIST_ID == this.selected_checklist_id) {
         length = i.CHECKLIST.SECTION_COUNT;
         break;
-     }
-   }
+      }
+    }
     let dialogRef = this.dialog.open(SectionFormDialog, {
-      width: '70vw',
+      width: '40vw',
       data: {
         checklist_id: this.selected_checklist_id,
-        sectionsLength:length
+        sectionsLength: length
       },
       disableClose: true
     });
@@ -435,7 +475,7 @@ export class ChecklistComponent implements OnInit {
   }
   editDialog(data) {
     let dialogRef = this.dialog.open(SectionFormDialog, {
-      width: '70vw',
+      width: '40vw',
       data: {
         checklist_id: this.selected_checklist_id,
         parentInput: data
@@ -469,8 +509,7 @@ export class ChecklistComponent implements OnInit {
     let dialogRef = this.dialog.open(UploadExcelDialog, {
       width: '500px',
       data: {
-        checklistId: this.selected_checklist_id,
-        createdBy: 1
+        sheetName:"Import Checklist Excel",
       },
       disableClose: true
     });
@@ -482,7 +521,17 @@ export class ChecklistComponent implements OnInit {
       }
     });
   }
+  downloadTemplate(){
+    this.api_service.downloadTemplate("cheklistTemplate.xlsx").subscribe((response: any) => {
+        debugger;
+      
+      },
+      err => {
+        this.api_service.checkStatus(err);
+      });
+  }
   openSections(name: string, id: number, status: any) {
+    debugger;
     this.status_of_selected_checklist = status;
     this.document.body.scrollTop = 0;
     this.selected_checklist_id = id;
@@ -490,11 +539,13 @@ export class ChecklistComponent implements OnInit {
     this.selectedContent = 'section';
     this.api_service.getSectionByChecklistId(this.selected_checklist_id).subscribe(
       data => {
-        this.sections = data;
-        this.sectionsCopy = data;
+        debugger;
+        this.sections = data.data;
+        this.sectionsCopy = data.data;
       },
-      err => { console.log(err);
-      this.api_service.checkStatus(err);
+      err => {
+        console.log(err);
+        this.api_service.checkStatus(err);
       });
   }
   openItems(checklist: any, section: any) {
@@ -545,8 +596,9 @@ export class ChecklistComponent implements OnInit {
           data => {
             this.generateChecklistsByDepartment(data);
           },
-          err => { console.log(err);
-          this.api_service.checkStatus(err);
+          err => {
+            console.log(err);
+            this.api_service.checkStatus(err);
           });
       }
     }
@@ -586,20 +638,25 @@ export class ChecklistComponent implements OnInit {
   loadSections() {
     this.api_service.getSectionByChecklistId(this.selected_checklist_id).subscribe(
       data => {
-        this.sections = data;
+        debugger;
+        this.sections = data.data;
         this.sections = this.sort(this.sections, 'MILESTONE_NO');
       },
-      err => { console.log(err);
-      this.api_service.checkStatus(err);
+      err => {
+        console.log(err);
+        this.api_service.checkStatus(err);
       });
   }
   loadChecklists() {
-    this.api_service.getAllChecklist().subscribe(
+    this.api_service.getAllChecklistByModelIdAndPMType(this.selectedModel, this.selectedMaintenanceType).subscribe(
       data => {
-        this.checklists = data;
-        this.checklistsCopy = data;
+        
+
+        this.checklists =data.data;
+        this.checklistsCopy = data.data;
       },
-      err => { console.log(err);
+      err => {
+        console.log(err);
         this.api_service.checkStatus(err);
       });
     this.expandFlag = false;
@@ -607,23 +664,47 @@ export class ChecklistComponent implements OnInit {
 
 
   getAllChecklists() {
-    this.loader=true;
-    this.api_service.getAllChecklist().subscribe(
+    this.loader = false;
+    this.api_service.getAllChecklistByModelIdAndPMType(this.selectedModel, this.selectedMaintenanceType).subscribe(
       data => {
-        this.loader=false;
-        this.checklists = data;
-        this.checklistsCopy = data;
+      
+
+
+        this.checklists = data.data;
+        this.checklistsCopy = data.data;
       },
-      err => { console.log(err);
+      err => {
+        console.log(err);
         this.api_service.checkStatus(err);
       });
 
   }
   ngOnInit() {
+
+    this.checklistForm = this.fb.group({
+      name: ['', Validators.required],
+      turbineType: ['', Validators.required],
+      OEMType: ['', Validators.required],
+      model: ['', Validators.required],
+      maintenanceType: ['', Validators.required],
+      revisionNumber: [1],
+      modelfilter: [''],
+      manintenancetypefilter: [''],
+      // category1:['', Validators.required],
+      // category2:['', Validators.required],
+      // category3:['', Validators.required],
+      categorys: this.fb.array([]),
+    })
+    this.addCategoryGroup();
     this.currentUser = this.auth_service.getUserInfo();
     this.currentUser.role = this.currentUser.role.toString().toLowerCase();
     // load all checklists
-    this.getAllChecklists();
+
+    this.getAllTurbineType();
+    this.getAllOEMTypes();
+    this.getAllModels();
+    this.getAllMaintenanceTypes();
+    this.getCategory1s();
     // load all departments
     this.api_service.getAllDepartments().subscribe(
       data => {
@@ -636,9 +717,12 @@ export class ChecklistComponent implements OnInit {
           this.departments.push(obj);
         }
       },
-      err => { console.log(err);
-      this.api_service.checkStatus(err);
+      err => {
+        console.log(err);
+        this.api_service.checkStatus(err);
       });
+
+
 
     this.form = this.fb.group({
       QUESTION: [null, Validators.required],
@@ -651,6 +735,163 @@ export class ChecklistComponent implements OnInit {
     });
 
   }
+
+  getAllTurbineType() {
+    this.api_service.getAllTurbineType().subscribe(result => {
+      debugger;
+      if (result) {
+        this.allTurbineTypes = result.data;
+      }
+    });
+  }
+  getAllOEMTypes() {
+    this.api_service.getAllOEMTypes().subscribe(result => {
+      debugger;
+      if (result) {
+        this.allOEMTypes = result.data;
+      }
+    });
+  }
+  getAllModels() {
+    this.api_service.getAllModels().subscribe(result => {
+      debugger;
+      if (result) {
+        this.models = result.data;
+        this.selectedModel = this.models[0];
+      }
+    });
+  }
+  getAllMaintenanceTypes() {
+    this.api_service.getAllMaintenanceTypes().subscribe(result => {
+      debugger;
+      if (result) {
+        this.maintenanceTypes = result.data;
+        this.selectedMaintenanceType = this.maintenanceTypes[0].Id;
+        this.getAllChecklists();
+      }
+    });
+  }
+  getCategory1s() {
+    this.api_service.getAllCategory1s().subscribe(result => {
+      debugger;
+      if (result) {
+        this.category1s = result.data;
+      }
+    });
+  }
+  getAllCategory2s(event, index) {
+    debugger;
+    this.api_service.getAllCategory2s(event.target.value).subscribe(result => {
+      if (result) {
+        this.category2s[index] = result.data;
+      }
+    });
+  }
+  getAllCategory3s(event, index) {
+    // this.category3s=[];
+    var categroy1 = this.checklistForm.controls.categorys.value[index].category1
+    var categroy2 = event.target.value
+    if (categroy1.length > 0 && categroy2.length) {
+      this.api_service.getAllCategory3s(categroy1, categroy2).subscribe(result => {
+        if (result) {
+          debugger;
+          this.category3s[index] = result.data;
+        }
+      });
+    }
+  }
+  submitUserForm() {
+    this.formSubmitted = true 
+    debugger;
+    if (this.checklistForm.status === "VALID") {
+      var obj = {
+        // "checklisT_ID": 0,
+        "name": this.checklistForm.value.name,
+        "oem": this.checklistForm.value.OEMType,
+        "maintenance_Type": this.checklistForm.value.maintenanceType,
+        "modelName": this.checklistForm.value.model,
+        "revisionNumber": this.checklistForm.value.revisionNumber + "",
+        "turbineTypeId": this.checklistForm.value.turbineType,
+        "categoryList": this.checklistForm.value.categorys,
+        "checkedBy": ""
+      }
+      this.api_service.createCheckList(obj).subscribe(result => {
+        setTimeout(() => {
+          toastr.success('Checklist Added Successfully', 'Success');
+         // this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+         // this.Notification = 'Checklist Added Successfully';
+          this.formSubmitted = false
+          this.checklistForm = this.fb.group({
+            name: ['', Validators.required],
+            turbineType: ['', Validators.required],
+            OEMType: ['', Validators.required],
+            model: ['', Validators.required],
+            maintenanceType: ['', Validators.required],
+            revisionNumber: [1],
+            modelfilter: [''],
+            manintenancetypefilter: [''],
+            categorys: this.fb.array([]),
+          })
+          this.addCategoryGroup();
+         // this.display = true;
+          this.isSeeHistoryDiv=false
+        }, 400);
+        err => {
+          console.log(err);
+          if (err.status == 401) {
+            //this.closeDialog();
+            setTimeout(() => {
+              this.api_service.checkStatus(err);
+            }, 1000);
+          }
+          else {
+            setTimeout(() => {
+              toastr.error('Checklist Add Failed', 'Error');
+             // this.Notification = 'Checklist Add Failed';
+             // this.display = true;
+            }, 400);
+          }
+        }
+      })
+    }else{
+      // for (const controlName in this.checklistForm.controls) {
+      //   if (this.checklistForm.controls.hasOwnProperty(controlName)) {
+      //     const control = this.checklistForm.controls[controlName];
+          
+      //     if (control.status== "INVALID") {
+      //       control.markAsDirty();
+      //       control.updateValueAndValidity({ onlySelf: true });
+      //     }
+      //   }
+      // }
+    }
+  }
+  
+
+  addCategoryGroup() {
+    const categoryGroup = this.fb.group({
+      category1: ['', Validators.required],
+      category2: ['', Validators.required],
+      category3: ['', Validators.required]
+    });
+    this.categoryGroups.push(categoryGroup);
+  //  this.category1s.push([]);
+    this.category2s.push([]);
+    this.category3s.push([]);
+  }
+  removeCategoryGroup(){
+    debugger
+    var index=this.categoryGroups.length-1;
+    if(index!=0){
+    this.categoryGroups.removeAt(index);
+    }
+  }
+
+  get categoryGroups() {
+    return this.checklistForm.get('categorys') as FormArray;
+  }
+
+
   getItems(id: number): void {
     // get checklist items
     // this.api_service.getQuestions().subscribe(
@@ -681,7 +922,7 @@ export class ChecklistComponent implements OnInit {
   createTemplate() {
   }
   createQuestion() {
-  
+
   }
   updateQuestion(id: number) {
     if (this.form['_status'] == 'VALID') {
@@ -711,61 +952,68 @@ export class ChecklistComponent implements OnInit {
   }
   loadQuestions() {
   }
-  openQuestionDeletePopup(id:number) { //individual
-     this.confirmationService.confirm({
+  openQuestionDeletePopup(id: number) { //individual
+    this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this Question?',
       header: 'Delete Confirmation',
       icon: 'fa fa-trash',
       accept: () => {
-         this.api_service.deleteIndividualQuestionById(id).subscribe(
+        this.api_service.deleteIndividualQuestionById(id).subscribe(
           data => {
-          setTimeout(()=>{
-              this.Notification  = "Question deleted Successfully";
-              this.display = true;
+            setTimeout(() => {
+              toastr.success('Question Deleted Successfully', 'Success');
+             // this.Notification = "Question deleted Successfully";
+             // this.display = true;
             }, 400);
           },
-          err => { console.log(err);
+          err => {
+            console.log(err);
             this.api_service.checkStatus(err);
-            setTimeout(()=>{
-              this.Notification  = "Question delete Failed";
-              this.display = true;
+            setTimeout(() => {
+              toastr.error('Question Delete Failed', 'Error');
+             // this.Notification = "Question delete Failed";
+              //this.display = true;
             }, 400);
-          }); 
+          });
       }
-    }); 
+    });
 
   }
-  openGroupQuestionDeletePopup(id:number) { //Activity
-     this.confirmationService.confirm({
+  openGroupQuestionDeletePopup(id: number) { //Activity
+    this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this Activity Question?',
       header: 'Delete Confirmation',
       icon: 'fa fa-trash',
       accept: () => {
-         this.api_service.deleteGroupQuestionById(id).subscribe(
+        this.api_service.deleteGroupQuestionById(id).subscribe(
           data => {
-            setTimeout(()=>{
-              this.Notification  = "Activity Question deleted Successfully";
-              this.display = true;
+            setTimeout(() => {
+              toastr.success('Activity Question deleted Successfully', 'Success');
+              //this.Notification = "Activity Question deleted Successfully";
+             // this.display = true;
             }, 400);
           },
-          err => { console.log(err);
+          err => {
+            console.log(err);
             this.api_service.checkStatus(err);
-            setTimeout(()=>{
-            this.Notification  = "Activity Question delete Failed";
-            this.display = true;
-          }, 400);
-          }); 
-        }
+            setTimeout(() => {
+              toastr.error('Activity Question Delete Failed', 'Error');
+              //this.Notification = "Activity Question delete Failed";
+             // this.display = true;
+            }, 400);
+          });
+      }
     });
   }
   openQuestionEditPopup(section, question) {
+    debugger;
     let dialogRef = this.dialog.open(EditQuestionDialog, {
       width: '70vw',
       data: {
         question: question,
-        milestone_id: section.SECTION_ID,
+        milestone_id: section.Id,
         tabs: 'individual',
-        checklist_status: section.CHECKLIST_STATUS
+        checklist_status: section.Status
       },
       disableClose: true
     });
@@ -776,10 +1024,11 @@ export class ChecklistComponent implements OnInit {
     });
   }
   openQuestionPopup(section) {
+    debugger;
     let dialogRef = this.dialog.open(EditQuestionDialog, {
       width: '70vw',
       data: {
-        milestone_id: section.SECTION_ID,
+        milestone_id: section.Id,
         tabs: 'both'
       },
       disableClose: true
@@ -791,15 +1040,17 @@ export class ChecklistComponent implements OnInit {
     });
   }
   openMilestone(milestone) {
+    debugger;
     if (this.expanded_milestone == milestone) {
       this.expanded_milestone = undefined;
     } else {
       this.expanded_milestone = milestone;
       this.checklist_items = [];
-      this.api_service.getQuestions(milestone.SECTION_ID).subscribe(
+      this.api_service.getQuestions(milestone.Id).subscribe(
         data => {
-          this.checklist_items = data;
-          this.checklist_itemsCopy = data;
+          debugger;
+          this.checklist_items = data.data;
+          this.checklist_itemsCopy = data.data;
         },
         err => {
           this.checklist_items = [];
@@ -815,15 +1066,17 @@ export class ChecklistComponent implements OnInit {
   }
 
   openMilestoneExpanded(milestone) {
-    this.api_service.getQuestions(milestone.SECTION_ID).subscribe(
+    debugger;
+    this.api_service.getQuestions(milestone.Id).subscribe(
       data => {
-        milestone.CHECKLIST_ITEMS = data;
+        debugger;
+        milestone.CHECKLIST_ITEMS = data.data;
       },
       err => {
         console.log(err);
         this.api_service.checkStatus(err);
       });
-   }
+  }
 
   openAllMilestones() {
     this.expandFlag = true;
@@ -860,8 +1113,11 @@ export class ChecklistComponent implements OnInit {
       }
     });
   };
-  toggleDisplaySeeHistory(){
+  toggleDisplaySeeHistory() {
     this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+  }
+  isAddMore() {
+    this.isAddMoreflag = true;
   }
   // end
 }

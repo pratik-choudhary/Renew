@@ -24,9 +24,9 @@ export class NewChecklistVersionDialog {
     @Inject(MD_DIALOG_DATA) public data: any) {
     this.selectedChecklistId = data.current_checklist_id;
     this.selectedChecklistVersion = +(data.current_checklist_version);
-    this.dept_id = data.dept_id;
+    //this.dept_id = data.dept_id;
     this.model_id = data.model_id;
-    this.stage_id = data.stage_id;
+    //this.stage_id = data.stage_id;
   }
   onNotify(message: string) {
     if (message === 'success') {

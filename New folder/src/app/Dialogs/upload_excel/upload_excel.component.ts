@@ -14,11 +14,13 @@ export class UploadExcelDialog {
   checklist_id: any;
   created_by_id: any;
   currentUser:any;
+  sheetName:any;
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   constructor(@Inject(MD_DIALOG_DATA) public data: any, public dialogRef: MdDialogRef<UploadExcelDialog>, private api_service: ApiService, private fb: FormBuilder, private auth_service: AuthGuard) {
     this.currentUser = this.auth_service.getUserInfo();
     this.checklist_id = data.checklistId;
     this.created_by_id = this.currentUser.user_id;
+    this.sheetName=data.sheetName;
   }
   ngOnInit() {
  }

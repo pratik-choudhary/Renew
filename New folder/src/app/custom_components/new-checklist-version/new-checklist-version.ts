@@ -6,6 +6,7 @@ import {ValidationService} from 'app/services/validation.service';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { ViewContainerRef } from '@angular/core';
 import { AuthGuard } from 'app/services/auth-guard';
+import * as toastr from 'toastr';
 
 @Component({
     selector: 'new-checklist-version',
@@ -63,16 +64,18 @@ export class NewChecklistVersion implements OnInit {
     submitNewChecklistVersion() {
         var obj: { [k: string]: any } = {};
         obj.checklist_id = this.selectedChecklistId;
-        obj.DEPARTMENT_ID = this.departmentId;
-        obj.MODEL_ID = this.modelId;
+      //  obj.DEPARTMENT_ID = this.departmentId;
+      //  obj.MODEL_ID = this.modelId;
         obj.VERSION = this.form.value.VERSION;
-        obj.CREATED_BY = this.currentUser.user_id;
-        obj.STAGE_ID = this.stageId;
-        this.api_service.createNewChecklistVersion(this.selectedChecklistId, obj).subscribe(
+       // obj.CREATED_BY = this.currentUser.user_id;
+       // obj.STAGE_ID = this.stageId;
+        this.api_service.createNewChecklistVersion(this.selectedChecklistId, this.form.value.VERSION).subscribe(
             data => {
               setTimeout(()=>{
-              this.Notification="Revision Added Successfully";
-              this.display=true;
+                toastr.success('Revision Added Successfully', 'Success');
+                this.notify.emit('success');
+             // this.Notification="Revision Added Successfully";
+             // this.display=true;
             }, 400);
             },
             err => { 
@@ -87,8 +90,10 @@ export class NewChecklistVersion implements OnInit {
             else
             {
                 setTimeout(()=>{
-                    this.Notification="Revision Add Failed";
-                    this.display=true;
+                    toastr.error('Checklist Delete Failed', 'Error');
+                    this.notify.emit('failed');
+                   // this.Notification="Revision Add Failed";
+                   // this.display=true;
                 }, 400);
             }
             

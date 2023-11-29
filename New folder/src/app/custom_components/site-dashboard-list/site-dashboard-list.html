@@ -4,7 +4,7 @@
     </div>
     <div>
         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-        <input [(ngModel)]="searchTerm" (ngModelChange)="search()" type="text" pInputText size="35" placeholder="Search by Location Name">
+        <input [(ngModel)]="searchTerm" (ngModelChange)="search()" type="text" pInputText size="35" placeholder="Search By Location Name">
         <span><a style="color: #00978c;text-decoration: underline;cursor: pointer;padding: 10px;" (click)="openIssueRegisterDialog()">View Issue Register</a></span>
         <span #map>
             <md-icon (click)="openMapDialog()" mdTooltip="Map" class="icon-20 material-icons" style="cursor: pointer;font-size: 20px;color: #23375b;">map</md-icon>
@@ -24,7 +24,7 @@
                 <p-column header="Model" rowspan="3" [style]="{'width':'100px'}"></p-column>
                 <p-column header="DQR OK Points" rowspan="3" [style]="{'width':'100px'}"></p-column>
                 <p-column header="DQR NOT OK Points" rowspan="3" [style]="{'width':'100px'}"></p-column>
-                <p-column header="HOTO Certificate" rowspan="3" [style]="{'width':'100px'}"></p-column>
+                <p-column header="DIGIROM Certificate" rowspan="3" [style]="{'width':'100px'}"></p-column>
                 <!-- <p-column header="STPT Certificate" rowspan="3" [style]="{'width':'100px'}"></p-column> -->
                 <p-column header="PQHC" [style]="{'width': '640px'}" colspan="9"></p-column>
                 <p-column header="Pre-Comissioning" [style]="{'width': '210px'}" colspan="3"></p-column>

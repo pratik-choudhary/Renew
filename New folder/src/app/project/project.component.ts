@@ -23,6 +23,7 @@ export class ProjectComponent implements OnInit {
   ];
   filteredManagers: Observable<any[]>;
    managers: any;
+  
 
   constructor(public fb: FormBuilder, private router: Router,  private api_service: ApiService,private auth_service: AuthGuard) {
     //role management      

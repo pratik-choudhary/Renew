@@ -151,7 +151,7 @@
   }
 
   function isNotAnimatable(property) {
-    // https://drafts.csswg.org/web-animations/#concept-not-animatable
+    // https://w3c.github.io/web-animations/#concept-not-animatable
     return property === 'display' || property.lastIndexOf('animation', 0) === 0 || property.lastIndexOf('transition', 0) === 0;
   }
 

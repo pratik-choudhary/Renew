@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
 import { DialogModule} from  'primeng/primeng';
+import { MultiSelectModule } from 'primeng/primeng';
 import {
   MdToolbarModule,
   MdIconModule,
@@ -47,6 +48,13 @@ import {
   import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
   import { DropdownModule, InputTextModule, RadioButtonModule} from 'primeng/primeng';
   import { ContractorComponent } from './contractor/contractor.component';
+  
+
+  // import { AutoCompleteModule } from 'primeng/autocomplete';
+
+
+
+
   @NgModule({
     imports: [
     MdAutocompleteModule,

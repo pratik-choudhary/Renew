@@ -18,6 +18,22 @@ export const AppRoutes: Routes = [{
     loadChildren: './checklist/checklist.module#ChecklistModule'
   },
   {
+    path: 'asset',
+    loadChildren: './asset/asset.module#AssetModule'
+  },
+  {
+    path: 'pmschedule',
+    loadChildren: './pm-schedule/pm-schedule.module#PmScheduleModule'
+  },
+  {
+    path: 'checklist-Milestone',
+    loadChildren: './checklist-milestone/checklist-milestone.module#ChecklistMilestoneModule'
+  },
+  {
+    path: 'approval',
+    loadChildren: './approval/approval.module#ApprovalModule'
+  },
+  {
     path: 'master',
     loadChildren: './master_menu/master_menu.module#MasterMenuModule'
   },

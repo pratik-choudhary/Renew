@@ -12,25 +12,31 @@
 <md-card class="mat-card-top" style="margin-top: -30px;">
     <md-card-content>
         <div id="user-search" style="margin-left: 10px;">
-            <p-autoComplete [(ngModel)]="user" [suggestions]="filteredUsersSingle" (completeMethod)="filterUsersSingle($event)" field="fullNameValue"
-                [size]="30" placeholder="Select User" [minLength]="1" (onSelect)="selectedUserFn($event)" [style]="{'width':'300px'}" (onClear)="clearUser()"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="user" [suggestions]="filteredUsersSingle"
+                (completeMethod)="filterUsersSingle($event)" field="fullNameValue" [size]="30" placeholder="Select User"
+                [minLength]="1" (onSelect)="selectedUserFn($event)" [style]="{'width':'300px'}"
+                (onClear)="clearUser()"></p-autoComplete>
+            <button class="pull-right mat-raised-button mat-primary" color="primary" md-raised-button type="button"
+                (click)="addCustomer()">
+                <span class="mat-button-wrapper">Add User</span>
+            </button>
         </div>
-        <div *ngIf="error_msg_flag" style="margin-top:5px;color:red;">{{error_msg_flag}}</div>    
+        <div *ngIf="error_msg_flag" style="margin-top:5px;color:red;">{{error_msg_flag}}</div>
         <md-card *ngIf="selectedUser">
             <md-card-content>
                 <div fxLayout="row">
                     <div class="mb-1" fxFlex="50">
-                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">First name:            
-                    </span>
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">First name:
+                        </span>
                         {{user.firstName}}
                     </div>
                     <div class="mb-1" fxFlex="50" style="margin-left: 72px;">
-                    <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Last name:            
-                    </span>  
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Last name:
+                        </span>
                         {{user.lastName}}
                     </div>
                     <div class="mb-1" fxFlex="50">
-                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Full name:</span>            
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Full name:</span>
                         {{user.fullNameValue}}
                     </div>
                 </div>
@@ -52,38 +58,45 @@
                     <div fxLayout="row">
                         <div class="mb-1" fxFlex="50" fxLayoutWrap="wrap">
                             Department<small style="color: red;">*</small>
-                            <select style="width: 95%;padding: 5px;border-radius: 4px;" class="suzlon-input" placeholder="Department" [(ngModel)]="selectedDepartment"
+                            <select style="width: 95%;padding: 5px;border-radius: 4px;" class="suzlon-input"
+                                placeholder="Department" [(ngModel)]="selectedDepartment"
                                 [formControl]="form.controls['DEPARTMENT']" (change)="getDepartmentSpecificRoles()">
                                 <option *ngFor="let department of departments" [value]="department.id">
                                     {{department.name}}
                                 </option>
                             </select>
-                            <small *ngIf="form.controls['DEPARTMENT'].hasError('required') && form.controls['DEPARTMENT'].touched" class="mat-text-warn">Required</small>
+                            <small
+                                *ngIf="form.controls['DEPARTMENT'].hasError('required') && form.controls['DEPARTMENT'].touched"
+                                class="mat-text-warn">Required</small>
                         </div>
                         <div class="mb-1" fxFlex="50" fxLayoutWrap="wrap">
                             Role
-                            <select style="width: 95%;padding: 5px;border-radius: 4px;" class="suzlon-input" placeholder="Role" [(ngModel)]="selectedRole"
-                                [formControl]="form.controls['ROLE']">
+                            <select style="width: 95%;padding: 5px;border-radius: 4px;" class="suzlon-input"
+                                placeholder="Role" [(ngModel)]="selectedRole" [formControl]="form.controls['ROLE']">
                                 <option *ngFor="let role of roles" [value]="role.role">
                                     {{role.role}}
                                 </option>
                             </select>
 
                         </div>
-                        <div class="mb-1"  fxFlex="25" fxLayoutWrap="wrap">
+                        <div class="mb-1" fxFlex="25" fxLayoutWrap="wrap">
                             Status
-                            <select class="suzlon-input" style="width: 95%;padding: 5px;border-radius: 4px;" required="true" [formControl]="form.controls['STATUS']">
+                            <select class="suzlon-input" style="width: 95%;padding: 5px;border-radius: 4px;"
+                                required="true" [formControl]="form.controls['STATUS']">
                                 <option *ngFor="let status of statusList" [value]="status">
                                     {{ status }}
                                 </option>
                             </select>
                         </div>
-                        <div class="mb-1"  fxFlex="25" fxLayoutWrap="wrap" fxLayout="column">
-                                <div>Is Dashboard User?</div>
-                                <div><md-checkbox (change)="setDashboardUser(i)" [(ngModel)]="dashboard_user" ></md-checkbox></div>
+                        <div class="mb-1" fxFlex="25" fxLayoutWrap="wrap" fxLayout="column">
+                            <div>Is Dashboard User?</div>
+                            <div><md-checkbox (change)="setDashboardUser(i)" [(ngModel)]="dashboard_user"></md-checkbox>
                             </div>
+                        </div>
                         <div>
-                            <button md-raised-button color="primary" (click)="addUser()" style="margin-left: 10px; margin-top: 16px;" type="button" [disabled]="!form.valid">{{buttonLabel}}</button>
+                            <button md-raised-button color="primary" (click)="addUser()"
+                                style="margin-left: 10px; margin-top: 16px;" type="button"
+                                [disabled]="!form.valid">{{buttonLabel}}</button>
                         </div>
                     </div>
                 </form>
@@ -94,10 +107,161 @@
         </div>
     </md-card-content>
     <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
-            <p>{{Notification}}</p>
-            <p-footer>
-                <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
-            </p-footer>
+        <p>{{Notification}}</p>
+        <p-footer>
+            <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+        </p-footer>
     </p-dialog>
     <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
 </md-card>
+
+
+<div [hidden]="isSeeHistoryDiv" class="history">
+    <div class="history-inner">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <a (click)="toggleDisplaySeeHistory()" class="history-title">
+                <img  style="margin-top: 50px" class="history-left-arrow" src="../../assets/images/left-arrow.png" alt="left arrow">Add User
+            </a>
+        </div>
+
+        <form [formGroup]="checklistForm" (ngSubmit)="submitUserForm()">
+
+            <div fxLayout="row" style="margin-top:15px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="text" class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="name"
+                             />
+                        <span *ngIf="formSubmitted && !checklistForm.get('name').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 60px;">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Email Id
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="email" class="suzlon-input ng-pristine ng-invalid ng-touched"
+                            formControlName="emailId"  />
+                        <span *ngIf="formSubmitted && checklistForm.get('emailId').hasError('email')"
+                            class="err-text validation-label">
+                            Please enter a valid email address</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:15px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Password
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="text" class="suzlon-input ng-pristine ng-invalid ng-touched"
+                            formControlName="password"  />
+                        <span *ngIf="formSubmitted && !checklistForm.get('password').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 60px;">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Department
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="department" placeholder="Select Type" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let department of departments" [value]="department.Id">{{department.Name}}
+                            </option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('department').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:15px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Role
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="role" placeholder="Select Model" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let role of roles" [value]="role.role">{{role.role}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('role').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 50px;">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Status
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="Status" placeholder="Select Model" style="width: 100%;
+                        padding: 6px;border-radius: 4px;border-color: #dcdcdc;" disabled>
+                            <option *ngFor="let status of statusList" [value]="status">{{status}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('status').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:15px">
+                <div class="col-md-3">
+                    <div class="suzlon-input" style="width: 230px">
+                        <span style="font-size: 13px; color: rgba(0, 0, 0, 0.54); padding-bottom: 8px;">Site
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="site" placeholder="Select Model"
+                            style="width: 100%; padding: 6px; border-radius: 4px; border-color: #dcdcdc;" multiple>
+                            <option *ngFor="let site of sites" [ngValue]="site.Id">{{site.Site}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('site').valid"
+                            class="err-text validation-label">This field is required</span>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-3">
+                    <div class="suzlon-input" style="width: 230px">
+                        <span style="font-size: 13px; color: rgba(0, 0, 0, 0.54); padding-bottom: 8px;">Site
+                            <small style="color: red;">*</small>
+                        </span>
+                        
+                        <p-multiSelect [options]="sites" formControlName="site"></p-multiSelect>
+                    </div>
+                </div> -->
+            </div>
+
+
+
+
+
+
+
+
+            <div fxLayout="row" style="margin-top:50px;margin-left: 58%;">
+                <div class="col-md-3">
+                    <div class="suzlon-input ">
+                        <button type="submit" md-raised-button color="primary">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 10px">
+                    <div class="suzlon-input ">
+                        <button type="button" md-raised-button color="accent" (click)="toggleDisplaySeeHistory()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>

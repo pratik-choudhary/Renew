@@ -13,7 +13,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
                         <div fxLayout="row" fxGap="5px">
                             <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                            <input #gb type="text" pInputText size="30" placeholder="Search by project name">
+                            <input #gb type="text" pInputText size="30" placeholder="Search By project name">
                             <div style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;" *ngIf="projectsList">Total Count {{projectsList.length}}</div>
                         </div>
                         <div *ngIf="areaList != undefined && areaList != null" style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-left:10px;">Total Count {{areaList.length}}</div>
@@ -63,7 +63,7 @@
                         <ng-template let-col let-row="rowData" pTemplate="body">
                            <div fxLayout="row" fxLayoutWrap> 
                                 <div *ngFor="let c of row.checklists" 
-                                style="border-color: #156090;background: #186ba0;color: #FFFFFF;
+                                style="border-color: #1b5e20;background: #1b5e20;color: #FFFFFF;
                                 padding: 2px; margin: 4px; border-radius: 3px;">{{c.NAME}}</div>
                            </div> 
                         </ng-template>

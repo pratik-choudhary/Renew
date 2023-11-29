@@ -73,7 +73,7 @@ export class MilestoneImport implements OnInit {
             data => {
                 setTimeout(()=>{
                 this.Notification = 'Milestone Imported Successfully';
-                this.display = true;
+                this.display = false;
             }, 400);
             }, err => {
                 console.log(err);

@@ -1,0 +1,215 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div style=" margin-left: -38px; margin-top: -25px;">
+            <ul class="breadcrumb">
+                <li>
+                    <a style="padding-left: 12px;color:#23375b;background:#f6f7f9;"
+                        ng-class="someBooleanInScope? 'color-0' : 'color-1'">Asset</a>
+                </li>
+                <!-- <li [hidden]="selectedContent=='checklist'">
+                  <a style="color:#23375b;background:#f6f7f9;"
+                      (click)="selectedContent='section'">{{selected_section_bredcrumb}}</a>
+              </li>
+              <li [hidden]="selectedContent=='checklist'||selectedContent=='section'">
+                  <a style="color:#23375b;background:#f6f7f9;">{{selected_item_bredcrumb}}</a>
+              </li> -->
+                <li>
+                    <a></a>
+                </li>
+            </ul>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="space-between">
+        </div>
+        <div style="margin-top: -20px;">
+            <!-- <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
+              (click)="uploadExcelDialog()">
+              <md-icon class="material-icons">arrow_upward</md-icon>
+              <span>Import from Excel</span>
+          </button> -->
+            <!-- <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
+              (click)="openImportMilestoneDialog()">
+              <md-icon class="material-icons">arrow_downward</md-icon>
+              <span>Import Milestone</span>
+          </button> -->
+
+            <!-- <button *ngIf="status_of_selected_checklist != 'published'" md-raised-button class="suzlon-button-small"
+              (click)="createDialog()">
+              <md-icon svgIcon="plus-circle" class="icon-20"></md-icon>
+              <span>Add Milestone</span>
+          </button> -->
+        </div>
+    </div>
+</md-toolbar>
+<md-card style="margin-top: -25px;height: 90%;">
+    <md-content>
+         <div class="ui-widget-header">
+          <div fxLayout="row" fxLayoutAlign="space-between"
+              style="padding:6px 10px;">
+              <div fxLayout="row" fxGap="5px">
+                  <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                  <input type="text" pInputText size="30" [(ngModel)]="searchTerm" (ngModelChange)="search()"
+                      placeholder="Search By Assets">
+                  <div style="margin-left: 20px;margin-top: auto;margin-bottom: auto;">
+                      <label for="">Site</label>
+                      <select style="width: 100px"  (change)="getAssetBySite()" [(ngModel)]="selectedsite" name="site" placeholder="Please Select Site">
+                          <option *ngFor="let site of sites" [value]="site.Site">{{site.Site}}
+                          </option>
+                      </select>
+                  </div>
+               
+              </div>
+
+              <div fxLayout="row">
+                  <div *ngIf="Assets != undefined && Assets != null"
+                      style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-right: 20px">Total Count
+                      {{Assets.length}}</div>
+                
+                  <!-- <button
+                      style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background:#f6f7f9;;color: #10673a;border: none"
+                      (click)="uploadExcelDialog()"  title="Import Excel">  <md-icon style="font-size: 32px;" >upload_file</md-icon></button>
+                  <button
+                      style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background: #10673a;"
+                      (click)="openDialog()" title="Create New Checklist">Create New Checklist</button> -->
+<!-- 
+                 
+                  <md-menu #menu="mdMenu" [overlapTrigger]="false" md-prevent-menu-close="md-prevent-menu-close">
+                      <div class="filter-menu-header">
+                          <span>Departments</span>
+                      </div>
+                      <div fxLayout="row" fxLayoutWrap="wrap">
+                          <div *ngFor="let department of departments" fxFlex="50" fxLayoutWrap="wrap">
+                              <md-content style="margin-left:10px;padding:5px;">
+                                  <md-checkbox (change)="selectDepartments(department.id)"
+                                      [checked]="department.selected"
+                                      (click)="$event.stopPropagation()">{{department.name}}</md-checkbox>
+                              </md-content>
+                          </div>
+                          <div style="color: #00978c;text-decoration: underline;font-size: 11px;margin-left: 30px;margin-top: 4px;cursor: pointer"
+                              (click)="removeDepartmentFilter()">Remove Filter</div>
+
+                      </div>
+                  </md-menu> -->
+              </div>
+              <div *ngIf="selectedContent=='section'" style="padding: 10px;">
+
+              </div>
+          </div>
+      </div> 
+
+        <!-- checklist   -->
+        <!-- <div *ngIf="loader" class="loader">
+
+      </div>
+
+      <div *ngIf="!loader" style="padding: 10px;"> -->
+
+        <!-- <p-dataTable [value]="checklists" [rows]="10" [paginator]="true" [responsive]="true" [immutable]="false" [globalFilter]="gb"
+      sortMode="multiple" (onPage)="changePage($event)" [(first)]="first">  -->
+        <p-dataTable #dt [value]="Assets" [rows]="14" [paginator]="true" [responsive]="true" [immutable]="false"
+            [globalFilter]="gb" sortMode="multiple">
+            <p-column [style]="{'width':'110px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;" title="Functional Location">Functional Location</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.FunctionalLocation != null" style="text-transform: capitalize;">
+                        {{row.FunctionalLocation }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'60px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Asset No</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.AssetNo != null" style="text-transform: capitalize;">
+                        {{row.AssetNo }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'60px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Asset Type</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.AssetType != null" style="text-transform: capitalize;">
+                        {{row.AssetType }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'40px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">State</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.State != null" style="text-transform: capitalize;">
+                        {{row.State }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'60px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Site</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.Site != null" style="text-transform: capitalize;">
+                        {{row.Site }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'30px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;" title="Capacity">Cap.</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.Capacity != null" style="text-transform: capitalize;">
+                        {{row.Capacity }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'50px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">OEM</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.Oem != null" style="text-transform: capitalize;">
+                        {{row.Oem }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'50px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Model No</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.ModelNo != null" style="text-transform: capitalize;">
+                        {{row.ModelNo }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'50px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Company Code</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.CompanyCode != null" style="text-transform: capitalize;">
+                        {{row.CompanyCode }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'50px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Cost Centre</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.CostCentre != null" style="text-transform: capitalize;">
+                        {{row.CostCentre }}</div>
+                </template>
+            </p-column>
+            <p-column [style]="{'width':'50px'}">
+                <ng-template pTemplate="header">
+                    <div style="font-weight: 900; color: black;">Plant</div>
+                </ng-template>
+                <template let-col let-row="rowData" pTemplate="body">
+                    <div *ngIf="row.Plant != null" style="text-transform: capitalize;">
+                        {{row.Plant }}</div>
+                </template>
+            </p-column>
+
+        </p-dataTable>
+
+        <!-- </div> -->
+
+    </md-content>
+</md-card>

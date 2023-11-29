@@ -163,6 +163,7 @@ export class ChecklistAddForm {
   loadSections(id:number) {
     this.api_service.getSectionByChecklistId(id).subscribe(
       data => {
+        debugger;
         this.sections = data;
         if(data.length>0)
         {

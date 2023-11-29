@@ -1,81 +1,112 @@
-<div style="background:#26a69a;height:40px;" color="primary">
-  <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
-    <div>
-      <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{model}}</div>
-    </div>
-    <div>
-      <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
-        (click)="close()">close</md-icon>
-    </div>
-  </div>
-</div>
-
-<div  style="padding:10px 10px 25px 10px;">
-  <div fxLayout="row" fxLayoutAlign="space-between">
-    <div class="tab" fxLayout="row" style="height: 24px;">
-      <a *ngIf="tabs == 'both' || tabs == 'individual'" [ngClass]="{'active':selected_tab=='individual'}" (click)="changeTab('individual')">Individual</a>
-      <a *ngIf="tabs == 'both' || tabs == 'group'" [ngClass]="{'active':selected_tab=='group'}" (click)="changeTab('group')">Group</a>
+<div style="background:#1b5e20;height:40px;" color="primary">
+   <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+      <div>
+         <div fxFlex class="header-text"
+            style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{model}}</div>
+      </div>
+      <div>
+         <md-icon class="material-icons mat-icon"
+            style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
+            (click)="close()">close</md-icon>
+      </div>
    </div>
 </div>
-<form  *ngIf="selected_tab=='individual'" fxLayout="column" [formGroup]="form" (ngSubmit)="saveQuestion()">
-<md-dialog-content style="height: auto;">
-   <div fxLayout="row" fxLayoutWrap fxFlex>
-      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top border-left">
-         <div class="title">
-            Question number
-            <small class="mat-text-warn">*</small>
-         </div>
-        <div class="suzlon-input2" style="margin-top: 18px;"> 
-               <input type="number" placeholder="Question number" [formControl]="form.controls['QUESTION_NO']">
-         </div> 
+
+<div style="padding:10px 10px 25px 10px;">
+   <div fxLayout="row" fxLayoutAlign="space-between">
+      <div class="tab" fxLayout="row" style="height: 24px;">
+         <a *ngIf="tabs == 'both' || tabs == 'individual'" [ngClass]="{'active':selected_tab=='individual'}"
+            (click)="changeTab('individual')">Individual</a>
+         <!-- <a *ngIf="tabs == 'both' || tabs == 'group'" [ngClass]="{'active':selected_tab=='group'}" (click)="changeTab('group')">Group</a> -->
       </div>
-      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
-        <div class="title">
-            Question
-            <small class="mat-text-warn">*</small>
-         </div>
-          <div>
-            <textarea [formControl]="form.controls['QUESTION']"  placeholder="Write your question" type="text" style="margin:16px 0;width:100%;"></textarea>
-         </div> 
-      </div>    
-      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
-         <div class="title">
-            Specification
-            <small class="mat-text-warn">*</small>
-         </div>
-         <div>
-            <md-radio-group (change)="changeSpecificationType()" [disabled]="checklist_status == 'published'" [formControl]="form.controls['SPECIFICATION_TYPE']" style="padding:16px;">
+   </div>
+   <form *ngIf="selected_tab=='individual'" fxLayout="column" [formGroup]="form" (ngSubmit)="saveQuestion()">
+      <md-dialog-content style="padding: 0px 22px 12px 0px">
+         <div fxLayout="row" fxLayoutWrap fxFlex>
+            <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top border-left">
+               <div class="title">
+                  Question Number
+                  <small class="mat-text-warn">*</small>
+               </div>
+               <div class="suzlon-input2" style="margin-top: 18px;">
+                  <input type="number" placeholder="Question number" [formControl]="form.controls['QUESTION_NO']">
+               </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
+               <div class="title">
+                  Question
+                  <small class="mat-text-warn">*</small>
+               </div>
+               <div>
+                  <textarea [formControl]="form.controls['QUESTION']" placeholder="Write your question" type="text"
+                     style="margin:16px 0;width:100%;"></textarea>
+               </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
+               <div class="title">
+                  Specification
+                  <small class="mat-text-warn">*</small>
+               </div>
+               <div>
+                  <!-- <md-radio-group (change)="changeSpecificationType()" [disabled]="checklist_status == 'published'" [formControl]="form.controls['SPECIFICATION_TYPE']" style="padding:16px;">
                <md-radio-button value="text" style="margin-right: 15px;">Text</md-radio-button>
                <md-radio-button value="select" style="margin-right: 15px;">Dropdown</md-radio-button>
                <md-radio-button value="range">Range</md-radio-button>
-            </md-radio-group>
-         </div>
-         <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='text' || form.controls['SPECIFICATION_TYPE']['_value']=='range'">
-            <textarea [formControl]="form.controls['SPECIFICATION']" placeholder="Specification" type="text" style="margin:16px 0;width:100%;"></textarea>
-         </div>
-         <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='select'" class="mb-1" formArrayName="SPECIFICATION_OPTIONS">
-            <div fxLayout="row" *ngFor="let option of form.controls.SPECIFICATION_OPTIONS.controls;
+            </md-radio-group> -->
+                  <select class="suzlon-input" (change)="changeSpecificationType()"
+                     [formControl]="form.controls['SPECIFICATION_TYPE']" placeholder="SELECT SPECIFICATION" style="width: 100%;
+                 padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                     <option *ngFor="let Specification of Specifications" [value]="Specification.OptionType">
+                        {{Specification.OptionType}}
+                     </option>
+                  </select>
+               </div>
+               <div
+                  *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='Date' || form.controls['SPECIFICATION_TYPE']['_value']=='OK/NOT OK' || form.controls['SPECIFICATION_TYPE']['_value']=='OK/NOT OK/NA' || form.controls['SPECIFICATION_TYPE']['_value']=='Value' || form.controls['SPECIFICATION_TYPE']['_value']=='Value/NA'">
+                  <textarea [formControl]="form.controls['SPECIFICATION']" placeholder="Specification" type="text"
+                     style="margin:10px 0;width:100%;"></textarea>
+               </div>
+               <!-- <div
+                  *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='Value' || form.controls['SPECIFICATION_TYPE']['_value']=='Value/NA' ">
+                  <div class="suzlon-input2" style="margin-top: 5px;">
+                     <input   style="width:50%;" type="text" placeholder="Unit" [formControl]="form.controls['QUESTION_NO']">
+                  </div>
+               </div> -->
+               <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='Dropdown'" class="mb-1"
+                  formArrayName="SPECIFICATION_OPTIONS">
+                  <div fxLayout="row" *ngFor="let option of form.controls.SPECIFICATION_OPTIONS.controls;
                let i=index;let last=last;" id="option-array">
-               <md-input-container fxFlex [formGroupName]="i">
-                  <input mdInput 
-                     formControlName="OPTION_DESCRIPTION">
-               </md-input-container>
-               <img *ngIf="last" src="assets/images/plus-circle-outline.svg" style="margin: 0 8px;cursor: pointer;" (click)="addSpecification()">
-               <img *ngIf="form.controls.SPECIFICATION_OPTIONS.controls.length > 1" src="assets/images/close-circle-outline.svg" (click)="removeSpecification(i)" style="cursor:pointer">
+                     <md-input-container fxFlex [formGroupName]="i">
+                        <input mdInput formControlName="OPTION_DESCRIPTION">
+                     </md-input-container>
+                     <img *ngIf="last" src="assets/images/plus-circle-outline.svg"
+                        style="margin: 0 8px;cursor: pointer;" (click)="addSpecification()">
+                     <img *ngIf="form.controls.SPECIFICATION_OPTIONS.controls.length > 1"
+                        src="assets/images/close-circle-outline.svg" (click)="removeSpecification(i)"
+                        style="cursor:pointer">
+                  </div>
+               </div>
+               <div
+                  *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='Value' || form.controls['SPECIFICATION_TYPE']['_value']=='Value/NA'">
+                  <div fxLayout="row" fxLayoutAlign="space-brtween">
+                     
+                     
+                     <md-input-container style="margin: 0 10px;">
+                        <input mdInput placeholder="Min Value" [(ngModel)]="MIN_RANGE"
+                           [formControl]="form.controls['MIN_RANGE']">
+                     </md-input-container>
+                     <md-input-container style="margin: 0 10px;">
+                        <input mdInput placeholder="Max Value" [(ngModel)]="MAX_RANGE"
+                           [formControl]="form.controls['MAX_RANGE']">
+                     </md-input-container>
+                     <md-input-container style="margin: 0 10px;">
+                        <input mdInput placeholder="Unit" [(ngModel)]="Unit"
+                           [formControl]="form.controls['Unit']">
+                     </md-input-container>
+                  </div>
+               </div>
             </div>
-         </div>
-         <div *ngIf="form.controls['SPECIFICATION_TYPE']['_value']=='range'">
-            <div fxLayout="row" fxLayoutAlign="space-brtween">
-               <md-input-container style="margin: 0 10px;">
-                  <input mdInput placeholder="Min Value" [(ngModel)]="MIN_RANGE" [formControl]="form.controls['MIN_RANGE']">
-               </md-input-container>
-               <md-input-container style="margin: 0 10px;">
-                  <input mdInput placeholder="Max Value" [(ngModel)]="MAX_RANGE" [formControl]="form.controls['MAX_RANGE']">
-               </md-input-container>
-            </div>
-         </div>
-      </div>
-      <!-- <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
+            <!-- <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-top">
          <div class="title">
             Status
          </div>
@@ -93,7 +124,7 @@
             </div>
          </div>
       </div> -->
-      <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-left">
+            <!-- <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-left">
          <div class="title">
             Actual
          </div>
@@ -118,84 +149,99 @@
                <img *ngIf="form.controls.ACTUAL_OPTIONS.controls.length > 1" src="assets/images/close-circle-outline.svg" (click)="removeActual(i)" style="cursor:pointer">
             </div>
          </div>
-      </div>
-      <div fxFlex="100" fxFlex.gt-md="33" class="question-section">
-         <div>
-            <div class="title" style="margin-bottom: 16px;">
-               Required
-            </div>
-            <div style="margin-left: 16px;margin-bottom: 6px;">
-               <md-checkbox [formControl]="form.controls['PHOTO']" style="margin-right: 15px;">Photo</md-checkbox>
-            </div>
-            <div style="margin-left: 16px;margin-bottom: 6px;">
+      </div> -->
+            <div fxFlex="100" fxFlex.gt-md="33" class="question-section border-left">
+               <div>
+                  <div class="title" style="margin-bottom: 16px;">
+                     Required
+                  </div>
+                  <div style="margin-left: 16px;margin-bottom: 6px;">
+                     <md-checkbox [formControl]="form.controls['PHOTO']" style="margin-right: 15px;">Photo</md-checkbox>
+                  </div>
+                  <!-- <div style="margin-left: 16px;margin-bottom: 6px;">
                <md-checkbox [formControl]="form.controls['DOCUMENT']" style="margin-right: 15px;">Document</md-checkbox>
+            </div> -->
+               </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-md="33" class="question-section">
+               <div class="title">
+                  Criticality
+               </div>
+               <div>
+                  <md-radio-group [disabled]="checklist_status == 'published'"
+                     [formControl]="form.controls['CRITICALITY']" style="padding:16px;">
+                     <md-radio-button value="red" style="margin-right: 15px;">Red</md-radio-button>
+                     <md-radio-button value="yellow" style="margin-right: 15px;">Yellow</md-radio-button>
+                     <md-radio-button value="green">Green</md-radio-button>
+                  </md-radio-group>
+               </div>
             </div>
          </div>
-      </div>
-      <div fxFlex="100" fxFlex.gt-md="33" class="question-section">
-         <div class="title">
-            Criticality
-         </div>
-         <div>
-            <md-radio-group [disabled]="checklist_status == 'published'" [formControl]="form.controls['CRITICALITY']" style="padding:16px;">
-               <md-radio-button value="red" style="margin-right: 15px;">Red</md-radio-button>
-               <md-radio-button value="yellow" style="margin-right: 15px;">Yellow</md-radio-button>
-               <md-radio-button value="green">Green</md-radio-button>
-            </md-radio-group>
-         </div>
-      </div>
-   </div> 
-</md-dialog-content>
-<md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
-   <button md-raised-button [md-dialog-close]="false" style="background-color: #5B5B5B;color: #fff;">Cancel</button>
-   <button md-raised-button color="primary" style="margin-left: 10px" type="submit" [disabled]="!form.valid">Submit</button>
-</md-dialog-actions>
-</form>
-<div *ngIf="selected_tab=='group'" fxLayout="column">
-  <md-dialog-content style="height: auto;">
-   <div fxLayout="row" fxLayoutWrap fxFlex style="border: 1px solid #dcd9d9;padding: 10px;background: #fcfcfc;overflow:auto;">
-      <div style="width:100%;">
-        <div class="suzlon-input" style="width: 100%">
-          <input type="text" placeholder="Activity *" [(ngModel)]="group_activity">
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="end" style="width:100%;margin-bottom:6px;"> 
-        <div fxLayout="row" fxLayoutAlign="center" style="width:100%">
-            <div class="index-circles" [ngClass]="{'active':i==current_active_template}" *ngFor="let que of questions;let i=index" (click)="selectCurrentActiveTemplate(i)">{{i+1}}</div>
-            <div class="index-circles-add" (click)="addQuestions()">+</div>
-        </div>
-         <div *ngIf="questions.length-1>0" style="width: 24px;position: absolute;margin-left: -38px;margin-top: 19px;"> 
-            <div class="index-circles-delete">
-              <md-icon svgIcon="icon_delete" class="delete-template-icon" style="cursor: pointer;border-radius: 50%;" (click)="removeTemplate()"></md-icon>
+      </md-dialog-content>
+      <md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+         <button md-raised-button [md-dialog-close]="false" style="background: #f5f5f5;">Cancel</button>
+         <button md-raised-button color="primary" style="margin-left: 10px" type="submit"
+            [disabled]="!form.valid">Submit</button>
+      </md-dialog-actions>
+   </form>
+   <div *ngIf="selected_tab=='group'" fxLayout="column">
+      <md-dialog-content style="height: auto;">
+         <div fxLayout="row" fxLayoutWrap fxFlex
+            style="border: 1px solid #dcd9d9;padding: 10px;background: #fcfcfc;overflow:auto;">
+            <div style="width:100%;">
+               <div class="suzlon-input" style="width: 100%">
+                  <input type="text" placeholder="Activity *" [(ngModel)]="group_activity">
+               </div>
             </div>
-        </div>
-      </div>
-      <!-- template strat -->
-      <div style="width:100%;margin-bottom:10px;" fxLayout="row" fxLayoutAlign="center">
-        <div style="width:38px;margin-left: -4px;margin-right: 4px;"> 
-          <md-icon svgIcon="arrow_left" (click)="selectCurrentActiveTemplate(current_active_template-1)" class="icon-36" [ngClass]="{'hide-element': current_active_template==0}" style="cursor: pointer;border-radius: 50%;"></md-icon>
-        </div>
-        <div fxFlex fxLayout="row">
-          <group-question *ngFor="let que of questions;let i=index" [ngClass]="{'hide-element': i!= current_active_template}" [parentInput]="patch_value" [checklistStatus]="checklist_status" (childData)='handleEvent($event,i)' (onDuplicate)="duplicateQuestion($event)" style="width:100%"></group-question>
-        </div>  
-        <div style="width:38px"> 
-          <md-icon svgIcon="arrow_right" (click)="selectCurrentActiveTemplate(current_active_template+1)" [ngClass]="{'hide-element':current_active_template > questions.length-2}" class="icon-36" style="cursor: pointer;border-radius: 50%;margin-left: 4px;"></md-icon>
-        </div> 
-      </div>
-      <!-- template end -->
-     </div> 
-  </md-dialog-content>
-  <md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
-    <button md-raised-button [md-dialog-close]="false" style="background-color: #5B5B5B;color: #fff;">Cancel</button>
-    <button md-raised-button color="primary" style="margin-left: 10px" (click)="saveGroupTemplate(group_activity)">Submit</button>
-  </md-dialog-actions>
-</div>  
+            <div fxLayout="row" fxLayoutAlign="end" style="width:100%;margin-bottom:6px;">
+               <div fxLayout="row" fxLayoutAlign="center" style="width:100%">
+                  <div class="index-circles" [ngClass]="{'active':i==current_active_template}"
+                     *ngFor="let que of questions;let i=index" (click)="selectCurrentActiveTemplate(i)">{{i+1}}</div>
+                  <div class="index-circles-add" (click)="addQuestions()">+</div>
+               </div>
+               <div *ngIf="questions.length-1>0"
+                  style="width: 24px;position: absolute;margin-left: -38px;margin-top: 19px;">
+                  <div class="index-circles-delete">
+                     <md-icon svgIcon="icon_delete" class="delete-template-icon"
+                        style="cursor: pointer;border-radius: 50%;" (click)="removeTemplate()"></md-icon>
+                  </div>
+               </div>
+            </div>
+            <!-- template strat -->
+            <div style="width:100%;margin-bottom:10px;" fxLayout="row" fxLayoutAlign="center">
+               <div style="width:38px;margin-left: -4px;margin-right: 4px;">
+                  <md-icon svgIcon="arrow_left" (click)="selectCurrentActiveTemplate(current_active_template-1)"
+                     class="icon-36" [ngClass]="{'hide-element': current_active_template==0}"
+                     style="cursor: pointer;border-radius: 50%;"></md-icon>
+               </div>
+               <div fxFlex fxLayout="row">
+                  <group-question *ngFor="let que of questions;let i=index"
+                     [ngClass]="{'hide-element': i!= current_active_template}" [parentInput]="patch_value"
+                     [checklistStatus]="checklist_status" (childData)='handleEvent($event,i)'
+                     (onDuplicate)="duplicateQuestion($event)" style="width:100%"></group-question>
+               </div>
+               <div style="width:38px">
+                  <md-icon svgIcon="arrow_right" (click)="selectCurrentActiveTemplate(current_active_template+1)"
+                     [ngClass]="{'hide-element':current_active_template > questions.length-2}" class="icon-36"
+                     style="cursor: pointer;border-radius: 50%;margin-left: 4px;"></md-icon>
+               </div>
+            </div>
+            <!-- template end -->
+         </div>
+      </md-dialog-content>
+      <md-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+         <button md-raised-button [md-dialog-close]="false" style="background: #f5f5f5;">Cancel</button>
+         <button md-raised-button color="primary" style="margin-left: 10px"
+            (click)="saveGroupTemplate(group_activity)">Submit</button>
+      </md-dialog-actions>
+   </div>
 </div>
 <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
-    <p>{{Notification}}</p>
-    <p-footer>
-      <button type="button" class="notification-button"
-      (click)="onNotification()"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-check" style="margin-right:1px" ></span> <span>Ok</span></button>
+   <p>{{Notification}}</p>
+   <p-footer>
+      <button type="button" class="notification-button" (click)="onNotification()"><span
+            class="ui-button-icon-left ui-clickable fa fa-fw fa-check" style="margin-right:1px"></span>
+         <span>Ok</span></button>
 
-    </p-footer>
+   </p-footer>
 </p-dialog>

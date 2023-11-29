@@ -9,6 +9,8 @@ import { ApiService } from 'app/services/api.service';
 import { DialogModule } from 'primeng/primeng';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { AuthGuard } from 'app/services/auth-guard';
+import * as toastr from 'toastr';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -16,6 +18,7 @@ import { AuthGuard } from 'app/services/auth-guard';
   providers: [ConfirmationService]
 })
 export class UserComponent implements OnInit {
+  checklistForm: FormGroup
   public form: FormGroup;
   filteredUsersSingle: any[];
   user: any;
@@ -26,6 +29,9 @@ export class UserComponent implements OnInit {
   refresh: string;
   user_info: any;
   alreadyExists = false;
+  isSeeHistoryDiv = true;
+  selectedSite:any;
+  formSubmitted: boolean = false;
   
   statusList = [
     'Active', 'Inactive'
@@ -35,19 +41,13 @@ export class UserComponent implements OnInit {
       'role': 'Engineer'
     },
     {
-      'role': 'PM'
-    },
-    {
-      'role': 'HoD'
-    },
-    {
       'role': 'QA'
     },
     {
       'role':'ADMIN'
     },
     {
-      'role':'Site_MIS'
+      'role':'SITE INCHARGE'
     }
   ];
   rolesCopy=[];
@@ -57,6 +57,7 @@ export class UserComponent implements OnInit {
   selectedUser = false;
   buttonLabel = "Add";
   userList: any;
+  sites:any;
   // Declare a mapping between action ids and their event listener
   myActions = {
     'alert': (property) => { alert(JSON.stringify(property.value)) },
@@ -76,14 +77,14 @@ export class UserComponent implements OnInit {
     private auth_service: AuthGuard
   ) {
       this.user_info = this.auth_service.getUserInfo();
-      if (this.user_info) {
-        if (this.user_info.role.toUpperCase() !== 'ADMIN' 
-        && this.user_info.role.toUpperCase() !== 'SITE_MIS'
-          && this.user_info.role.toUpperCase() !== 'PM'
-            && this.user_info.role.toUpperCase() !== 'HOD') {
-          this.router.navigate(['/site-dashboard']);
-        }
-      }
+      // if (this.user_info) {
+      //   if (this.user_info.role.toUpperCase() !== 'ADMIN' 
+      //   && this.user_info.role.toUpperCase() !== 'SITE_MIS'
+      //     && this.user_info.role.toUpperCase() !== 'PM'
+      //       && this.user_info.role.toUpperCase() !== 'HOD') {
+      //     this.router.navigate(['/site-dashboard']);
+      //   }
+      // }
     this.iconRegistry.addSvgIcon(
       'plus-circle',
       sanitizer.bypassSecurityTrustResourceUrl('assets/images/plus-circle.svg'));
@@ -134,10 +135,21 @@ export class UserComponent implements OnInit {
      }
   } 
     ngOnInit() {
+      debugger;
+   this.getAllSite();
+      this.checklistForm = this.fb.group({
+        name: ['', Validators.required],
+        emailId: ['',[Validators.required, Validators.email]],
+        password: ['', Validators.required],
+        department: ['', Validators.required],
+        role: ['', Validators.required],
+        Status: ['Active', Validators.required],
+        site: ['', Validators.required],
+      })
     this.rolesCopy = this.roles;
     this.api_service.getAllDepartments().subscribe(
       data => {
-        this.departments = data;
+        this.departments = data.data;
       },
       err => { console.log(err);
       this.api_service.checkStatus(err);
@@ -157,6 +169,8 @@ export class UserComponent implements OnInit {
       });
 
 
+
+
   }
   loadUsers() {
     this.api_service.getUsers().subscribe(
@@ -166,6 +180,14 @@ export class UserComponent implements OnInit {
       err => {
         console.log(err);
         this.api_service.checkStatus(err);
+      });
+  }
+  getAllSite(){
+    this.api_service.getAllSite().subscribe(
+      data => {
+            this.sites = data.data;
+      }, err => {
+        console.log(err);
       });
   }
 
@@ -199,6 +221,7 @@ export class UserComponent implements OnInit {
   onNotification() {
         if (this.Notification == "User Added Successfully") {
       this.display = false;
+      this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
       this.refresh = "refreshList";
     }
     if (this.Notification == "User Add Failed") {
@@ -241,8 +264,12 @@ export class UserComponent implements OnInit {
           if (data != null) {
             this.loadUsers();
             setTimeout(() => {
-            this.Notification = "User Added Successfully";
-            this.display = true;
+              toastr.success('User Added Successfully', 'Success');
+              this.display = false;
+              this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+              this.refresh = "refreshList";
+            // this.Notification = "User Added Successfully";
+            // this.display = true;
           }, 400);
           }
         },
@@ -250,8 +277,11 @@ export class UserComponent implements OnInit {
           console.log(err);
           this.api_service.checkStatus(err);
           setTimeout(()=>{
-          this.Notification = "User Add Failed";
-          this.display = true;
+            toastr.error('User Add Failed', 'Error');
+            this.display = false;
+            this.refresh = "";
+          // this.Notification = "User Add Failed";
+          // this.display = true;
         }, 400);
         });
     }else {
@@ -265,8 +295,12 @@ export class UserComponent implements OnInit {
         data => {
           if (data != null) {
             setTimeout(()=>{
-            this.Notification = "User Updated Successfully";
-            this.display = true;
+              toastr.success('User Updated Successfully', 'Success');
+              this.display = false;
+              this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+              this.refresh = "refreshList";
+            // this.Notification = "User Updated Successfully";
+            // this.display = true;
           }, 400);
           }
         },
@@ -274,13 +308,79 @@ export class UserComponent implements OnInit {
           console.log(err);
           this.api_service.checkStatus(err);
           setTimeout(()=>{
-          this.Notification = "Failed to update";
-          this.display = true;
+            toastr.error('Failed To Update', 'Error');
+            this.display = false;
+            this.refresh = "";
+          // this.Notification = "Failed to update";
+          // this.display = true;
         }, 400);
         });
      }});
     }
    }
+
+   addCustomer() {
+    this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+    // let dialogRef = this.dialog.open(ChecklistFormDialog, {
+    //   width: '60vw',
+    //   disableClose: true
+    // });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.loadChecklists();
+    //   }
+    // });
+  }
+
+  toggleDisplaySeeHistory() {
+    this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+  }
+  submitUserForm(){
+    debugger;
+    this.formSubmitted = true 
+    if (this.checklistForm.status === "VALID") {
+    var obj={
+      name:this.checklistForm.value.name,
+      password:this.checklistForm.value.password,
+      employeeEmail:this.checklistForm.value.emailId ,
+      department_id:this.checklistForm.value.department,
+      role:this.checklistForm.value.role,
+      status:this.checklistForm.value.Status,
+      siteIdList:this.checklistForm.value.site,
+      //siteIdList: [30083 ,30084,30085 ]
+    }
+     this.api_service.addUser(obj).subscribe(
+      
+      data => {
+        this.formSubmitted = false
+        if (data != null) { 
+          this.loadUsers();
+          setTimeout(() => {
+            toastr.success('User Added Successfully', 'Success');
+            this.display = false;
+            this.isSeeHistoryDiv = !this.isSeeHistoryDiv;
+            this.refresh = "refreshList";
+          // this.Notification = "User Added Successfully";
+          // this.display = true;
+        }, 400);
+        }
+      },
+      err => {
+        console.log(err);
+        this.api_service.checkStatus(err);
+        setTimeout(()=>{
+          toastr.error('User Add Failed', 'Error');
+          this.display = false;
+          this.refresh = "";
+        // this.Notification = "User Add Failed";
+        // this.display = true;
+      }, 400);
+      });
+    }
+  }
+  onLocationExpandChange(even){
+
+  }
   
   // end
 }

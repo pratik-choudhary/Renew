@@ -1,0 +1,293 @@
+<md-toolbar color="primary">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div style=" margin-left: -38px; margin-top: -25px;">
+            <ul class="breadcrumb">
+                <li>
+                    <a style="padding-left: 12px;color:#23375b;background:#f6f7f9;"
+                        ng-class="someBooleanInScope? 'color-0' : 'color-1'">PM Schedule</a>
+                </li>
+                <li>
+                    <a></a>
+                </li>
+            </ul>
+        </div>
+        <div style="padding: 10px;min-width:285px;" fxLayout="row" fxLayoutAlign="space-between">
+        </div>
+
+    </div>
+</md-toolbar>
+<md-card style="margin-top: -25px;height: 90%;">
+    <md-content>
+        <div class="ui-widget-header">
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding:6px 10px;">
+                <div fxLayout="row" fxGap="5px">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="30" [(ngModel)]="searchTerm" (ngModelChange)="search()"
+                        placeholder="Search By Functional Location">
+                    <div style="margin-left: 20px; margin-top: auto; margin-bottom: auto;" *ngIf="selectdtab == 'PM Schedule'">
+                        <label for="site">Site</label>
+                        <select style="width: 100px" (change)=" getPmScheduleBySiteOrModelOrPMType()"
+                            [(ngModel)]="selectedsite" name="site" id="site">
+                            <option *ngFor="let site of sites" [value]="site.Site">{{ site.Site }}</option>
+                        </select>
+                    </div>
+                    <div style="margin-left: 20px;margin-top: auto;margin-bottom: auto;" *ngIf="selectdtab == 'PM Schedule'">
+                        <label for="">Model</label>
+                        <select style="width: 100px" (change)=" getPmScheduleBySiteOrModelOrPMType()"
+                            [(ngModel)]="selectedModel" name="model" placeholder="Select Model">
+                            <option *ngFor="let model of models" [value]="model">{{model}}
+                            </option>
+                        </select>
+                    </div>
+                    <div style="margin-left: 20px;margin-top: auto;margin-bottom: auto;" *ngIf="selectdtab == 'PM Schedule' ">
+                        <label for="">PM Type</label>
+
+                        <select style="width: 100px" (change)=" getPmScheduleBySiteOrModelOrPMType()"
+                            [(ngModel)]="selectedMaintenanceType" name="maintenanceType" placeholder="Select Model">
+                            <option *ngFor="let manintenancetype of maintenanceTypes" [value]="manintenancetype.Id">
+                                {{manintenancetype.PmType1}}
+                            </option>
+                        </select>
+
+                    </div>
+                    <div style="" *ngIf="selectdtab == 'Approvals' ">
+                        <button
+                            style="margin-top: 2px;margin-right: 20px;color:#ffffff;cursor: pointer;background:#f6f7f9;;color: #10673a;border: none"
+                            (click)="uploadExcelDialog()" title="Upload PM Schedule Excel"> <md-icon
+                                style="font-size: 32px;margin-left: 20px">upload_file</md-icon>
+                        </button>
+                    </div>
+                    <div *ngIf="selectdtab == 'Approvals' " (click)="pmScheduleApprove($event)">
+                        <button md-raised-button class="suzlon-button" 
+                            style="background: #1b5e20 !important;color: white !important;line-height:30px !important;margin-top: 3px;
+                            margin-right: 8px">
+                            <!-- <md-icon svgIcon="plus-circle" class="icon-20"></md-icon> -->
+                            <span>Approve</span>
+                        </button>
+                    </div>
+
+
+                </div>
+
+                <div fxLayout="row">
+                    <div *ngIf="pmScheduleData != undefined && pmScheduleData != null && selectdtab == 'PM Schedule' "
+                        style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-right: 20px">Total Count
+                        {{pmScheduleData.length}}</div>
+                    <div *ngIf="pmScheduleDataApprove != undefined && pmScheduleDataApprove != null && selectdtab == 'Approvals' "
+                        style="font-size: 12px; margin-top: auto;margin-bottom: auto;margin-right: 20px">Total Count
+                        {{pmScheduleDataApprove.length}}</div>
+                </div>
+                <div *ngIf="selectedContent=='section'" style="padding: 10px;">
+
+                </div>
+            </div>
+        </div>
+
+       
+        <md-tab-group (click)="onTabChange($event)" >
+            <md-tab label="PM Schedule" clickable>
+
+                <p-dataTable #dt [value]="pmScheduleData" [rows]="14" [paginator]="true" [responsive]="true"
+                    [immutable]="false" [globalFilter]="gb" sortMode="multiple">
+                    <p-column [style]="{'width':'110px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;" title="Functional Location">Functional Location
+                            </div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.FunctionalLocation != null" style="text-transform: capitalize;">
+                                {{row.FunctionalLocation }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">PM Type</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.PmType != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.PmType }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Site</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.Site != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.Site }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'60px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Equipment No</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.EquipmentNo != null" style="text-transform: capitalize;">
+                                {{row.EquipmentNo }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'60px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Planned Date</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.PlannedDate != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.PlannedDate |date:'dd-MMM, yyyy' }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'60px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Plant</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.Plant != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.Plant }}</div>
+                        </template>
+                    </p-column>
+
+                </p-dataTable>
+
+            </md-tab>
+            <md-tab label="Approvals" clickable>
+               
+                <p-dataTable #dt [value]="pmScheduleDataApprove" [rows]="14" [paginator]="false" [responsive]="true"
+                    [immutable]="false" [globalFilter]="gb" sortMode="multiple">
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;" >Created By
+                            </div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.CreatedBy != null" style="text-transform: capitalize;">
+                                {{row.CreatedBy }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Created Date</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.CreatedDate != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.CreatedDate |date:'dd-MMM, yyyy' }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'30px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">No Of Entries</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.NoOfEntries != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.NoOfEntries }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'30px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Status</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.Status != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.Status }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;" >Last Updated By
+                            </div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.ModifiedBy != null" style="text-transform: capitalize;">
+                                {{row.ModifiedBy }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Last Updated  Date</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.ModifiedDate != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.ModifiedDate |date:'dd-MMM, yyyy' }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'10px'}">
+                        <ng-template let-col let-row="rowData" pTemplate="body">
+                            <div fxLayout="row" style="text-decoration:underline;cursor:pointer"
+                                (click)="openSections(row)">
+                                <!-- <div>{{row.checklist.SECTION_COUNT}}</div> -->
+                                <div style="margin-left: 11px;margin-top: -14px;">
+                                    <md-icon class="icon-20 material-icons"
+                                        style="color:gray;margin-top: 18px;font-size: 20px;"
+                                        title="View">visibility</md-icon>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+                <p style="font-weight: 900;
+                color: white;
+                text-align: center;
+                background: #1b5e20;
+                margin-bottom: 0px" *ngIf="pmScheduleDataApprovelist.length > 0">PM Schedule Pending List</p>
+                <p-dataTable *ngIf="pmScheduleDataApprovelist.length > 0" #dt [value]="pmScheduleDataApprovelist" [rows]="9" [paginator]="true" [responsive]="true"
+                    [immutable]="false" [globalFilter]="gb" sortMode="multiple">
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;" >Functional Location
+                            </div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.FunctionalLocation != null" style="text-transform: capitalize;">
+                                {{row.FunctionalLocation }}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Equipment No</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.EquipmentNo != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.EquipmentNo  }}</div>
+                        </template>
+                    </p-column>
+           
+                    <p-column [style]="{'width':'30px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">PM Type</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.Pmtype != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.Pmtype}}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'30px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Plant</div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.Plant != null" style="text-transform: capitalize;text-align: center;">
+                                {{row.Plant}}</div>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width':'40px'}">
+                        <ng-template pTemplate="header">
+                            <div style="font-weight: 900; color: black;">Planned Date
+                            </div>
+                        </ng-template>
+                        <template let-col let-row="rowData" pTemplate="body">
+                            <div *ngIf="row.PlannedDate != null" style="text-transform: capitalize;">
+                                {{row.PlannedDate  |date:'dd-MMM, yyyy' }}</div>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </md-tab>
+        </md-tab-group>
+
+
+
+    </md-content>
+</md-card>
+<p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+    <p>{{Notification}}</p>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
+    </p-footer>
+</p-dialog>

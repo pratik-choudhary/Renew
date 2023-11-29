@@ -12,7 +12,8 @@
             </div>
         </div>
         <div style="padding: 0 20px;" fxLayout="row">
-            <div style="margin-top: 10px;margin-right: 20px;"><a href="{{apk_link}}" style="color: #00978c;text-decoration: underline;cursor: pointer;font-size: 17px;" download>DIGIROM Mobile App v{{version}}</a></div>
+            <!-- <div style="margin-top: 10px;margin-right: 20px;"><a href="{{apk_link}}" style="color: #10673a;text-decoration: underline;cursor: pointer;font-size: 17px;" download>DIGIROM Mobile App v{{version}}</a></div> -->
+            <div style="margin-top: 10px;margin-right: 20px;"><a  style="color: #10673a;text-decoration: underline;cursor: pointer;font-size: 17px;" download>DIGIROM Mobile App v{{version}}</a></div>
             <div *ngIf="user_info" style="margin: auto 12px auto 0;">
                 <div style="font-size: 14px;">{{user_info.name}}</div>
                 <div style="font-size: 12px;text-align: center; font-weight: 300;font-style: italic;">({{user_info.role}}, {{user_info.department}})</div>
@@ -48,13 +49,13 @@
     <md-sidenav-container class="app-inner">
         <md-sidenav #sidemenu class="sidebar-panel" id="sidebar-panel" [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (mouseover)="menuMouseOver()" (mouseout)="menuMouseOut()">
             <md-nav-list appAccordion class="navigation">
-                <md-list-item routerLinkActive="opened" *ngIf="user_info.role!=='Engineer' ||(user_info.role === 'Engineer' && user_info.department_id == 10017)" [routerLinkActiveOptions]="{exact: true}">
+                <!-- <md-list-item routerLinkActive="opened" *ngIf="user_info.role!=='Engineer' ||(user_info.role === 'Engineer' && user_info.department_id == 10017)" [routerLinkActiveOptions]="{exact: true}">
                     <a class="relative" md-ripple [routerLink]="['/', 'site-dashboard']">
                         <md-icon>dashboard</md-icon>
                         <span>Dashboard</span>
                         <span fxFlex></span>
                     </a>
-                </md-list-item>
+                </md-list-item> -->
                 <!-- menuitem.role.indexOf(user_info.role.toUpperCase() != -1 -->
                 <md-list-item appAccordionLink *ngFor="let menuitem of menuItems.getAll()" group="{{menuitem.state}}">
                     <a appAccordionToggle class="relative" md-ripple [routerLink]="['/', menuitem.url, menuitem.state]" *ngIf="menuitem.type === 'link' && menuitem.url != null">
@@ -99,13 +100,13 @@
                         </md-list-item>
                     </md-nav-list>
                 </md-list-item>
-                <md-list-item *ngIf="user_info.role === 'QA' ||user_info.role === 'qa'||user_info.role === 'admin' || user_info.role === 'ADMIN'">
+                <!-- <md-list-item *ngIf="user_info.role === 'QA' ||user_info.role === 'qa'||user_info.role === 'admin' || user_info.role === 'ADMIN'">
                     <a class="relative" md-ripple [routerLink]="['/', 'document']">
                         <md-icon>insert_drive_file</md-icon>
                         <span>Documents</span>
                         <span fxFlex></span>
                     </a>
-                </md-list-item>
+                </md-list-item> -->
             </md-nav-list>
         </md-sidenav>
         <md-sidenav #end align="end" class="chat-panel" mode="over" opened="false">

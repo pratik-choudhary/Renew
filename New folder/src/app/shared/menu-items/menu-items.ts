@@ -102,23 +102,23 @@ const MENUITEMS = [
         type: 'link',
         icon: 'person',
         url: 'master',
-        role: 'ADMIN,PM,SITE_MIS,HOD'
+        role: 'ADMIN,PM,SITE_MIS,HOD,QA'
       },
       {
         state: 'asset',
         name: 'Asset',
         type: 'link',
-        icon: 'build',
-        url: 'master',
-        role: 'ADMIN,PM,SITE_MIS,HOD'
+        icon: 'currency_exchange',
+        url: null,
+        role: 'ADMIN,PM,SITE_MIS,HOD,QA'
       },
       {
-        state: 'pmSedule',
+        state: 'pmschedule',
         name: 'PM Schedule',
         type: 'link',
-        icon: 'build',
-        url: 'master',
-        role: 'ADMIN,PM,SITE_MIS,HOD'
+        icon: 'access_time',
+        url: null,
+        role: 'ADMIN,PM,SITE_MIS,HOD,QA'
       }
       ]
      },
@@ -129,22 +129,32 @@ const MENUITEMS = [
       icon: 'directions_run',
       role: 'ADMIN,HOD,PM,SITE_MIS,QA',
       children: [
+        {
+          state: 'checklist-Milestone',
+          name: 'Checklist',
+          type: 'link',
+          icon: 'assignment',
+          url: null,
+          role: 'ADMIN,PM,SITE_MIS,QA'
+          
+        },
+        {
+          state: 'approval',
+          name: 'Approval',
+          type: 'link',
+          icon: 'task',
+          url: null,
+          role: 'ADMIN,PM,SITE_MIS,QA'
+          
+        },
       // {
-      //   state: 'project',
-      //   name: 'Project',
+      //   state: 'location',
+      //   name: 'Location',
       //   type: 'link',
-      //   icon: 'swap_calls',
+      //   icon: 'location_on',
       //   url: 'site-management',
-      //   role: 'ADMIN,PM,SITE_MIS,QA'
+      //   role: 'ADMIN,PM,SITE_MIS'
       // },
-      {
-        state: 'location',
-        name: 'Location',
-        type: 'link',
-        icon: 'location_on',
-        url: 'site-management',
-        role: 'ADMIN,PM,SITE_MIS'
-      },
       // {
       //   state: 'location-plan',
       //   name: 'Location Planning',
@@ -153,16 +163,16 @@ const MENUITEMS = [
       //   url: null,
       //   role: 'ADMIN,PM,SITE_MIS,HOD'
       // },
-      {
-        state: 'site-team',
-        name: 'Site Team',
-        type: 'link',
-        icon: 'supervisor_account',
-        url: null,
-        role: 'ADMIN,PM,SITE_MIS'
-      },
-      ]
-    }
+      // {
+      //   state: 'site-team',
+      //   name: 'Site Team',
+      //   type: 'link',
+      //   icon: 'supervisor_account',
+      //   url: null,
+      //   role: 'ADMIN,PM,SITE_MIS'
+      // },
+       ]
+     }
 ];
 
 

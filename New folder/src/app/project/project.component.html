@@ -52,7 +52,8 @@
                 <input mdInput [mdDatepicker]="minDatePicker" placeholder="Plan start date" [formControl]="form.controls['minDate']" required>
                 <button mdSuffix [mdDatepickerToggle]="minDatePicker"></button>
               </md-input-container>
-              <md-datepicker #minDatePicker [touchUi]="touch"></md-datepicker>
+              <!-- <md-datepicker #minDatePicker [touchUi]="touch"></md-datepicker> -->
+              <md-datepicker #minDatePicker [touchUi]="touch" [mdDateFormats]="dateFormats"></md-datepicker>
             </div>
             <small *ngIf="form.controls['minDate'].hasError('required') && form.controls['minDate'].touched" class="mat-text-warn">Required.</small>
       

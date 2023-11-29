@@ -4,7 +4,7 @@
         <small *ngIf="invalidFile" style="margin-top:6px;color:red;">Invalid file format</small>
     </div>
     <div>
-        <button md-raised-button color="primary" [disabled]="disable_button" (click)="uploadFile()" style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
+        <button md-raised-button color="primary" [disabled]="disable_button" (click)="uploadChecklist()" style="margin-left: 10px;box-shadow: none;color:#fff">Upload</button>
     </div>
 </div>
 <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">

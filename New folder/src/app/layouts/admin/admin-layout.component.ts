@@ -37,14 +37,15 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getMobileAppVersion() {
-    this.api_service.getMobileAppVersion().subscribe(
-      data => {
-        this.version = data;
-      },
-      err => {
-        console.log(err);
-        this.api_service.checkStatus(err);
-      });
+    // this.api_service.getMobileAppVersion().subscribe(
+    //   data => {
+    //     this.version = data;
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     this.api_service.checkStatus(err);
+    //   });
+    this.version="1.40";
 
   }
 

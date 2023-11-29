@@ -1,57 +1,182 @@
- <md-content class="md-padding">
-            <div style="margin-top:10px;">
-                <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none;text-align: end;">
-                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                    <input #gb type="text" pInputText size="50" placeholder="Search">
-                </div>
-                <p-dataTable *ngIf="userList.length > 0" [value]="userList"  [rows]="10" [paginator]="true"  [tableStyle]="{'width':'auto'}"  [responsive]="true" [editable]="true" [globalFilter]='gb' [immutable]="false" sortMode="multiple">
-                    <p-column field="employee_id" header="Domain ID" [sortable]="true" [style]="{'width':'100px'}"></p-column>
-                    <p-column field="name" header="Name" [sortable]="true" [style]="{'width':'225px'}"></p-column>
-                    <p-column field="email" header="Email Id" [style]="{'width':'250px','word-wrap': 'break-word'}"></p-column> 
-                    <p-column field="department" header="Department" [editable]="true" [style]="{'width':'200px'}" [sortable]="true">
-                    <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">                              
-                    <p-dropdown [(ngModel)]="row[col.field]"  (onChange)="deptChange(row.index,row)" [options]="departments" [autoWidth]="false" [style]="{'width':'100%'}"
-                    required="true" appendTo="body"></p-dropdown>
-                    </ng-template>
-                    </p-column>
-                    <p-column field="role" header="Role" [editable]="true" [sortable]="true" [style]="{'width':'100px'}">
-                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
-                        <p-dropdown placeholder="Select Role" [(ngModel)]="row[col.field]" (onFocus)="updateRolesByDept(row)" (onChange)="showSaveButton(row.index,row)"  [options]="roles" [autoWidth]="false" [style]="{'width':'100%'}"
-                        required="true" appendTo="body"></p-dropdown>
-                    </ng-template>
-                    </p-column>
-                    <p-column header="Dashboard User" field="is_dashboard_user">
-                        <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="body">
-                                <md-checkbox (change)="setDashboardUser(i)" [(ngModel)]="row[col.field]" ></md-checkbox>
-                        </ng-template>
-                    </p-column>
-                    <!-- <p-column field="STATUS" header="Status"></p-column> -->
-                    <p-column field="status" header="Status" [editable]="true" [sortable]="true" [style]="{'width':'100px'}">
-                        <ng-template let-col let-row="rowData" pTemplate="body">
-                            {{row[col.field]}}
-                        </ng-template>
-                         <ng-template let-col let-row="rowData" let-i="rowIndex" pTemplate="editor">
-                            <p-dropdown [(ngModel)]="row[col.field]" (onChange)="showSaveButton(row.index)" [options]="status_arr" [autoWidth]="false" [style]="{'width':'100%'}"
-                                required="true" appendTo="body"></p-dropdown>
-                        </ng-template> 
-                    </p-column>
-                    <p-column styleClass="col-button" [style]="{'width':'80px'}">
-                        <ng-template pTemplate="header">
-                            Action
-                        </ng-template>
-                        <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
-                            <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
-                                <md-icon *ngIf="rowData.saveFlag" (click)="saveEditUser(rowData,rowData.index)" class="icon-20 material-icons" style="cursor: pointer;font-size: 20px;color: #23375b;">save</md-icon>
-                            </div>
-                        </ng-template>
-                    </p-column>
-                </p-dataTable>
-            </div>
-        </md-content>
-        <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
+<!-- <md-content > -->
+    <div style="margin-top:10px;">
+        <!-- <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none;text-align: end;">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input #gb type="text" pInputText size="50" placeholder="Search">
+        </div> -->
+        <p-dataTable [value]="userList" [rows]="14" [paginator]="true" 
+            [responsive]="true" [editable]="true" [globalFilter]='gb' [immutable]="false" sortMode="multiple">
+            <p-column field="employee_id" header="Domain ID" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+            <p-column field="name" header="Name" [sortable]="true" [style]="{'width':'150px'}"></p-column>
+            <p-column field="email" header="Email Id" [style]="{'width':'200px','word-wrap': 'break-word'}"></p-column>
+            <p-column field="department" header="Department" [editable]="false" [style]="{'width':'100px'}"
+                [sortable]="true">
+            </p-column>
+            <p-column field="role" header="Role" [editable]="false" [sortable]="true" [style]="{'width':'100px'}">
+            </p-column>
+            <p-column field="status" header="Status" [editable]="false" [sortable]="true" [style]="{'width':'100px'}">
+            </p-column>
+            <p-column field="siteNameList" header="Site" [editable]="false" [sortable]="true" [style]="{'width':'250px', 'word-wrap': 'break-word'}">
+            </p-column>
+            <p-column styleClass="col-button" [style]="{'width':'50px'}">
+                <ng-template pTemplate="header">
+                    Action
+                </ng-template>
+                <ng-template let-rowData="rowData" let-index="rowIndex" pTemplate="body">
+                    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+                        <md-icon (click)="saveEditUser(rowData,rowData.index)" class="icon-20 material-icons"
+                            title="Edit" style="cursor: pointer;font-size: 20px;color: #23375b;">create</md-icon>
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+<!-- </md-content> -->
+ <p-dialog header="Message" [(visible)]="display" modal="modal" width="300" [responsive]="true" appendTo="body">
                 <p>{{Notification}}</p>
                 <p-footer>
                     <button type="button" pButton icon="fa-check" (click)="onNotification()" label="Ok"></button>
                 </p-footer>
-        </p-dialog>
-        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog>
+        </p-dialog> 
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" appendTo="body"></p-confirmDialog> 
+<div [hidden]="isSeeHistoryDiv" class="history">
+    <div class="history-inner">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <a (click)="toggleDisplaySeeHistory()" class="history-title">
+                <img  style="margin-top: 50px;" class="history-left-arrow" src="../../assets/images/left-arrow.png" alt="left arrow">Update User
+            </a>
+        </div>
+
+        <form [formGroup]="checklistForm" (ngSubmit)="submitUserForm()">
+
+            <div fxLayout="row" style="margin-top:15px">
+                <div class="col-md-3">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Name
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="text" class="suzlon-input ng-pristine ng-invalid ng-touched" formControlName="name"
+                            (keypress)="lettersOnly($event)" />
+                        <span *ngIf="formSubmitted && !checklistForm.get('name').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 60px;">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Email Id
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="email" class="suzlon-input ng-pristine ng-invalid ng-touched"
+                            formControlName="emailId" (keypress)="lettersOnly($event)" />
+                            <span *ngIf="formSubmitted && checklistForm.get('emailId').hasError('email')"
+                            class="err-text validation-label">
+                            Please enter a valid email address</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:15px">
+                <!-- <div class="col-md-3">
+                    <div class="suzlon-input " style="width:220px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Password
+                            <small style="color: red;">*</small>
+                        </span>
+                        <input type="text" class="suzlon-input ng-pristine ng-invalid ng-touched"
+                            formControlName="password" (keypress)="lettersOnly($event)" />
+                        <span *ngIf="formSubmitted && !checklistForm.get('password').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div> -->
+                <div class="col-md-3" >
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Department
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="department" placeholder="Select Type" style="width: 100%;
+                                padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let department of departments" [value]="department.Id">{{department.Name}}
+                            </option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('department').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 50px;">
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Role
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="role" placeholder="Select Model" style="width: 100%;
+                                padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let role of roles" [value]="role.role">{{role.role}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('role').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div fxLayout="row" style="margin-top:15px">
+               
+                <div class="col-md-3" >
+                    <div class="suzlon-input " style="width:230px">
+                        <span style="font-size:13px;color: rgba(0, 0, 0, 0.54);padding-bottom: 8px;">Status
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="Status" placeholder="Select Model" style="width: 100%;
+                                padding: 6px;border-radius: 4px;border-color: #dcdcdc;">
+                            <option *ngFor="let status of statusList" [value]="status">{{status}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('status').valid"
+                            class="err-text validation-label">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 50px;">
+                    <div class="suzlon-input" style="width: 230px">
+                        <span style="font-size: 13px; color: rgba(0, 0, 0, 0.54); padding-bottom: 8px;">Site
+                            <small style="color: red;">*</small>
+                        </span>
+                        <select class="suzlon-input" formControlName="site" placeholder="Select Model"
+                            style="width: 100%; padding: 6px; border-radius: 4px; border-color: #dcdcdc;" multiple>
+                            <option *ngFor="let site of sites" [ngValue]="site.Id">{{site.Site}}</option>
+                        </select>
+                        <span *ngIf="formSubmitted && !checklistForm.get('site').valid"
+                            class="err-text validation-label">This field is required</span>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" style="margin-top:5px">
+              
+            </div>
+
+
+
+
+
+
+            <div fxLayout="row" style="margin-top:50px;margin-left: 58%;">
+                <div class="col-md-3">
+                    <div class="suzlon-input ">
+                        <button type="submit" md-raised-button color="primary">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 10px">
+                    <div class="suzlon-input ">
+                        <button type="button" md-raised-button color="accent" (click)="toggleDisplaySeeHistory()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>

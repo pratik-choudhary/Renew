@@ -1,7 +1,7 @@
-<div style="background:#26a69a;height:40px;" color="primary">
+<div style="background:#1b5e20;height:40px;" color="primary">
     <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
         <div>
-            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">Import from Excel</div>
+            <div fxFlex class="header-text" style="font-size: 19px;font-weight: 500;margin-top: 8px;margin-left: 10px;color:white;">{{sheetName}}</div>
         </div>
         <div>
             <md-icon class="material-icons mat-icon" style=" width: calc(100% - 30px);margin-top: 12px;text-align: end;cursor:pointer;font-size: 18px;color:white;margin-right: 10px;"
@@ -10,5 +10,5 @@
     </div>
 </div>
 <div>
-    <app-upload-excel [checklistId]="checklist_id" [createdBy]="created_by_id" (notify)="onNotify($event)"></app-upload-excel>
+    <app-upload-excel [sheetName]="sheetName" (notify)="onNotify($event)"></app-upload-excel>
 </div>
